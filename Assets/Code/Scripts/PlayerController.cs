@@ -8,8 +8,8 @@ public class PlayerController : MonoBehaviour
     [Header("References")] 
     public GameObject[] rightWheels;
     public GameObject[] leftWheels;
-    
-    [Header("Movement")]
+
+    [Header("Movement")] public float maxSpeed = 30f;
     public float moveSpeed = 20f;
     public float wheelRotationSpeed = 200f;
     
@@ -57,7 +57,12 @@ public class PlayerController : MonoBehaviour
 
     private void MoveTank(float input)
     {
-        Vector3 move = input * transform.right * moveSpeed * Time.fixedDeltaTime;
-        rb.AddForce(move,ForceMode.Acceleration);
+        Vector3 move = input * -transform.right * moveSpeed;
+        rb.AddForce(move,ForceMode.Impulse);
+        rb.linearVelocity = new Vector3(
+            Mathf.Clamp(rb.linearVelocity.x, -maxSpeed, maxSpeed),
+            rb.linearVelocity.y,
+            Mathf.Clamp(rb.linearVelocity.z, -maxSpeed, maxSpeed)
+        );
     }
 }
