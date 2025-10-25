@@ -2339,9 +2339,9 @@ MonoBehaviour:
   - {fileID: 5332149186129414127}
   leftWheels:
   - {fileID: 964332328680073436}
-  maxSpeed: 10
-  moveSpeed: 3
-  wheelRotationSpeed: 200
+  maxSpeed: 14
+  moveSpeed: 5
+  rotationSpeed: 2
 --- !u!54 &2228774578058666151
 Rigidbody:
   m_ObjectHideFlags: 0

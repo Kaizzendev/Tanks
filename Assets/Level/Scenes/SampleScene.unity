@@ -341,9 +341,17 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 626984095702339055, guid: 51daffa2d8ab73349af9c2bf8f4ea91c, type: 3}
+      propertyPath: turretRotateSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 2228774578058666151, guid: 51daffa2d8ab73349af9c2bf8f4ea91c, type: 3}
       propertyPath: m_Mass
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2878074823456222676, guid: 51daffa2d8ab73349af9c2bf8f4ea91c, type: 3}
+      propertyPath: rotationSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5021297792936054801, guid: 51daffa2d8ab73349af9c2bf8f4ea91c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -403,7 +411,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8992575248051711492, guid: 51daffa2d8ab73349af9c2bf8f4ea91c, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 963194228}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51daffa2d8ab73349af9c2bf8f4ea91c, type: 3}
 --- !u!1 &963194225
@@ -492,12 +503,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.11614629, y: 0.69750273, z: -0.11614629, w: 0.69750273}
-  m_LocalPosition: {x: -15, y: 11.846397, z: 0}
+  m_LocalRotation: {x: 0.11614629, y: -0.69750273, z: 0.11614629, w: 0.69750273}
+  m_LocalPosition: {x: 15, y: 8.186398, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 230548205}
   m_LocalEulerAnglesHint: {x: 18.908, y: 90, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -512,8 +523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 230548205}
-  offset: {x: -15, y: 10, z: 0}
-  smoothSpeed: 0.125
+  rotationSpeed: 100
 --- !u!1 &1359529806
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +744,6 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 1921235334}
   - {fileID: 723460880}

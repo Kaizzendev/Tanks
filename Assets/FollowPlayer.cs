@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,21 +8,32 @@ public class FollowPlayer : MonoBehaviour
     
     [Header("References")] 
     public Transform playerTransform;
-    public Vector3 offset;
-    public float smoothSpeed = 1f;
+    
+    [Header("Rotation")]
+    public float rotationSpeed = 1f;
+    
+    float rotationInput;
 
+    void Update()
+    {
+        rotationInput = 0f;
+        if (Input.GetKey(KeyCode.Q))
+        {
+            rotationInput = -1f;
+        }
 
-    // void Update()
-    // {
-    //     if (Input.GetKey(KeyCode.LeftAlt))
-    //     {
-    //         
-    //     }
-    // }
+        if (Input.GetKey(KeyCode.E))
+        {
+            rotationInput = 1f;
+        }
+    }
     void LateUpdate()
     {
-        Vector3 desiredPosition = playerTransform.position + offset;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position =  smoothedPosition;
+        float cameraRotation = rotationInput * rotationSpeed * Time.deltaTime;
+        if (rotationInput != 0)
+        {
+            transform.RotateAround(playerTransform.position, Vector3.up, cameraRotation);
+        }
+        
     }
 }
