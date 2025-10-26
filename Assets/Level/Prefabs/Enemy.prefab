@@ -2391,6 +2391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  explosion: {fileID: 5864781356994049933, guid: d9c4ee827d3fa7849b61fb6e3f59fd93, type: 3}
 --- !u!1 &8946430072972900565
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,9 @@ public class EnemyHealth : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
     
+    
+    [Header("References")]
+    public GameObject explosion;
     private void Start()
     {
         currentHealth = maxHealth;
@@ -19,6 +22,7 @@ public class EnemyHealth : MonoBehaviour
             currentHealth -= other.GetComponent<Missile>().missileDamage;
             if (currentHealth <= 0)
             {
+               
                 Death();
             }
         }
@@ -26,6 +30,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Death()
     {
+        Instantiate(explosion,transform.position,Quaternion.identity);
         Destroy(gameObject); //TODO: object pool
     }
 }
