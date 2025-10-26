@@ -11,7 +11,7 @@ public class TurretController : MonoBehaviour
     [Header("Rotation")]
     public float turretRotateSpeed = 150f;
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         RotateTurretTowardsMouse();
     }
