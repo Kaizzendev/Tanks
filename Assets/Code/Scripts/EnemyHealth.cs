@@ -7,7 +7,7 @@ public class EnemyHealth : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
     
-    
+    public bool isDead;
     [Header("References")]
     public GameObject explosion;
     private void Start()
@@ -30,6 +30,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void Death()
     {
+        isDead = true;
         Instantiate(explosion,transform.position,Quaternion.identity);
         Destroy(gameObject); //TODO: object pool
     }

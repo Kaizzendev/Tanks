@@ -28,24 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = Input.GetAxis("Vertical");
         rotationInput = Input.GetAxis("Horizontal");
-        
-        //RotateWheels(moveInput, rotationInput);
     }
-
-    // private void RotateWheels(float f, float rotationInput1)
-    // {
-    //     float wheelRotation = moveInput * wheelRotationSpeed * Time.deltaTime;
-    //
-    //     foreach (var wheel in leftWheels)
-    //     {
-    //         wheel.transform.Rotate(0, wheelRotation -rotationInput * wheelRotationSpeed * Time.deltaTime, 0);
-    //     }
-    //
-    //     foreach (var wheel in rightWheels)
-    //     {
-    //         wheel.transform.Rotate(0, wheelRotation + rotationInput * wheelRotationSpeed * Time.deltaTime, 0);
-    //     }
-    // }
 
     private void FixedUpdate()
     {

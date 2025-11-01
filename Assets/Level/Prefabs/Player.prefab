@@ -1477,13 +1477,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5943550066061169734}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.043619383, w: 0.99904823}
-  m_LocalPosition: {x: 1.4904804, y: 0.51616573, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.1490099, w: 0.98883575}
+  m_LocalPosition: {x: 1.3324564, y: 0.5971992, z: 0}
   m_LocalScale: {x: 0.03275535, y: 0.03275535, z: 0.03275535}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5021297792936054801}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -17.139}
 --- !u!33 &3556096884113160904
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2358,9 +2358,10 @@ GameObject:
   - component: {fileID: 2878074823456222676}
   - component: {fileID: 2228774578058666151}
   - component: {fileID: 8452043503274737183}
+  - component: {fileID: 5938008078712389449}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2373,7 +2374,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8613093775178724542}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2392,7 +2393,7 @@ Transform:
   - {fileID: 5021297792936054801}
   - {fileID: 7189894684750424078}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2878074823456222676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2460,6 +2461,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.176264, y: 4.098103, z: 3.1148844}
   m_Center: {x: -0.6019935, y: 1.1189823, z: -0.028442144}
+--- !u!95 &5938008078712389449
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8613093775178724542}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3d75ee4cba630a54685f0e07cbc4d605, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8946430072972900565
 GameObject:
   m_ObjectHideFlags: 0
