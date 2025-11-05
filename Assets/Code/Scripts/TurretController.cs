@@ -8,6 +8,7 @@ public class TurretController : MonoBehaviour
     [Header("References")] 
     public Camera mainCamera;
     public Transform turretTransform;
+    public Transform canon;
     [Header("Rotation")]
     public float turretRotateSpeed = 150f;
 

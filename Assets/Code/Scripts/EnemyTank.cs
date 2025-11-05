@@ -1,11 +1,13 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyTank : MonoBehaviour
 {
     public Transform player;
-    
-    [Header("Paramaters")]
-    public float moveSpeed;
+
+    [Header("Paramaters")] public float moveSpeed;
     public float rotateSpeed;
     public float detectionRange;
     public float fireRange;
@@ -14,16 +16,35 @@ public class EnemyTank : MonoBehaviour
 
     private float fireTimer;
 
-    [Header("References")] 
-    public Transform turret;
+    [Header("References")] public Transform turret;
     public Transform firePoint;
     public GameObject missile;
-
+    public NavMeshAgent navMeshAgent;
     private EnemyHealth _enemyHealth;
+
     
-    private enum State {Idle, Chase, Attack, Dead }
+    [Header("Patrol system")]
+    public Transform[] patrolPoints;
+    public float waitTimeAtPoint = 1f;
+    private int currentPatrolIndex;
+    private bool waiting;
+    private enum State
+    {
+        Idle,
+        Chase,
+        Attack,
+        Dead,
+        Patrol
+    }
+
     private State currentState = State.Idle;
-    
+
+
+    private void Awake()
+    {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+    }
+
     void Start()
     {
         if (player == null)
@@ -33,6 +54,16 @@ public class EnemyTank : MonoBehaviour
         }
 
         _enemyHealth = GetComponent<EnemyHealth>();
+        
+        if (patrolPoints != null && patrolPoints.Length > 0)
+        {
+            currentState = State.Patrol;
+            GoToNextPatrolPoint();
+        }
+        else
+        {
+            currentState = State.Idle;
+        }
     }
 
     void Update()
@@ -48,9 +79,19 @@ public class EnemyTank : MonoBehaviour
                 {
                     currentState = State.Chase;
                 }
+
                 break;
-            
+
+            case State.Patrol:
+                PatrolBehavior();
+                if (distance < detectionRange)
+                {
+                    currentState = State.Chase;
+                }
+                break;
+
             case State.Chase:
+                // ChaseBehavior();
                 MoveTowards(player.position);
                 RotateTowards(player.position);
                 if (distance < fireRange)
@@ -60,10 +101,11 @@ public class EnemyTank : MonoBehaviour
 
                 if (distance > detectionRange)
                 {
-                    currentState = State.Idle;
+                    currentState = State.Patrol;
                 }
+
                 break;
-            
+
             case State.Attack:
                 RotateTurretTowards(player.position);
                 Shoot();
@@ -71,8 +113,38 @@ public class EnemyTank : MonoBehaviour
                 {
                     currentState = State.Chase;
                 }
+
                 break;
         }
+    }
+
+    private void PatrolBehavior()
+    {
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+            StartCoroutine(WaitAndGoNextPatrol());
+    }
+    
+    IEnumerator WaitAndGoNextPatrol()
+    {
+        waiting = true;
+        navMeshAgent.isStopped = true;
+        yield return new WaitForSeconds(waitTimeAtPoint);
+        waiting = false;
+        GoToNextPatrolPoint();
+    }
+
+    void GoToNextPatrolPoint()
+    {
+        if (patrolPoints.Length == 0) return;
+
+        navMeshAgent.isStopped = false;
+        navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex].position);
+        currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length; // recorre en bucle
+    }
+
+    private void ChaseBehavior()
+    {
+        
     }
 
     private void MoveTowards(Vector3 target)
@@ -80,7 +152,7 @@ public class EnemyTank : MonoBehaviour
         Vector3 direction = (target - transform.position).normalized;
         transform.position += direction * moveSpeed * Time.deltaTime;
     }
-    
+
     private void RotateTowards(Vector3 target)
     {
         Vector3 dir = (target - transform.position).normalized;
@@ -104,9 +176,9 @@ public class EnemyTank : MonoBehaviour
         {
             fireTimer = 0;
             Vector3 direction = firePoint.position - transform.position;
-            GameObject missilePrefab = Instantiate(missile, firePoint.position, firePoint.rotation); 
+            GameObject missilePrefab = Instantiate(missile, firePoint.position, firePoint.rotation);
             missilePrefab.GetComponent<Missile>().Launch(direction);
-            missilePrefab.transform.rotation = Quaternion.Euler(0,180,0);
+            missilePrefab.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 }
