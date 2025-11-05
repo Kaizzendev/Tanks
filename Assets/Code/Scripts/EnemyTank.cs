@@ -120,6 +120,9 @@ public class EnemyTank : MonoBehaviour
 
     private void PatrolBehavior()
     {
+        if (waiting || patrolPoints == null || patrolPoints.Length == 0)
+            return;
+        
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
             StartCoroutine(WaitAndGoNextPatrol());
     }
