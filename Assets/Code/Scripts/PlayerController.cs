@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("References")] 
-    public GameObject[] rightWheels;
-    public GameObject[] leftWheels;
 
     [Header("Movement")] public float maxSpeed = 30f;
     public float moveSpeed = 20f;
@@ -37,8 +34,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void RotateTank(float input)
-    {
-        
+    { 
         Quaternion rotation = Quaternion.Euler(new Vector3(0, rotationSpeed * input, 0));
         rb.MoveRotation(rb.rotation * rotation);
     }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
@@ -21,6 +22,6 @@ public class Missile : MonoBehaviour
 
     public void Launch(Vector3 direction)
     {
-        rb.AddForce(direction * missileSpeed, ForceMode.Impulse);
+        rb.linearVelocity = direction * missileSpeed;
     }
 }

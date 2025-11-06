@@ -91,8 +91,7 @@ public class EnemyTank : MonoBehaviour
                 break;
 
             case State.Chase:
-                // ChaseBehavior();
-                MoveTowards(player.position);
+                ChaseBehavior();
                 RotateTowards(player.position);
                 if (distance < fireRange)
                 {
@@ -147,13 +146,7 @@ public class EnemyTank : MonoBehaviour
 
     private void ChaseBehavior()
     {
-        
-    }
-
-    private void MoveTowards(Vector3 target)
-    {
-        Vector3 direction = (target - transform.position).normalized;
-        transform.position += direction * moveSpeed * Time.deltaTime;
+        navMeshAgent.SetDestination(player.position);
     }
 
     private void RotateTowards(Vector3 target)
