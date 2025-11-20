@@ -43,6 +43,7 @@ public class EnemyTank : MonoBehaviour
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.speed = moveSpeed;
     }
 
     void Start()

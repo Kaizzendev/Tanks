@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7fcc0657987e89c4ea11c9347522df01, type: 2}
+  - {fileID: 2100000, guid: e2c30801e36f0f44babf854c24a201fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -155,7 +155,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7fcc0657987e89c4ea11c9347522df01, type: 2}
+  - {fileID: 2100000, guid: e2c30801e36f0f44babf854c24a201fa, type: 2}
   - {fileID: 2100000, guid: 9f2c0dd6a66480f4f9a07f2d0c9e92e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -1208,7 +1208,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9f2c0dd6a66480f4f9a07f2d0c9e92e0, type: 2}
-  - {fileID: 2100000, guid: 7fcc0657987e89c4ea11c9347522df01, type: 2}
+  - {fileID: 2100000, guid: e2c30801e36f0f44babf854c24a201fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1475,7 +1475,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7fcc0657987e89c4ea11c9347522df01, type: 2}
+  - {fileID: 2100000, guid: e2c30801e36f0f44babf854c24a201fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1614,7 +1614,7 @@ Transform:
   m_GameObject: {fileID: 6469491419321839353}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7064338, y: -0.03084362, z: -0.03084362, w: 0.7064338}
-  m_LocalPosition: {x: -2.753099, y: 1.2285159, z: 1.9400353}
+  m_LocalPosition: {x: -2.753099, y: 1.2285159, z: 2.09}
   m_LocalScale: {x: 1.0216956, y: 1.0216955, z: 1.0216955}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1819,7 +1819,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7fcc0657987e89c4ea11c9347522df01, type: 2}
+  - {fileID: 2100000, guid: e2c30801e36f0f44babf854c24a201fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1964,7 +1964,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7fcc0657987e89c4ea11c9347522df01, type: 2}
+  - {fileID: 2100000, guid: e2c30801e36f0f44babf854c24a201fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2231,7 +2231,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9d5b4c740e29114418f66a1115bfde04, type: 2}
+  - {fileID: 2100000, guid: e2c30801e36f0f44babf854c24a201fa, type: 2}
   - {fileID: 2100000, guid: 9f2c0dd6a66480f4f9a07f2d0c9e92e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -2410,7 +2410,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7fcc0657987e89c4ea11c9347522df01, type: 2}
+  - {fileID: 2100000, guid: e2c30801e36f0f44babf854c24a201fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2448,7 +2448,7 @@ GameObject:
   - component: {fileID: 3137768541336322623}
   - component: {fileID: 7918533034220454181}
   m_Layer: 9
-  m_Name: Enemy
+  m_Name: Enemy 2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2530,7 +2530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5230b5f4470f6ce4baa17ee01a23fa60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 130
   currentHealth: 0
   isDead: 0
   explosion: {fileID: 5864781356994049933, guid: d9c4ee827d3fa7849b61fb6e3f59fd93, type: 3}
@@ -2547,12 +2547,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  moveSpeed: 6
-  rotateSpeed: 6
-  detectionRange: 40
-  fireRange: 25
-  fireRate: 2
-  turretRotationSpeed: 2
+  moveSpeed: 3
+  rotateSpeed: 9
+  detectionRange: 50
+  fireRange: 40
+  fireRate: 3
+  turretRotationSpeed: 3
   turret: {fileID: 5021297792936054801}
   firePoint: {fileID: 5460709649325387512}
   missile: {fileID: 6234660730239567049, guid: e3c71408acd10344c8054324c4de0568, type: 3}
