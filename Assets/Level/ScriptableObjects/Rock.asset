@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralObject
   proceduralObject: {fileID: 3581020046417725948, guid: eb1ec26d55503ee4a8147308168dce70, type: 3}
   minDensity: 0
-  maxDensity: 0.3
-  probability: 1
-  scaleRange: {x: 5, y: 5}
+  maxDensity: 1
+  probability: 0.7
+  scaleRange: {x: 1, y: 1}

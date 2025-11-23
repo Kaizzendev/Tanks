@@ -15,5 +15,5 @@ MonoBehaviour:
   proceduralObject: {fileID: 209138526641170471, guid: b6558b63394082b4ebd4a3c2da3ee495, type: 3}
   minDensity: 0
   maxDensity: 1
-  probability: 1
+  probability: 0.1
   scaleRange: {x: 1, y: 1}

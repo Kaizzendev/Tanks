@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74c2fdcffe3607049bbe1302681a8127, type: 3}
-  m_Name: Pine
+  m_Name: Crate
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralObject
-  proceduralObject: {fileID: 3842428147945071944, guid: 80d4914ee22025e4d973e04502c593f7, type: 3}
+  proceduralObject: {fileID: 3122532026652751264, guid: b85dbf8f4811eb0489b7724e9447e5db, type: 3}
   minDensity: 0
   maxDensity: 1
-  probability: 0.7
+  probability: 0.3
   scaleRange: {x: 1, y: 1}
