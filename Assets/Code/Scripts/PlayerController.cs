@@ -3,49 +3,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace Player
 {
-
-    [Header("Movement")] public float maxSpeed = 30f;
-    public float moveSpeed = 20f;
-    
-    [Header("Rotation")]
-    public float rotationSpeed = 2f;
-    
-    
-    private Rigidbody rb;
-    private float moveInput;
-    private float rotationInput;
-    void Start()
+    public class PlayerController : MonoBehaviour
     {
-        rb = GetComponent<Rigidbody>();
-    }
+        private Rigidbody rb;
+        private float moveInput;
+        private float rotationInput;
 
-    void Update()
-    {
-        moveInput = Input.GetAxis("Vertical");
-        rotationInput = Input.GetAxis("Horizontal");
-    }
+        void Start()
+        {
+            rb = GetComponent<Rigidbody>();
+        }
 
-    private void FixedUpdate()
-    {
-        MoveTank(moveInput);
-        RotateTank(rotationInput);
-    }
+        void Update()
+        {
+            moveInput = Input.GetAxis("Vertical");
+            rotationInput = Input.GetAxis("Horizontal");
+        }
 
-    private void RotateTank(float input)
-    { 
-        Quaternion rotation = Quaternion.Euler(new Vector3(0, rotationSpeed * input, 0));
-        rb.MoveRotation(rb.rotation * rotation);
-    }
+        private void FixedUpdate()
+        {
+            MoveTank(moveInput);
+            RotateTank(rotationInput);
+        }
 
-    private void MoveTank(float input)
-    {
-        Vector3 move = input * -transform.right * moveSpeed;
-        rb.linearVelocity = new Vector3(
-            Mathf.Clamp(move.x, -maxSpeed, maxSpeed),
-            rb.linearVelocity.y,
-            Mathf.Clamp(move.z, -maxSpeed, maxSpeed)
-        );
+        private void RotateTank(float input)
+        {
+            Quaternion rotation = Quaternion.Euler(new Vector3(0, PlayerStats.Instance.rotationSpeed * input, 0));
+            rb.MoveRotation(rb.rotation * rotation);
+        }
+
+        private void MoveTank(float input)
+        {
+            Vector3 move = input * -transform.right * PlayerStats.Instance.moveSpeed;
+            rb.linearVelocity = new Vector3(
+                Mathf.Clamp(move.x, -PlayerStats.Instance.maxMoveSpeed, PlayerStats.Instance.maxMoveSpeed),
+                rb.linearVelocity.y,
+                Mathf.Clamp(move.z, -PlayerStats.Instance.maxMoveSpeed, PlayerStats.Instance.maxMoveSpeed)
+            );
+        }
     }
 }

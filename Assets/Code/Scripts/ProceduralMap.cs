@@ -17,7 +17,8 @@ public class ProceduralMap : MonoBehaviour
     public List<ProceduralObject> objects = new List<ProceduralObject>();
 
     private List<GameObject> spawned = new List<GameObject>();
-    
+
+    public GameObject enemy;
     
 #if UNITY_EDITOR
     [ContextMenu("Generate Map")]
@@ -39,7 +40,7 @@ public class ProceduralMap : MonoBehaviour
     public void Generate()
     {
         Random.InitState(seed);
-
+        
         List<Vector2> points = PoissonDiskSampler.Generate(
             objectSpacing,
             new Vector2(mapSize, mapSize),

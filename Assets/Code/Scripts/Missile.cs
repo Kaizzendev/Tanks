@@ -10,7 +10,7 @@ public class Missile : MonoBehaviour
     
     [Header("Parameters")]
     public float missileSpeed = 20f;
-    public int missileDamage = 100;
+    public float missileDamage = 100;
     
     private Rigidbody rb;
     private void Awake()

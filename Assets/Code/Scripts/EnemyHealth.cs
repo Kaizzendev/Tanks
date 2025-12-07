@@ -2,14 +2,19 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    
     [Header("HP")]
     public int maxHealth = 100;
-    public int currentHealth;
+    public float currentHealth;
     
     public bool isDead;
     [Header("References")]
     public GameObject explosion;
+
+    private void OnEnable()
+    {
+        EnemyEvents.OnEnemySpawned?.Invoke();
+    }
+    
     private void Start()
     {
         currentHealth = maxHealth;
@@ -32,6 +37,7 @@ public class EnemyHealth : MonoBehaviour
     {
         isDead = true;
         Instantiate(explosion,transform.position,Quaternion.identity);
+        EnemyEvents.OnEnemyDied?.Invoke();
         Destroy(gameObject); //TODO: object pool
     }
 }
