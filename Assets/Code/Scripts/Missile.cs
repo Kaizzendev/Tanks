@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
@@ -11,6 +12,7 @@ public class Missile : MonoBehaviour
     [Header("Parameters")]
     public float missileSpeed = 20f;
     public float missileDamage = 100;
+    public float timeToDespawn = 10f;
     
     private Rigidbody rb;
     private void Awake()
@@ -24,4 +26,11 @@ public class Missile : MonoBehaviour
     {
         rb.linearVelocity = direction * missileSpeed;
     }
+
+    private void Start()
+    {
+        Destroy(gameObject, timeToDespawn);
+    }
+    
+    
 }
