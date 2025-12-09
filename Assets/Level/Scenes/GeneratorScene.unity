@@ -148,17 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a620d7856dc7e4d86c827eea46a20d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralMap
+  biome: {fileID: 11400000, guid: f46214f929725a947a646620bc0b08bf, type: 2}
   mapSize: 200
-  terrainMaterial: {fileID: 2100000, guid: dac94efab6ca5a94a89d3a87991e03b6, type: 2}
   objectSpacing: 20
   seed: 12313
   noiseScale: 0.5
-  objects:
-  - {fileID: 11400000, guid: cf32177f1423d5d4c9fce135b956ba37, type: 2}
-  - {fileID: 11400000, guid: e7fb9d499cc2713498f4fcfe459b7bfb, type: 2}
-  - {fileID: 11400000, guid: 6f807102149629042b6b4788852c7eee, type: 2}
-  - {fileID: 11400000, guid: 7b3298a4c72a1bc4495dc0a02433ebc8, type: 2}
-  objectDensity: 0.3
   navSurface: {fileID: 328274972}
   enemy: {fileID: 8613093775178724542, guid: e7cd34720a7e0954bb3f983c35c955f7, type: 3}
   enemyCount: 10

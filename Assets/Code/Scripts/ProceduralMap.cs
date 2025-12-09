@@ -6,18 +6,16 @@ using Random = UnityEngine.Random;
 
 public class ProceduralMap : MonoBehaviour
 {
+    [Header("Biome")]
+    public Biome biome;
+    
     [Header("Map Settings")]
     public float mapSize = 100f;
-    public Material terrainMaterial;
     public float objectSpacing = 5f;
     public int seed = 12345;
 
     [Header("Noise Settings")]
     public float noiseScale = 0.05f;
-
-    [Header("Objects")]
-    public List<ProceduralObject> objects = new List<ProceduralObject>();
-    public float objectDensity = 0.3f;
 
     [Header("NavMesh")]
     public NavMeshSurface navSurface;
@@ -70,7 +68,7 @@ public class ProceduralMap : MonoBehaviour
         terrainPlane.transform.localPosition = Vector3.zero;
         terrainPlane.transform.localScale = new Vector3(mapSize / 10f, 1f, mapSize / 10f);
         
-        terrainPlane.GetComponent<Renderer>().material = terrainMaterial;
+        terrainPlane.GetComponent<Renderer>().material = biome.terrainMaterial;
     }
     
     public void GenerateProps()
@@ -95,7 +93,7 @@ public class ProceduralMap : MonoBehaviour
 
             
             // seleccionar objeto según reglas
-            ProceduralObject obj = ObjectRuleEngine.SelectObject(density, objects);
+            ProceduralObject obj = ObjectRuleEngine.SelectObject(density, biome.proceduralObjects);
 
             if (obj == null)
                 continue;
