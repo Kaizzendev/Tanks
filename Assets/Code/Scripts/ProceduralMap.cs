@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,26 +8,36 @@ public class ProceduralMap : MonoBehaviour
 {
     [Header("Map Settings")]
     public float mapSize = 100f;
+    public Material terrainMaterial;
     public float objectSpacing = 5f;
     public int seed = 12345;
 
     [Header("Noise Settings")]
-    public float noiseScale = 0.5f;
+    public float noiseScale = 0.05f;
 
     [Header("Objects")]
     public List<ProceduralObject> objects = new List<ProceduralObject>();
+    public float objectDensity = 0.3f;
 
-    private List<GameObject> spawned = new List<GameObject>();
-
+    [Header("NavMesh")]
+    public NavMeshSurface navSurface;
+    
+    
+    [Header("Enemy Settings")]
     public GameObject enemy;
+    public int enemyCount = 10;
+    public float enemyMinDistance = 8f; 
+    
+    private GameObject terrainPlane;
+    private List<GameObject> spawned = new List<GameObject>();
+    
     
 #if UNITY_EDITOR
     [ContextMenu("Generate Map")]
 #endif
     public void GenerateContextMenu()
     {
-        ClearMap();
-        Generate();
+        Generate(1);
     }
 
 
@@ -37,7 +48,32 @@ public class ProceduralMap : MonoBehaviour
             DestroyImmediate(transform.GetChild(i).gameObject);
         }
     }
-    public void Generate()
+
+    private void Awake()
+    {
+        Generate(1);
+    }
+
+    public void Generate(int difficulty)
+    {
+        ClearMap();
+        GeneratePlane();
+        GenerateProps();
+        BakeNavMesh();
+        spawnEnemies();
+    }
+
+    private void GeneratePlane()
+    {
+        terrainPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        terrainPlane.transform.SetParent(transform);
+        terrainPlane.transform.localPosition = Vector3.zero;
+        terrainPlane.transform.localScale = new Vector3(mapSize / 10f, 1f, mapSize / 10f);
+        
+        terrainPlane.GetComponent<Renderer>().material = terrainMaterial;
+    }
+    
+    public void GenerateProps()
     {
         Random.InitState(seed);
         
@@ -75,9 +111,40 @@ public class ProceduralMap : MonoBehaviour
             inst.transform.localScale *= scale;
 
             spawned.Add(inst);
-            print(spawned);
+
         }
     }
+    
+    private void BakeNavMesh()
+    {
+        if (navSurface != null)
+            navSurface.BuildNavMesh();
+    }
+
+    private void spawnEnemies()
+    {
+        if (enemy == null) return;
+
+        // Creamos posiciones Poisson para enemigos
+        List<Vector2> points = PoissonDiskSampler.Generate(
+            enemyMinDistance,
+            new Vector2(mapSize, mapSize),
+            20
+        );
+
+        // Limitamos a enemyCount
+        for (int i = 0; i < Mathf.Min(enemyCount, points.Count); i++)
+        {
+            Vector2 p = points[i];
+            float x = p.x - mapSize / 2f;
+            float z = p.y - mapSize / 2f;
+
+            Vector3 pos = new Vector3(x, 5f, z);
+
+            Instantiate(enemy, pos, Quaternion.identity, transform);
+        }
+    }
+
     private static class PoissonDiskSampler
     {
         public static List<Vector2> Generate(float radius, Vector2 regionSize, int rejectionSamples)

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3136087923361214853}
+  - component: {fileID: 7764497508263812000}
   m_Layer: 0
   m_Name: Czech Hedgehog
   m_TagString: Untagged
@@ -32,6 +33,27 @@ Transform:
   - {fileID: 2283136718251760716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7764497508263812000
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209138526641170471}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.14642744, y: 0.15822385, z: 0.15442586}
+  m_Center: {x: 0.015735207, y: 0.091243446, z: 0.0012974023}
 --- !u!1 &1505473393455810294
 GameObject:
   m_ObjectHideFlags: 0

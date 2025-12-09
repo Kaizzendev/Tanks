@@ -9,14 +9,10 @@ public class EnemyHealth : MonoBehaviour
     public bool isDead;
     [Header("References")]
     public GameObject explosion;
-
-    private void OnEnable()
-    {
-        EnemyEvents.OnEnemySpawned?.Invoke();
-    }
     
     private void Start()
     {
+        EnemyEvents.OnEnemySpawned?.Invoke();
         currentHealth = maxHealth;
     }
 
