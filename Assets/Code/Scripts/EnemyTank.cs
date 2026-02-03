@@ -16,12 +16,12 @@ public class EnemyTank : MonoBehaviour
 
     private float fireTimer;
 
-    [Header("References")] public Transform turret;
+    [Header("References")]
+    public Transform turret;
     public Transform firePoint;
     public GameObject missile;
     public NavMeshAgent navMeshAgent;
     private EnemyHealth _enemyHealth;
-
     
     [Header("Patrol system")]
     public Transform[] patrolPoints;
@@ -172,7 +172,7 @@ public class EnemyTank : MonoBehaviour
         if (fireTimer >= fireRate)
         {
             fireTimer = 0;
-            Vector3 direction = firePoint.position - transform.position;
+            Vector3 direction = firePoint.position - turret.transform.position;
             GameObject missilePrefab = Instantiate(missile, firePoint.position, firePoint.rotation);
             missilePrefab.GetComponent<Missile>().Launch(direction);
             missilePrefab.transform.rotation = Quaternion.Euler(0, 180, 0);
