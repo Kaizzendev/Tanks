@@ -31,6 +31,9 @@ public class Missile : MonoBehaviour
     {
         Destroy(gameObject, timeToDespawn);
     }
-    
-    
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Destroy(gameObject);
+    }
 }
