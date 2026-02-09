@@ -6,38 +6,14 @@ using Random = UnityEngine.Random;
 
 public class ProceduralMap : MonoBehaviour
 {
-    [Header("Biome")]
-    public Biome biome;
-    
-    [Header("Map Settings")]
-    public float mapSize = 100f;
-    public float objectSpacing = 5f;
-    public int seed = 12345;
-
-    [Header("Noise Settings")]
-    public float noiseScale = 0.05f;
 
     [Header("NavMesh")]
     public NavMeshSurface navSurface;
     
-    
-    [Header("Enemy Settings")]
     public GameObject enemy;
-    public int enemyCount = 10;
-    public float enemyMinDistance = 8f; 
     
     private GameObject terrainPlane;
     private List<GameObject> spawned = new List<GameObject>();
-    
-    
-#if UNITY_EDITOR
-    [ContextMenu("Generate Map")]
-#endif
-    public void GenerateContextMenu()
-    {
-        Generate(1);
-    }
-
 
     public void ClearMap()
     {
@@ -46,45 +22,40 @@ public class ProceduralMap : MonoBehaviour
             DestroyImmediate(transform.GetChild(i).gameObject);
         }
     }
-
-    private void Awake()
-    {
-        Generate(1);
-    }
-
-    public void Generate(int difficulty)
+    
+    public void Generate(int seed, Biome biome, Vector2 mapSize, float objectSpacing, float noiseScale, float enemyMinDistance, int enemyCount)
     {
         ClearMap();
-        GeneratePlane();
-        GenerateProps();
+        GeneratePlane(mapSize, biome);
+        GenerateProps(seed, biome, objectSpacing, mapSize, noiseScale);
         BakeNavMesh();
-        spawnEnemies();
+        spawnEnemies(enemyMinDistance, mapSize, enemyCount);
     }
 
-    private void GeneratePlane()
+    private void GeneratePlane(Vector2 mapSize, Biome biome)
     {
         terrainPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
         terrainPlane.transform.SetParent(transform);
         terrainPlane.transform.localPosition = Vector3.zero;
-        terrainPlane.transform.localScale = new Vector3(mapSize / 10f, 1f, mapSize / 10f);
+        terrainPlane.transform.localScale = new Vector3(mapSize.x / 10f  , 1f, mapSize.y / 10f);
         
         terrainPlane.GetComponent<Renderer>().material = biome.terrainMaterial;
     }
     
-    public void GenerateProps()
+    public void GenerateProps(int seed, Biome biome, float objectSpacing, Vector2 mapSize, float noiseScale )
     {
         Random.InitState(seed);
         
         List<Vector2> points = PoissonDiskSampler.Generate(
             objectSpacing,
-            new Vector2(mapSize, mapSize),
+            mapSize,
             30
         );
 
         foreach (Vector2 p in points)
         {
-            float x = p.x - mapSize / 2f;
-            float z = p.y - mapSize / 2f;
+            float x = p.x - mapSize.x / 2f;
+            float z = p.y - mapSize.y / 2f;
 
             float density = Mathf.PerlinNoise(
                 (p.x + seed) * noiseScale,
@@ -119,14 +90,14 @@ public class ProceduralMap : MonoBehaviour
             navSurface.BuildNavMesh();
     }
 
-    private void spawnEnemies()
+    private void spawnEnemies(float enemyMinDistance,Vector2 mapSize, int enemyCount )
     {
         if (enemy == null) return;
 
         // Creamos posiciones Poisson para enemigos
         List<Vector2> points = PoissonDiskSampler.Generate(
             enemyMinDistance,
-            new Vector2(mapSize, mapSize),
+            mapSize,
             20
         );
 
@@ -134,10 +105,10 @@ public class ProceduralMap : MonoBehaviour
         for (int i = 0; i < Mathf.Min(enemyCount, points.Count); i++)
         {
             Vector2 p = points[i];
-            float x = p.x - mapSize / 2f;
-            float z = p.y - mapSize / 2f;
+            float x = p.x - mapSize.x / 2f;
+            float z = p.y - mapSize.y / 2f;
 
-            Vector3 pos = new Vector3(x, 5f, z);
+            Vector3 pos = new Vector3(x, 3f, z);
 
             Instantiate(enemy, pos, Quaternion.identity, transform);
         }
