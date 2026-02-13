@@ -9,7 +9,8 @@ public class UpgradeButtonUI : MonoBehaviour
      public TextMeshProUGUI nameText;
      public TextMeshProUGUI descriptionText;
 
-    private Upgrade currentUpgrade;
+     [HideInInspector]
+    public Upgrade currentUpgrade;
 
     public void SetUpgrade(Upgrade upgrade)
     {

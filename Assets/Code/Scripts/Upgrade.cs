@@ -23,6 +23,11 @@ namespace Player
 
         public Sprite icon;
 
-        
+        public override string ToString()
+        {
+            return "upgrade name: " + upgradeName + ", " + "description: " + description + ", type: " + upgradeType + ", value: " + value;
+        }
     }
+    
+    
 }

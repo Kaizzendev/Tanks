@@ -14,28 +14,16 @@ public class UpgradeManager : MonoBehaviour
     private Upgrade[] allUpgrades;
     private Upgrade[] upgradePool;
     
-    public enum UpgradeType
-    {
-        Damage,
-        MaxHealth,
-        MoveSpeed,
-        AttackSpeed,
-        CriticChance,
-        CriticDamage,
-    }
-    private UpgradeType upgradeType;
-
-
     private void Start()
     {
         LoadUpgrades();
         LoadUpgradesIntoButtons();
     }
 
-    private void LoadUpgrades()
+    private void LoadUpgrades() // This can be improved by selecting by tier or selecting unique elements.
     {
          upgradePool = new Upgrade[3];
-         allUpgrades = Resources.LoadAll<Upgrade>("ScriptableObjects/Upgrades/Speed Upgrade");
+         allUpgrades = Resources.LoadAll<Upgrade>("ScriptableObjects/Upgrades");
          for (int i = 0; i < 3; i++)
          {
              upgradePool[i] = allUpgrades[Random.Range(0, allUpgrades.Length)];
@@ -56,11 +44,11 @@ public class UpgradeManager : MonoBehaviour
        button.SetUpgrade(upgradeData);
     }
 
-    public void Apply()
+    public void Apply(UpgradeButtonUI upgradeButton)
     {
         var stats = PlayerStats.Instance;
         float value = 0;
-        switch (upgradeType)
+        switch (upgradeButton.currentUpgrade.upgradeType)
         {
             case UpgradeType.Damage:
                 stats.damage += value;
@@ -81,5 +69,6 @@ public class UpgradeManager : MonoBehaviour
                 stats.criticMultiplier += value;
                 break;
         }
+        Debug.Log("Upgrade Selected = " + upgradeButton.currentUpgrade.ToString());
     }
 }
