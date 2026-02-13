@@ -47,7 +47,7 @@ public class LevelManager : MonoBehaviour
         config.enemyCount = config.enemyCount + Mathf.RoundToInt(currentLevel * 1.5f);
     }
     
-    private void StartLevel(LevelConfig config)
+    private void StartLevel(LevelConfig config) // Configure player spawn and delete current active missiles
     {
         config.seed = Random.Range(-1000, 1000);
         proceduralMap.Generate(config.seed, config.biome, config.mapSize, 
@@ -59,9 +59,19 @@ public class LevelManager : MonoBehaviour
     {
         if (state == GameManager.GameState.victory)
         {
-            currentLevel++;
-            SetDifficultyLevel(config, currentLevel);
+            GoToNextLevel();
+        }
+
+        if (state == GameManager.GameState.playing)
+        {
             StartLevel(config);
         }
+    }
+
+    private void GoToNextLevel()
+    {
+        currentLevel++;
+        SetDifficultyLevel(config, currentLevel);
+        StartLevel(config);
     }
 }

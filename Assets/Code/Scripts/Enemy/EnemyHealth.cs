@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -10,7 +11,7 @@ public class EnemyHealth : MonoBehaviour
     [Header("References")]
     public GameObject explosion;
     
-    private void Start()
+    private void OnEnable()
     {
         EnemyEvents.OnEnemySpawned?.Invoke();
         currentHealth = maxHealth;

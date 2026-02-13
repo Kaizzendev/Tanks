@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   mapSize: {x: 300, y: 300}
   objectSpacing: 14
-  seed: 97
+  seed: 361
   noiseScale: 0.05
   biome: {fileID: 11400000, guid: f46214f929725a947a646620bc0b08bf, type: 2}
-  enemyCount: 10
+  enemyCount: 1
   enemyMinDistance: 14
   enemyHealthMultiplier: 1
   enemyDamageMultiplier: 1

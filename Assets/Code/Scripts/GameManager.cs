@@ -6,7 +6,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     
     public SceneController sceneController;
-    
+
+    public EnemyManager enemyManager;
+    public UpgradeManager upgradeManager;
     public enum GameState
     {
         playing,
@@ -19,6 +21,36 @@ public class GameManager : MonoBehaviour
     public GameState currentState { get; private set; }
     
     public event Action<GameState> onStateChanged;
+
+    private void OnEnable()
+    {
+        enemyManager.onWaveCleared += HandleWaveCleared;
+        upgradeManager.onUpgradeButtonClicked += HandleUpgradeChosen;
+    }
+
+    private void HandleUpgradeChosen()
+    {
+        ChangeState(GameState.playing);
+    }
+
+    private void OnDisable()
+    {
+        enemyManager.onWaveCleared -= HandleWaveCleared;
+        upgradeManager.onUpgradeButtonClicked -= HandleUpgradeChosen;
+    }
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -56,19 +88,14 @@ public class GameManager : MonoBehaviour
                 break;
             
         }
+        Debug.Log($"GameState changed to {state}");
     }
 
-    private void Awake()
+
+    
+    private void HandleWaveCleared()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        ChangeState(GameState.reward);
     }
     
 }

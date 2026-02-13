@@ -9,11 +9,33 @@ public class UpgradeManager : MonoBehaviour
 {
     
     private UpgradeButtonUI upgradeButtonUI;
-    [Header("UI References")] public UpgradeButtonUI[] upgradeButtons;
+    [Header("UI References")] 
+    public UpgradeButtonUI[] upgradeButtons;
+    public RectTransform upgradeButtonsContainer;
 
     private Upgrade[] allUpgrades;
     private Upgrade[] upgradePool;
+
+    public event Action onUpgradeButtonClicked;
+    private void OnEnable()
+    {
+        GameManager.Instance.onStateChanged += OnGameStateChanged;
+    }
+
+
+    private void OnDisable()
+    {
+        GameManager.Instance.onStateChanged -= OnGameStateChanged;
+    }
     
+    private void OnGameStateChanged(GameManager.GameState state)
+    {
+        if (state == GameManager.GameState.reward)
+        {
+            upgradeButtonsContainer.gameObject.SetActive(true);
+        }
+    }
+
     private void Start()
     {
         LoadUpgrades();
@@ -69,6 +91,15 @@ public class UpgradeManager : MonoBehaviour
                 stats.criticMultiplier += value;
                 break;
         }
+
+        ReturnPlayState();
         Debug.Log("Upgrade Selected = " + upgradeButton.currentUpgrade.ToString());
     }
+
+    private void ReturnPlayState()
+    {
+        upgradeButtonsContainer.gameObject.SetActive(false);
+        onUpgradeButtonClicked?.Invoke();
+    }
+    
 }
