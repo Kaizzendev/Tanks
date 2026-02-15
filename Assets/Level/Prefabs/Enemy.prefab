@@ -292,7 +292,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562458508557528180}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.004363274, w: 0.9999905}
   m_LocalPosition: {x: -0.5439915, y: 2.9186616, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -308,7 +308,7 @@ Transform:
   - {fileID: 221249814917147188}
   - {fileID: 5460709649325387512}
   m_Father: {fileID: 6669316060245405857}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.5}
 --- !u!1 &964332328680073436
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,13 +422,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1009224521320776759}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -4.53, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5021297792936054801}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &1119751689742059530
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,15 +2550,17 @@ MonoBehaviour:
   moveSpeed: 6
   rotateSpeed: 6
   detectionRange: 40
-  fireRange: 25
   fireRate: 2
   turretRotationSpeed: 2
+  fireRange: 25
+  fireTimer: 0
   turret: {fileID: 5021297792936054801}
   firePoint: {fileID: 5460709649325387512}
   missile: {fileID: 6234660730239567049, guid: e3c71408acd10344c8054324c4de0568, type: 3}
   navMeshAgent: {fileID: 7918533034220454181}
   patrolPoints: []
   waitTimeAtPoint: 1
+  distance: 0
 --- !u!195 &7918533034220454181
 NavMeshAgent:
   m_ObjectHideFlags: 0

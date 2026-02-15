@@ -50,7 +50,6 @@ namespace Player
                 Vector3 direction = enemy.firePoint.position - enemy.turret.transform.position;
                 GameObject missilePrefab = GameObject.Instantiate(enemy.missile, enemy.firePoint.position, enemy.firePoint.rotation);
                 missilePrefab.GetComponent<Missile>().Launch(direction);
-                missilePrefab.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
         }
         
