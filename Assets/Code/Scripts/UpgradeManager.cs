@@ -49,7 +49,7 @@ public class UpgradeManager : MonoBehaviour
          for (int i = 0; i < 3; i++)
          {
              upgradePool[i] = allUpgrades[Random.Range(0, allUpgrades.Length)];
-            Debug.Log(upgradePool[i].ToString());
+            //Debug.Log(upgradePool[i].ToString());
          }
     }
     
@@ -93,7 +93,7 @@ public class UpgradeManager : MonoBehaviour
         }
 
         ReturnPlayState();
-        Debug.Log("Upgrade Selected = " + upgradeButton.currentUpgrade.ToString());
+        //Debug.Log("Upgrade Selected = " + upgradeButton.currentUpgrade.ToString());
     }
 
     private void ReturnPlayState()

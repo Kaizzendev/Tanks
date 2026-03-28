@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66939ee4efb51a24285ddeadada4679f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
+  mainCamera: {fileID: 6940499714469500396}
   turretTransform: {fileID: 5021297792936054801}
   turretRotateSpeed: 10
 --- !u!114 &7827384567324420166

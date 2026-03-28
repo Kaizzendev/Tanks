@@ -38,7 +38,7 @@ public class ProceduralMap : MonoBehaviour
         GenerateProps(seed, biome, objectSpacing, mapSize, noiseScale);
         BakeNavMesh();
         SpawnPlayer(mapSize);
-        spawnEnemies(enemyMinDistance, mapSize, enemyCount);
+        SpawnEnemies(enemyMinDistance, mapSize, enemyCount);
         //TODO: Spawn patrol points
         //TODO: Spawn different enemy types
         //TODO: Spawn player
@@ -112,11 +112,12 @@ public class ProceduralMap : MonoBehaviour
 
         if (UnityEngine.AI.NavMesh.SamplePosition(center, out hit, 20f, UnityEngine.AI.NavMesh.AllAreas))
         {
-            Instantiate(playerPrefab, hit.position + Vector3.up, Quaternion.identity);
+            Instantiate(playerPrefab, hit.position + Vector3.up, Quaternion.identity, transform);
+            print("Spawneo player");
         }
     }
 
-    private void spawnEnemies(float enemyMinDistance,Vector2 mapSize, int enemyCount )
+    private void SpawnEnemies(float enemyMinDistance,Vector2 mapSize, int enemyCount )
     {
         if (enemy == null) return;
 

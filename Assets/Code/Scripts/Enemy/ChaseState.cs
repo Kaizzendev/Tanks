@@ -13,7 +13,6 @@ namespace Player
 
         public override void Enter()
         {
-            Debug.Log("Entering Chase State");
             enemy.navMeshAgent.isStopped = false;
             enemy.navMeshAgent.SetDestination(enemy.player.position);
         }

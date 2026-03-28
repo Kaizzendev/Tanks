@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,7 +10,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] ProceduralMap proceduralMap;
     public int currentLevel = 0;
     
-    public LevelConfig config;
+    public LevelConfig defaultConfig;
 
     public event Action onLevelUp;
     
@@ -18,7 +19,7 @@ public class LevelManager : MonoBehaviour
 #endif
     public void GenerateContextMenu()
     {
-        StartLevel(config);
+        StartLevel(defaultConfig);
     }
     
     private void Awake()
@@ -38,16 +39,17 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("Starting Level");
-        StartLevel(config);
+        StartLevel(defaultConfig);
     }
 
-    private void SetDifficultyLevel(LevelConfig config, int currentLevel)
+    private LevelConfig SetDifficultyLevel(LevelConfig config, int currentLevel)
     {
-        config.seed += currentLevel * 13;
-        config.mapSize = new Vector2(Random.Range(10f,300f), Random.Range(10f,300f));
-        config.enemyCount += Mathf.RoundToInt(currentLevel * 1.5f);
+        LevelConfig newConfig = Instantiate(config);
+        newConfig.seed = config.seed + currentLevel * 13;
+        newConfig.mapSize = new Vector2(Random.Range(10f,300f), Random.Range(10f,300f));
+        newConfig.enemyCount = config.enemyCount + Mathf.RoundToInt(currentLevel * 1.5f);
         Debug.Log("Difficulty Level: " + currentLevel);
+        return newConfig; 
     }
     
     private void StartLevel(LevelConfig config) // Configure player spawn and delete current active missiles
@@ -55,7 +57,6 @@ public class LevelManager : MonoBehaviour
         config.seed = Random.Range(-1000, 1000);
         proceduralMap.Generate(config.seed, config.biome, config.mapSize, 
             config.objectSpacing, config.noiseScale, config.enemyMinDistance, config.enemyCount);
-        onLevelUp?.Invoke();
     }
 
 
@@ -65,17 +66,20 @@ public class LevelManager : MonoBehaviour
         {
             GoToNextLevel();
         }
-
-        if (state == GameManager.GameState.playing)
-        {
-            StartLevel(config);
-        }
     }
 
     private void GoToNextLevel()
     {
+        StartCoroutine(GoToNextLevelCoroutine());
+        
+    }
+
+    private IEnumerator GoToNextLevelCoroutine()
+    {
         currentLevel++;
-        SetDifficultyLevel(config, currentLevel);
-        StartLevel(config);
+        LevelConfig newLevel = SetDifficultyLevel(defaultConfig, currentLevel);
+        StartLevel(newLevel);
+        yield return new WaitForEndOfFrame();
+        onLevelUp?.Invoke();
     }
 }

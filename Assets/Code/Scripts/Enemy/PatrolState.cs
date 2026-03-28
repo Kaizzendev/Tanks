@@ -17,7 +17,6 @@ namespace Player
         
         public override void Enter()
         {
-            Debug.Log("Entering Patrol State");
             currentIndex = 0;
             waiting = false;
             MoveToNextPoint();

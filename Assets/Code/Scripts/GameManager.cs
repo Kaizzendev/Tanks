@@ -32,12 +32,21 @@ public class GameManager : MonoBehaviour
 
     private void HandleLevelUp()
     {
+        if (currentState != GameState.levelUp)
+        {
+            return;
+        }
         ChangeState(GameState.playing);
     }
 
     private void HandleUpgradeChosen()
     {
         ChangeState(GameState.levelUp);
+    }
+    
+    private void HandleWaveCleared()
+    {
+        ChangeState(GameState.reward);
     }
 
     private void OnDisable()
@@ -89,7 +98,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0;
                 break;
             case GameState.levelUp:
-                Time.timeScale = 1;
+                Time.timeScale = 0;
                 break;
             case GameState.reward:
                 Time.timeScale = 0;
@@ -98,12 +107,4 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log($"GameState changed to {state}");
     }
-
-
-    
-    private void HandleWaveCleared()
-    {
-        ChangeState(GameState.reward);
-    }
-    
 }
