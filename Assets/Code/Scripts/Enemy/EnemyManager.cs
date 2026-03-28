@@ -32,8 +32,5 @@ public class EnemyManager : MonoBehaviour
          onWaveCleared?.Invoke();
       }
    }
-#if UNITY_EDITOR
-   [ContextMenu("Count Enemies")]
-#endif
-   public void GetEnemiesAlive() => print(enemiesAlive);
+   public int GetEnemiesAlive() => enemiesAlive;
 }

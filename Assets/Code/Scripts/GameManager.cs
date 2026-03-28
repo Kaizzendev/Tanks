@@ -9,12 +9,13 @@ public class GameManager : MonoBehaviour
 
     public EnemyManager enemyManager;
     public UpgradeManager upgradeManager;
+    public LevelManager levelManager;
     public enum GameState
     {
         playing,
         pausing,
         gameOver,
-        victory,
+        levelUp,
         reward
     }
     
@@ -26,17 +27,24 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.onWaveCleared += HandleWaveCleared;
         upgradeManager.onUpgradeButtonClicked += HandleUpgradeChosen;
+        levelManager.onLevelUp += HandleLevelUp;
+    }
+
+    private void HandleLevelUp()
+    {
+        ChangeState(GameState.playing);
     }
 
     private void HandleUpgradeChosen()
     {
-        ChangeState(GameState.playing);
+        ChangeState(GameState.levelUp);
     }
 
     private void OnDisable()
     {
         enemyManager.onWaveCleared -= HandleWaveCleared;
         upgradeManager.onUpgradeButtonClicked -= HandleUpgradeChosen;
+        levelManager.onLevelUp -= HandleLevelUp;
     }
     
     private void Awake()
@@ -80,8 +88,8 @@ public class GameManager : MonoBehaviour
             case GameState.gameOver:
                 Time.timeScale = 0;
                 break;
-            case GameState.victory:
-                Time.timeScale = 0;
+            case GameState.levelUp:
+                Time.timeScale = 1;
                 break;
             case GameState.reward:
                 Time.timeScale = 0;

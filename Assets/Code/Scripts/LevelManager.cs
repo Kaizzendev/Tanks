@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
     
     public LevelConfig config;
 
+    public event Action onLevelUp;
     
 #if UNITY_EDITOR
     [ContextMenu("Generate Map")]
@@ -37,14 +38,16 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("Starting Level");
         StartLevel(config);
     }
 
     private void SetDifficultyLevel(LevelConfig config, int currentLevel)
     {
-        config.seed = config.seed +  currentLevel * 13;
+        config.seed += currentLevel * 13;
         config.mapSize = new Vector2(Random.Range(10f,300f), Random.Range(10f,300f));
-        config.enemyCount = config.enemyCount + Mathf.RoundToInt(currentLevel * 1.5f);
+        config.enemyCount += Mathf.RoundToInt(currentLevel * 1.5f);
+        Debug.Log("Difficulty Level: " + currentLevel);
     }
     
     private void StartLevel(LevelConfig config) // Configure player spawn and delete current active missiles
@@ -52,12 +55,13 @@ public class LevelManager : MonoBehaviour
         config.seed = Random.Range(-1000, 1000);
         proceduralMap.Generate(config.seed, config.biome, config.mapSize, 
             config.objectSpacing, config.noiseScale, config.enemyMinDistance, config.enemyCount);
+        onLevelUp?.Invoke();
     }
 
 
     private void OnGameStateChanged(GameManager.GameState state)
     {
-        if (state == GameManager.GameState.victory)
+        if (state == GameManager.GameState.levelUp)
         {
             GoToNextLevel();
         }

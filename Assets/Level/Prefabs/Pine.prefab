@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1607115443969450359}
   m_Layer: 0
   m_Name: Pine
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,5 +110,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.3102922, y: 8.632774, z: 5.4745936}
+  m_Size: {x: 3.4992974, y: 8.632774, z: 2.8552551}
   m_Center: {x: 0.24563801, y: 4.1741285, z: 0.23362851}

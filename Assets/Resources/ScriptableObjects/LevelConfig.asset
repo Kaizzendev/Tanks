@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3000341458b390c4aab04d491c10ac8b, type: 3}
   m_Name: LevelConfig
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  mapSize: {x: 300, y: 300}
+  mapSize: {x: 148.41559, y: 244.44853}
   objectSpacing: 14
-  seed: 361
+  seed: 974
   noiseScale: 0.05
   biome: {fileID: 11400000, guid: f46214f929725a947a646620bc0b08bf, type: 2}
-  enemyCount: 1
+  enemyCount: 13
   enemyMinDistance: 14
   enemyHealthMultiplier: 1
   enemyDamageMultiplier: 1

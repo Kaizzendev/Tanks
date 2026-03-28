@@ -10,6 +10,14 @@ public class ProceduralMap : MonoBehaviour
     [Header("NavMesh")]
     public NavMeshSurface navSurface;
     
+    [Header("Player")]
+    public GameObject playerPrefab;
+
+    [Header("Enemies")]
+    public List<GameObject> enemyTypes = new List<GameObject>();
+
+    [Header("Patrol")]
+    public GameObject patrolPointPrefab;
     public GameObject enemy;
     
     private GameObject terrainPlane;
@@ -29,7 +37,11 @@ public class ProceduralMap : MonoBehaviour
         GeneratePlane(mapSize, biome);
         GenerateProps(seed, biome, objectSpacing, mapSize, noiseScale);
         BakeNavMesh();
+        SpawnPlayer(mapSize);
         spawnEnemies(enemyMinDistance, mapSize, enemyCount);
+        //TODO: Spawn patrol points
+        //TODO: Spawn different enemy types
+        //TODO: Spawn player
     }
 
     private void GeneratePlane(Vector2 mapSize, Biome biome)
@@ -88,6 +100,20 @@ public class ProceduralMap : MonoBehaviour
     {
         if (navSurface != null)
             navSurface.BuildNavMesh();
+    }
+    
+    private void SpawnPlayer(Vector2 mapSize)
+    {
+        if (playerPrefab == null) return;
+
+        Vector3 center = new Vector3(0, 5f, 0);
+
+        UnityEngine.AI.NavMeshHit hit;
+
+        if (UnityEngine.AI.NavMesh.SamplePosition(center, out hit, 20f, UnityEngine.AI.NavMesh.AllAreas))
+        {
+            Instantiate(playerPrefab, hit.position + Vector3.up, Quaternion.identity);
+        }
     }
 
     private void spawnEnemies(float enemyMinDistance,Vector2 mapSize, int enemyCount )
