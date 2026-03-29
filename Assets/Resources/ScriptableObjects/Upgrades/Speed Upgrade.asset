@@ -15,5 +15,5 @@ MonoBehaviour:
   upgradeName: Caffeine++
   description: Speed upgrade
   upgradeType: 2
-  value: 50
+  value: 5
   icon: {fileID: 0}

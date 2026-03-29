@@ -68,32 +68,32 @@ public class UpgradeManager : MonoBehaviour
 
     public void Apply(UpgradeButtonUI upgradeButton)
     {
-        var stats = PlayerStats.Instance;
-        float value = 0;
+        float value = upgradeButton.currentUpgrade.value;
         switch (upgradeButton.currentUpgrade.upgradeType)
         {
             case UpgradeType.Damage:
-                stats.damage += value;
+                PlayerStats.Instance.damage += value;
                 break;
             case UpgradeType.MaxHealth:
-                stats.maxHealth += value;
+                PlayerStats.Instance.maxHealth += value;
                 break;
             case UpgradeType.MoveSpeed:
-                stats.moveSpeed += value;
+                PlayerStats.Instance.moveSpeed += value;
                 break;
             case UpgradeType.AttackSpeed:
-                stats.attackSpeed += value; //TODO: Hmm
+                PlayerStats.Instance.attackSpeed += value; //TODO: Hmm
                 break;
             case UpgradeType.CriticChance:
-                stats.criticChance += value;
+                PlayerStats.Instance.criticChance += value;
                 break;
             case UpgradeType.CriticDamage:
-                stats.criticMultiplier += value;
+                PlayerStats.Instance.criticMultiplier += value;
                 break;
         }
 
         ReturnPlayState();
-        //Debug.Log("Upgrade Selected = " + upgradeButton.currentUpgrade.ToString());
+        Debug.Log("Upgrade Selected = " + upgradeButton.currentUpgrade.ToString());
+
     }
 
     private void ReturnPlayState()
