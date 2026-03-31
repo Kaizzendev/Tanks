@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Player
 {
@@ -25,8 +27,19 @@ namespace Player
             Vector3 direction = spawnPoint.position - transform.position;
             GameObject missilePrefab =
                 Instantiate(missile, spawnPoint.position, spawnPoint.rotation); //TODO: Object pool
-            missilePrefab.GetComponent<Missile>().missileDamage = PlayerStats.Instance.damage;
+            missilePrefab.GetComponent<Missile>().missileDamage = SetDamage();
             missilePrefab.GetComponent<Missile>().Launch(direction);
+        }
+
+        private float SetDamage()
+        {
+            float damage = PlayerStats.Instance.damage;
+            if (Random.Range(0, 100) < PlayerStats.Instance.criticChance)
+            {
+                damage *= PlayerStats.Instance.criticMultiplier;
+            }
+            print("Disparo con daño de: " + damage);
+            return damage;
         }
     }
 }

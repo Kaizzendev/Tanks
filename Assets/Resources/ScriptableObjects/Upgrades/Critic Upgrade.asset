@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945d1c60b14039f4582c7a57d4225fc2, type: 3}
   m_Name: Critic Upgrade
   m_EditorClassIdentifier: Assembly-CSharp::Player.Upgrade
-  upgradeName: Critic update
-  description: sdfasdfas
-  upgradeType: 5
+  upgradeName: Surprise!
+  description: Gives you a better chance to deal critic damage
+  upgradeType: 4
   value: 3
   icon: {fileID: 0}

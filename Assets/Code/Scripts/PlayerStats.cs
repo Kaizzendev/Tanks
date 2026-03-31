@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace Player
 {
     public class PlayerStats : MonoBehaviour
     {
+        public event Action onPlayerChangeHP;
         public static PlayerStats Instance;
 
         [Header("Health Stats")]
@@ -12,7 +14,7 @@ namespace Player
 
         [Header("Damage Stats")]
         [SerializeField] internal float damage = 100f;
-        [SerializeField] internal float attackSpeed = 0.5f;
+        [SerializeField] internal float attackSpeed = 1f;
         [SerializeField] internal float criticChance = 0f;
         [SerializeField] internal float criticMultiplier = 2f;
         
@@ -42,11 +44,22 @@ namespace Player
         public void TakeDamage(float amount)
         {
             currentHealth -= amount;
-
+            onPlayerChangeHP?.Invoke();
             if (currentHealth <= 0)
             {
                 Die();
             }
+        }
+
+        public void Heal(float amount)
+        {
+            currentHealth += amount;
+        }
+
+        public void UpgradeHP()
+        {
+            currentHealth = maxHealth;
+            onPlayerChangeHP?.Invoke();
         }
 
         private void Die()

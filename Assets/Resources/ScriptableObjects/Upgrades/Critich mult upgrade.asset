@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 945d1c60b14039f4582c7a57d4225fc2, type: 3}
-  m_Name: Damage Upgrade
+  m_Name: Critich mult upgrade
   m_EditorClassIdentifier: Assembly-CSharp::Player.Upgrade
-  upgradeName: Damage
-  description: Gives you more damage
-  upgradeType: 0
-  value: 10
+  upgradeName: Lucky missile
+  description: Improves the base damage of critical hits
+  upgradeType: 5
+  value: 0.1
   icon: {fileID: 0}

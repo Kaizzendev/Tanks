@@ -16,7 +16,6 @@ public class UpgradeManager : MonoBehaviour
     private Upgrade[] allUpgrades;
     private Upgrade[] upgradePool;
 
-    public event Action onUpgradeButtonClicked;
     private void OnEnable()
     {
         GameManager.Instance.onStateChanged += OnGameStateChanged;
@@ -76,12 +75,13 @@ public class UpgradeManager : MonoBehaviour
                 break;
             case UpgradeType.MaxHealth:
                 PlayerStats.Instance.maxHealth += value;
+                PlayerStats.Instance.UpgradeHP();
                 break;
             case UpgradeType.MoveSpeed:
                 PlayerStats.Instance.moveSpeed += value;
                 break;
             case UpgradeType.AttackSpeed:
-                PlayerStats.Instance.attackSpeed += value; //TODO: Hmm
+                PlayerStats.Instance.attackSpeed -= value;
                 break;
             case UpgradeType.CriticChance:
                 PlayerStats.Instance.criticChance += value;
@@ -99,7 +99,7 @@ public class UpgradeManager : MonoBehaviour
     private void ReturnPlayState()
     {
         upgradeButtonsContainer.gameObject.SetActive(false);
-        onUpgradeButtonClicked?.Invoke();
+        GameEvents.onUpgradeButtonClicked?.Invoke();
     }
     
 }

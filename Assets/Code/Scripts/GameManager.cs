@@ -1,4 +1,5 @@
 using System;
+using Player;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -7,8 +8,8 @@ public class GameManager : MonoBehaviour
     
     public SceneController sceneController;
 
-    public EnemyManager enemyManager;
     public UpgradeManager upgradeManager;
+    public EnemyManager enemyManager;
     public LevelManager levelManager;
     public enum GameState
     {
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         enemyManager.onWaveCleared += HandleWaveCleared;
-        upgradeManager.onUpgradeButtonClicked += HandleUpgradeChosen;
+        GameEvents.onUpgradeButtonClicked += HandleUpgradeChosen;
         levelManager.onLevelUp += HandleLevelUp;
     }
 
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         enemyManager.onWaveCleared -= HandleWaveCleared;
-        upgradeManager.onUpgradeButtonClicked -= HandleUpgradeChosen;
+        GameEvents.onUpgradeButtonClicked -= HandleUpgradeChosen;
         levelManager.onLevelUp -= HandleLevelUp;
     }
     
