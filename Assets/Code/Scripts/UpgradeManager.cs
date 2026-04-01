@@ -31,6 +31,8 @@ public class UpgradeManager : MonoBehaviour
     {
         if (state == GameManager.GameState.reward)
         {
+            LoadUpgrades();
+            LoadUpgradesIntoButtons();
             upgradeButtonsContainer.gameObject.SetActive(true);
         }
     }
@@ -45,9 +47,18 @@ public class UpgradeManager : MonoBehaviour
     {
          upgradePool = new Upgrade[3];
          allUpgrades = Resources.LoadAll<Upgrade>("ScriptableObjects/Upgrades");
+
+         for (int i = 0; i < allUpgrades.Length; i++)
+         {
+             int randomIndex = Random.Range(i, allUpgrades.Length);
+             Upgrade tempUpgrade = allUpgrades[i];
+             allUpgrades[i] = allUpgrades[randomIndex];
+             allUpgrades[randomIndex] = tempUpgrade;
+         }
+         
          for (int i = 0; i < 3; i++)
          {
-             upgradePool[i] = allUpgrades[Random.Range(0, allUpgrades.Length)];
+             upgradePool[i] = allUpgrades[i];
             //Debug.Log(upgradePool[i].ToString());
          }
     }

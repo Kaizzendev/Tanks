@@ -50,8 +50,8 @@ public class StatManagerUI : MonoBehaviour
     {
         speedText.text = "Speed: " + PlayerStats.Instance.moveSpeed;
         damageText.text = "Damage: " + PlayerStats.Instance.damage;
-        criticChanceText.text = "Critic Chance: " + PlayerStats.Instance.criticChance;
-        criticMultiplierText.text = "Critic Multiplier: " + PlayerStats.Instance.criticMultiplier;
+        criticChanceText.text = "Critic: " + PlayerStats.Instance.criticChance;
+        criticMultiplierText.text = "Critic mult: " + PlayerStats.Instance.criticMultiplier;
         attackSpeedText.text = "AT speed: " + PlayerStats.Instance.attackSpeed;
     }
     void Update()
