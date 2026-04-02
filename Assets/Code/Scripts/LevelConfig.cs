@@ -18,6 +18,10 @@ public class LevelConfig : ScriptableObject
     public float enemyMinDistance = 8f;
     public float enemyHealthMultiplier = 1f; 
     public float enemyDamageMultiplier = 1f;
+    
+    [Header("Patrol Points")]
+    public float patrolPointsMinDistance = 5f;
+    public int  patrolPointsCount = 10;
 
     [Header("Difficulty")]
     public int difficultyLevel = 1;

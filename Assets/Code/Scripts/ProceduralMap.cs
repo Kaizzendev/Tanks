@@ -22,7 +22,14 @@ public class ProceduralMap : MonoBehaviour
     
     private GameObject terrainPlane;
     private List<GameObject> spawned = new List<GameObject>();
+    
+    public List<Transform> patrolPoints = new List<Transform>();
+    private List<Transform> spawnedEnemiesPosition = new List<Transform>();
 
+    private Transform propsParent;
+    private Transform enemiesParent;
+    private Transform patrolPointsParent;
+    
     public void ClearMap()
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
@@ -31,17 +38,18 @@ public class ProceduralMap : MonoBehaviour
         }
     }
     
-    public void Generate(int seed, Biome biome, Vector2 mapSize, float objectSpacing, float noiseScale, float enemyMinDistance, int enemyCount)
+    public void Generate(int seed, Biome biome, Vector2 mapSize, float objectSpacing, float noiseScale, float enemyMinDistance, int enemyCount, float patrolPointsMinDistance, int patrolPointsCount)
     {
         ClearMap();
         GeneratePlane(mapSize, biome);
+        GenerateParents();
         GenerateProps(seed, biome, objectSpacing, mapSize, noiseScale);
         BakeNavMesh();
         SpawnPlayer(mapSize);
         SpawnEnemies(enemyMinDistance, mapSize, enemyCount);
-        //TODO: Spawn patrol points
+        SpawnPatrolPoints(patrolPointsMinDistance, mapSize, patrolPointsCount);
         //TODO: Spawn different enemy types
-        //TODO: Spawn player
+
     }
 
     private void GeneratePlane(Vector2 mapSize, Biome biome)
@@ -52,6 +60,18 @@ public class ProceduralMap : MonoBehaviour
         terrainPlane.transform.localScale = new Vector3(mapSize.x / 10f  , 1f, mapSize.y / 10f);
         
         terrainPlane.GetComponent<Renderer>().material = biome.terrainMaterial;
+    }
+
+    public void GenerateParents()
+    {
+        propsParent = new GameObject("Props").transform;
+        propsParent.SetParent(transform);        
+        
+        enemiesParent = new GameObject("Enemies").transform;
+        enemiesParent.SetParent(transform);     
+        
+        patrolPointsParent = new GameObject("Patrol points").transform;
+        patrolPointsParent.SetParent(transform);
     }
     
     public void GenerateProps(int seed, Biome biome, float objectSpacing, Vector2 mapSize, float noiseScale )
@@ -85,7 +105,7 @@ public class ProceduralMap : MonoBehaviour
             Vector3 pos = new Vector3(x, 0f, z);
             Quaternion rot = Quaternion.Euler(0, Random.Range(0, 360), 0);
 
-            GameObject inst = Instantiate(obj.proceduralObject, pos, rot, transform);
+            GameObject inst = Instantiate(obj.proceduralObject, pos, rot, propsParent);
 
             // variación de escala
             float scale = Random.Range(obj.scaleRange.x, obj.scaleRange.y);
@@ -102,7 +122,7 @@ public class ProceduralMap : MonoBehaviour
             navSurface.BuildNavMesh();
     }
     
-    private void SpawnPlayer(Vector2 mapSize)
+    private void SpawnPlayer(Vector2 mapSize) //TODO: Spawn far from enemies
     {
         if (playerPrefab == null) return;
 
@@ -113,14 +133,14 @@ public class ProceduralMap : MonoBehaviour
         if (UnityEngine.AI.NavMesh.SamplePosition(center, out hit, 20f, UnityEngine.AI.NavMesh.AllAreas))
         {
             Instantiate(playerPrefab, hit.position + Vector3.up, Quaternion.identity, transform);
-            print("Spawneo player");
         }
+            
     }
-
+    
     private void SpawnEnemies(float enemyMinDistance,Vector2 mapSize, int enemyCount )
     {
         if (enemy == null) return;
-
+        spawnedEnemiesPosition.Clear();
         // Creamos posiciones Poisson para enemigos
         List<Vector2> points = PoissonDiskSampler.Generate(
             enemyMinDistance,
@@ -137,9 +157,44 @@ public class ProceduralMap : MonoBehaviour
 
             Vector3 pos = new Vector3(x, 3f, z);
 
-            Instantiate(enemy, pos, Quaternion.identity, transform);
+            GameObject spawnedEnemy = Instantiate(enemy, pos, Quaternion.identity, enemiesParent);
+            spawnedEnemiesPosition.Add(spawnedEnemy.transform);
         }
     }
+    
+    private void SpawnPatrolPoints(float patrolPointsMinDistance, Vector2 mapSize, int patrolPointsCount)
+    {
+        patrolPoints.Clear();
+        
+        List<Vector2> points = PoissonDiskSampler.Generate(
+            patrolPointsMinDistance,
+            mapSize,
+            20
+        );
+
+        for (int i = 0; i < Mathf.Min(points.Count, patrolPointsCount); i++)
+        {
+            Vector2 p = points[i];
+            float x = p.x - mapSize.x / 2f;
+            float z = p.y - mapSize.y / 2f;
+            
+            Vector3 pos = new Vector3(x, 0f, z);
+            
+            UnityEngine.AI.NavMeshHit hit;
+            
+            if (UnityEngine.AI.NavMesh.SamplePosition(pos, out hit, 5f, UnityEngine.AI.NavMesh.AllAreas))
+            {
+                GameObject point = Instantiate(patrolPointPrefab, pos, Quaternion.identity, patrolPointsParent);
+                patrolPoints.Add(point.transform);
+            }
+        }
+
+    }
+    
+    public Transform[] getPatrolPoints()
+        {
+            return patrolPoints.ToArray();
+        }
 
     private static class PoissonDiskSampler
     {

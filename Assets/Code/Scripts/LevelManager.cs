@@ -55,8 +55,16 @@ public class LevelManager : MonoBehaviour
     private void StartLevel(LevelConfig config) // Configure player spawn and delete current active missiles
     {
         config.seed = Random.Range(-1000, 1000);
-        proceduralMap.Generate(config.seed, config.biome, config.mapSize, 
-            config.objectSpacing, config.noiseScale, config.enemyMinDistance, config.enemyCount);
+        proceduralMap.Generate(
+            config.seed, 
+            config.biome, 
+            config.mapSize, 
+            config.objectSpacing, 
+            config.noiseScale, 
+            config.enemyMinDistance, 
+            config.enemyCount,
+            config.patrolPointsMinDistance, 
+            config.patrolPointsCount);
     }
 
 

@@ -42,6 +42,8 @@ public class EnemyTank : MonoBehaviour
 
     void Start()
     {
+        ProceduralMap map = FindObjectOfType<ProceduralMap>();
+        patrolPoints = map.getPatrolPoints();
         
         fsm = new StateMachine();
         fsm.RegisterState(new PatrolState(fsm,this));
