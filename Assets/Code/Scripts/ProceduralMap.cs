@@ -33,14 +33,17 @@ public class ProceduralMap : MonoBehaviour
     
     public void Generate(int seed, Biome biome, Vector2 mapSize,
         float objectSpacing, float noiseScale, GameObject[] enemyPrefabs, float enemyMinDistance,
-        int enemyCount,GameObject patrolPointPrefab, float patrolPointsMinDistance, int patrolPointsCount)
+        int enemyCount,GameObject patrolPointPrefab, float patrolPointsMinDistance, int patrolPointsCount, bool generatePlayer)
     {
         ClearMap();
         GeneratePlane(mapSize, biome);
         GenerateParents();
         GenerateProps(seed, biome, objectSpacing, mapSize, noiseScale);
         BakeNavMesh();
-        SpawnPlayer(mapSize);
+        if (generatePlayer)
+        {
+            SpawnPlayer(mapSize);
+        }
         SpawnEnemies(enemyMinDistance, mapSize, enemyCount, enemyPrefabs);
         SpawnPatrolPoints(patrolPointsMinDistance, mapSize, patrolPointsCount, patrolPointPrefab);
     }

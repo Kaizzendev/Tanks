@@ -76,7 +76,9 @@ public class LevelManager : MonoBehaviour
             config.enemyCount,
             config.patrolPointprefab,
             config.patrolPointsMinDistance, 
-            config.patrolPointsCount);
+            config.patrolPointsCount,
+            config.generatePlayer
+            );
     }
 
 

@@ -30,5 +30,25 @@ public class LevelConfig : ScriptableObject
 
     [Header("Optional Rewards / Powerups")]
     public int maxPowerUps = 2;
-    
+
+    public bool generatePlayer = true;
+
+    public override string ToString()
+    {
+        return $"LevelConfig:\n" +
+               $"- Map Size: {mapSize.x} x {mapSize.y}\n" +
+               $"- Object Spacing: {objectSpacing}\n" +
+               $"- Seed: {seed}\n" +
+               $"- Noise Scale: {noiseScale}\n" +
+               $"- Biome: {(biome != null ? biome.name : "None")}\n" +
+               $"- Enemy Count: {enemyCount}\n" +
+               $"- Enemy Min Distance: {enemyMinDistance}\n" +
+               $"- Enemy Health Multiplier: {enemyHealthMultiplier}\n" +
+               $"- Enemy Damage Multiplier: {enemyDamageMultiplier}\n" +
+               $"- Patrol Points Count: {patrolPointsCount}\n" +
+               $"- Patrol Points Min Distance: {patrolPointsMinDistance}\n" +
+               $"- Generate Player: {generatePlayer}\n" +
+               $"- Difficulty Level: {difficultyLevel}\n" +
+               $"- Max PowerUps: {maxPowerUps}";
+    }
 }
