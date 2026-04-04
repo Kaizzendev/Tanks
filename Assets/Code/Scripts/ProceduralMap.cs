@@ -13,17 +13,10 @@ public class ProceduralMap : MonoBehaviour
     [Header("Player")]
     public GameObject playerPrefab;
 
-    [Header("Enemies")]
-    public List<GameObject> enemyTypes = new List<GameObject>();
-
-    [Header("Patrol")]
-    public GameObject patrolPointPrefab;
-    public GameObject enemy;
-    
     private GameObject terrainPlane;
     private List<GameObject> spawned = new List<GameObject>();
     
-    public List<Transform> patrolPoints = new List<Transform>();
+    private List<Transform> patrolPoints = new List<Transform>();
     private List<Transform> spawnedEnemiesPosition = new List<Transform>();
 
     private Transform propsParent;
@@ -38,7 +31,9 @@ public class ProceduralMap : MonoBehaviour
         }
     }
     
-    public void Generate(int seed, Biome biome, Vector2 mapSize, float objectSpacing, float noiseScale, float enemyMinDistance, int enemyCount, float patrolPointsMinDistance, int patrolPointsCount)
+    public void Generate(int seed, Biome biome, Vector2 mapSize,
+        float objectSpacing, float noiseScale, GameObject[] enemyPrefabs, float enemyMinDistance,
+        int enemyCount,GameObject patrolPointPrefab, float patrolPointsMinDistance, int patrolPointsCount)
     {
         ClearMap();
         GeneratePlane(mapSize, biome);
@@ -46,10 +41,8 @@ public class ProceduralMap : MonoBehaviour
         GenerateProps(seed, biome, objectSpacing, mapSize, noiseScale);
         BakeNavMesh();
         SpawnPlayer(mapSize);
-        SpawnEnemies(enemyMinDistance, mapSize, enemyCount);
-        SpawnPatrolPoints(patrolPointsMinDistance, mapSize, patrolPointsCount);
-        //TODO: Spawn different enemy types
-
+        SpawnEnemies(enemyMinDistance, mapSize, enemyCount, enemyPrefabs);
+        SpawnPatrolPoints(patrolPointsMinDistance, mapSize, patrolPointsCount, patrolPointPrefab);
     }
 
     private void GeneratePlane(Vector2 mapSize, Biome biome)
@@ -137,9 +130,9 @@ public class ProceduralMap : MonoBehaviour
             
     }
     
-    private void SpawnEnemies(float enemyMinDistance,Vector2 mapSize, int enemyCount )
+    private void SpawnEnemies(float enemyMinDistance,Vector2 mapSize, int enemyCount, GameObject[] enemies)
     {
-        if (enemy == null) return;
+        if (enemies == null) return;
         spawnedEnemiesPosition.Clear();
         // Creamos posiciones Poisson para enemigos
         List<Vector2> points = PoissonDiskSampler.Generate(
@@ -157,12 +150,17 @@ public class ProceduralMap : MonoBehaviour
 
             Vector3 pos = new Vector3(x, 3f, z);
 
-            GameObject spawnedEnemy = Instantiate(enemy, pos, Quaternion.identity, enemiesParent);
+            GameObject spawnedEnemy = Instantiate(GetRandomEnemy(enemies), pos, Quaternion.identity, enemiesParent);
             spawnedEnemiesPosition.Add(spawnedEnemy.transform);
         }
     }
     
-    private void SpawnPatrolPoints(float patrolPointsMinDistance, Vector2 mapSize, int patrolPointsCount)
+    private GameObject GetRandomEnemy(GameObject[] enemies)
+    {
+        return enemies[Random.Range(0, enemies.Length)];
+    }
+    
+    private void SpawnPatrolPoints(float patrolPointsMinDistance, Vector2 mapSize, int patrolPointsCount, GameObject patrolPointPrefab)
     {
         patrolPoints.Clear();
         
