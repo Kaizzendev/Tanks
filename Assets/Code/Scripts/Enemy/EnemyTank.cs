@@ -3,6 +3,7 @@ using System.Collections;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class EnemyTank : MonoBehaviour
 {
@@ -43,7 +44,9 @@ public class EnemyTank : MonoBehaviour
     void Start()
     {
         ProceduralMap map = FindObjectOfType<ProceduralMap>();
-        patrolPoints = map.getPatrolPoints();
+        patrolPoints = shufflePatrolPoints(map.getPatrolPoints());
+
+        
         
         fsm = new StateMachine();
         fsm.RegisterState(new PatrolState(fsm,this));
@@ -60,6 +63,18 @@ public class EnemyTank : MonoBehaviour
         }
 
         _enemyHealth = GetComponent<EnemyHealth>();
+    }
+
+    private Transform[] shufflePatrolPoints(Transform[] points)
+    {
+        for (int i = 0; i < points.Length; i++)
+        {
+            int randomIndex = Random.Range(i, points.Length);
+            Transform p = points[randomIndex];
+            points[i] = points[randomIndex];
+            points[randomIndex] = p;
+        }
+        return points;
     }
 
     void Update()
