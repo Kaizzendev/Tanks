@@ -1,4 +1,5 @@
 using System;
+using Player;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,19 +7,68 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     
     public SceneController sceneController;
-    
+
+    public UpgradeManager upgradeManager;
+    public EnemyManager enemyManager;
+    public LevelManager levelManager;
     public enum GameState
     {
         playing,
         pausing,
         gameOver,
-        victory,
+        levelUp,
         reward
     }
     
     public GameState currentState { get; private set; }
     
     public event Action<GameState> onStateChanged;
+
+    private void OnEnable()
+    {
+        enemyManager.onWaveCleared += HandleWaveCleared;
+        GameEvents.onUpgradeButtonClicked += HandleUpgradeChosen;
+        levelManager.onLevelUp += HandleLevelUp;
+    }
+
+    private void HandleLevelUp()
+    {
+        if (currentState != GameState.levelUp)
+        {
+            return;
+        }
+        ChangeState(GameState.playing);
+    }
+
+    private void HandleUpgradeChosen()
+    {
+        ChangeState(GameState.levelUp);
+    }
+    
+    private void HandleWaveCleared()
+    {
+        ChangeState(GameState.reward);
+    }
+
+    private void OnDisable()
+    {
+        enemyManager.onWaveCleared -= HandleWaveCleared;
+        GameEvents.onUpgradeButtonClicked -= HandleUpgradeChosen;
+        levelManager.onLevelUp -= HandleLevelUp;
+    }
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -48,7 +98,7 @@ public class GameManager : MonoBehaviour
             case GameState.gameOver:
                 Time.timeScale = 0;
                 break;
-            case GameState.victory:
+            case GameState.levelUp:
                 Time.timeScale = 0;
                 break;
             case GameState.reward:
@@ -56,19 +106,6 @@ public class GameManager : MonoBehaviour
                 break;
             
         }
+        Debug.Log($"GameState changed to {state}");
     }
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    
 }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0886b2cb40d4a346968cb69d7fec180, type: 3}
+  m_Name: Forest
+  m_EditorClassIdentifier: Assembly-CSharp::Biome
+  terrainMaterial: {fileID: 2100000, guid: dac94efab6ca5a94a89d3a87991e03b6, type: 2}
+  proceduralObjects:
+  - {fileID: 11400000, guid: 6f807102149629042b6b4788852c7eee, type: 2}
+  - {fileID: 11400000, guid: e7fb9d499cc2713498f4fcfe459b7bfb, type: 2}
+  - {fileID: 11400000, guid: 7b3298a4c72a1bc4495dc0a02433ebc8, type: 2}
+  - {fileID: 11400000, guid: cf32177f1423d5d4c9fce135b956ba37, type: 2}
+  objectNoiseScale: 0.05
+  baseObjectDensity: 0.3

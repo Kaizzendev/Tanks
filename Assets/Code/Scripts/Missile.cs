@@ -31,6 +31,18 @@ public class Missile : MonoBehaviour
     {
         Destroy(gameObject, timeToDespawn);
     }
-    
-    
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Obstacle"))
+        {
+            Destroy(other.gameObject);
+        }
+        Destroy(gameObject);
+    }
 }

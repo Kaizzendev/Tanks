@@ -324,6 +324,7 @@ MonoBehaviour:
   color: {fileID: 2100000, guid: ccac6132effb80a45b81141b75dc0a3f, type: 2}
   missileSpeed: 10
   missileDamage: 100
+  timeToDespawn: 10
 --- !u!54 &7489728190595000105
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -366,7 +367,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

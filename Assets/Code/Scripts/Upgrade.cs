@@ -23,31 +23,11 @@ namespace Player
 
         public Sprite icon;
 
-        public void Apply()
+        public override string ToString()
         {
-            var stats = PlayerStats.Instance;
-
-            switch (upgradeType)
-            {
-                case UpgradeType.Damage:
-                    stats.damage += value;
-                    break;
-                case UpgradeType.MaxHealth:
-                    stats.maxHealth += value;
-                    break;
-                case UpgradeType.MoveSpeed:
-                    stats.moveSpeed += value;
-                    break;
-                case UpgradeType.AttackSpeed:
-                    stats.attackSpeed += value; //TODO: Hmm
-                    break;
-                case UpgradeType.CriticChance:
-                    stats.criticChance += value;
-                    break;
-                case UpgradeType.CriticDamage:
-                    stats.criticMultiplier += value;
-                    break;
-            }
+            return "upgrade name: " + upgradeName + ", " + "description: " + description + ", type: " + upgradeType + ", value: " + value;
         }
     }
+    
+    
 }
