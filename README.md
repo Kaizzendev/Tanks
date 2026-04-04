@@ -29,15 +29,26 @@ git  clone  https://github.com/Kaizzendev/Tanks.git
 
 Open  the  project  in  Unity (version 6000.3.12f1).
 
-Load  the  main  scene (MainScene.unity).
+Load  the  "Game"  scene (Game.unity).
 
 Press  Play  to  run  the  game.
 
 ```
 ---
-## 📸 Screenshots & Demo
+## 📸 Screenshots & Gifs
+
+![Gameplay](screenshots/vid2.gif)
+![Upgrades](screenshots/img2.png)
+![Generator](screenshots/img3.png)
+![Generator](screenshots/img4.png)
+![Generator](screenshots/vid1.gif)
+
 ---
-## 🔗 Playable Demo: []
+## 🕹️ Playable Demo: Itch.io
+
+👉 [**Tanks demo test on Itch.io**](https://kaizzendev.itch.io/tanksdemo)
+
+
 ---
 ## 📈 Roadmap
 ### ✅ Completed
@@ -47,7 +58,7 @@ Press  Play  to  run  the  game.
 ---
 ## 🚧 Next Goals
 - Object Pool for projectiles and effects
-- Implement progression system and upgrades
+- Implement progression system 
 - Add main menu and polished UX (start menu, pause, options)
 - Integrate sound design and particle effects
 ---
