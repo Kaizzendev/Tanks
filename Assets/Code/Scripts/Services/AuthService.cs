@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Networking;
-using Player.Models;
+using Player.DTOs;
 using UnityEngine;
 
 namespace Player.Services
@@ -11,20 +10,47 @@ namespace Player.Services
     {
         [SerializeField] private ApiClient _apiClient;
 
-        public IEnumerator GetUsers(Action<List<User>> onSuccess)
+        public string Token { get; private set; }
+        
+        // public IEnumerator GetUsers(Action<List<User>> onSuccess)
+        // {
+        //     yield return _apiClient.Get<List<User>>("api/auth/users", onSuccess);
+        // }
+
+        public IEnumerator Login(string username, string password, Action<LoginResponse> onSuccess)
         {
-            yield return _apiClient.Get<List<User>>("api/auth/users", onSuccess);
+            LoginRequest request = new()
+            {
+                Username = username,
+                Password = password,
+            };
+            
+            yield return _apiClient.Post<LoginRequest, LoginResponse>("api/auth/login", request, onSuccess);
+        }
+        
+        public IEnumerator Register(string username, string password, Action onSuccess)
+        {
+            RegisterRequest request = new()
+            {
+                Username = username,
+                Password = password,
+            };
+            
+            yield return _apiClient.Post<RegisterRequest>("api/auth/register", request, onSuccess);
         }
 
 
         private void Start()
         {
-            StartCoroutine(GetUsers(users =>
+            StartCoroutine(Register("Caramelo", "Fresa", () =>
             {
-                foreach (User user in users)
-                {
-                    Debug.Log("ID: " + user.id + " Username: " + user.username + " PasswordHash: " + user.passwordHash);
-                }
+               Debug.Log("Usuario registrado");
+            }));
+            
+            StartCoroutine(Login("Caramelo", "Fresa", response =>
+            {
+                Token = response.Token;
+                Debug.Log("Token: " + Token);
             }));
 
         }

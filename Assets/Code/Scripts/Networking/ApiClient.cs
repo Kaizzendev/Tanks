@@ -8,11 +8,9 @@ namespace Networking
 {
     public class ApiClient : MonoBehaviour
     {
-        private const string BaseUrl = "http://192.168.1.152:5024/";
-
         public IEnumerator Get<T>(string endpoint, Action<T> onSuccess, Action<Exception> onError = null)
         {
-            UnityWebRequest request = UnityWebRequest.Get(BaseUrl + endpoint);
+            UnityWebRequest request = UnityWebRequest.Get(ApiConfig.BaseUrl + endpoint);
             yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)
@@ -25,5 +23,45 @@ namespace Networking
             
             onSuccess?.Invoke(result);
         }
+
+        public IEnumerator Post<TRequest, TResponse>(string endpoint, TRequest body, Action<TResponse> onSuccess,
+            Action<Exception> onError = null)
+        {
+            string json = JsonConvert.SerializeObject(body);
+            
+            UnityWebRequest request = UnityWebRequest.Post(ApiConfig.BaseUrl + endpoint, json, "application/json");
+            
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                onError?.Invoke(new Exception(request.error));
+                yield break;
+            }
+            
+            TResponse response = JsonConvert.DeserializeObject<TResponse>(request.downloadHandler.text);
+            
+            onSuccess?.Invoke(response);
+        }
+
+        public IEnumerator Post<TRequest>(string endpoint, TRequest body, Action onSuccess,
+            Action<Exception> onError = null)
+        {
+            string json = JsonConvert.SerializeObject(body);
+            
+            UnityWebRequest request = UnityWebRequest.Post(ApiConfig.BaseUrl + endpoint, json, "application/json");
+            
+            yield return request.SendWebRequest();
+            
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                onError?.Invoke(new Exception(request.error));
+                yield break;
+            }
+            
+            onSuccess?.Invoke();
+            
+        }
+        
     }
 }
