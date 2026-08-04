@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Player.DTOs
+namespace DTOs.Requests
 {
     [Serializable]
     public class LoginRequest

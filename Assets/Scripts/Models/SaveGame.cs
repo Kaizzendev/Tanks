@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Player.Models
+namespace Models
 {
     [Serializable]
     public class SaveGame

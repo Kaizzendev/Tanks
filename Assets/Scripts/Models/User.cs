@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Player.Models
+namespace Models
 {
     [Serializable]
     public class User

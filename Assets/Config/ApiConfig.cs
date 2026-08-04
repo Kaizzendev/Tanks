@@ -1,4 +1,4 @@
-﻿namespace Networking
+﻿namespace Config
 {
     public static class ApiConfig
     {

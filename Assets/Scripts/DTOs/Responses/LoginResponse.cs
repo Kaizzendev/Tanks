@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Player.DTOs
+namespace DTOs.Responses
 {
     [Serializable]
     public class LoginResponse

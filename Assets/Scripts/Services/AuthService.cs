@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using Networking;
-using Player.DTOs;
+using DTOs.Requests;
+using DTOs.Responses;
 using UnityEngine;
 
-namespace Player.Services
+namespace Services
 {
     public class AuthService : MonoBehaviour
     {
