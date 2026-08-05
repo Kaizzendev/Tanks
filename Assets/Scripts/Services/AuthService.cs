@@ -12,13 +12,8 @@ namespace Services
         [SerializeField] private ApiClient _apiClient;
 
         public string Token { get; private set; }
-        
-        // public IEnumerator GetUsers(Action<List<User>> onSuccess)
-        // {
-        //     yield return _apiClient.Get<List<User>>("api/auth/users", onSuccess);
-        // }
 
-        public IEnumerator Login(string username, string password, Action<LoginResponse> onSuccess)
+        public IEnumerator Login(string username, string password, Action<LoginResponse> onSuccess, Action<Exception> onError)
         {
             LoginRequest request = new()
             {
@@ -26,10 +21,10 @@ namespace Services
                 Password = password,
             };
             
-            yield return _apiClient.Post<LoginRequest, LoginResponse>("api/auth/login", request, onSuccess);
+            yield return _apiClient.Post<LoginRequest, LoginResponse>("api/auth/login", request, onSuccess, onError);
         }
         
-        public IEnumerator Register(string username, string password, Action onSuccess)
+        public IEnumerator Register(string username, string password, Action onSuccess, Action<Exception> onError)
         {
             RegisterRequest request = new()
             {
@@ -37,23 +32,8 @@ namespace Services
                 Password = password,
             };
             
-            yield return _apiClient.Post<RegisterRequest>("api/auth/register", request, onSuccess);
+            yield return _apiClient.Post<RegisterRequest>("api/auth/register", request, onSuccess, onError);
         }
-
-
-        private void Start()
-        {
-            StartCoroutine(Register("Caramelo", "Fresa", () =>
-            {
-               Debug.Log("Usuario registrado");
-            }));
-            
-            StartCoroutine(Login("Caramelo", "Fresa", response =>
-            {
-                Token = response.Token;
-                Debug.Log("Token: " + Token);
-            }));
-
-        }
+        
     }
 }
