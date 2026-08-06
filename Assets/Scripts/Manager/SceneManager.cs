@@ -38,5 +38,20 @@ namespace Manager
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("Register");
         }
+        
+        public static void LoadLeaderboardMenu()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Leaderboard");
+        }
+
+        public static void LoadSettingsMenu()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Settings");
+        }
+
+        public static void LoadAboutMenu()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("About");
+        }
     }
 }
