@@ -61,4 +61,10 @@ public class RegisterUI : MonoBehaviour
     {
         SceneManager.LoadLoginMenu();
     }
+    
+    public void GoBack()
+    {
+        SceneManager.LoadMainMenu();
+    }
+    
 }

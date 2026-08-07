@@ -53,4 +53,9 @@ public class LoginUI : MonoBehaviour
         SceneManager.LoadRegisterMenu();
     }
     
+    public void GoBack()
+    {
+        SceneManager.LoadMainMenu();
+    }
+    
 }

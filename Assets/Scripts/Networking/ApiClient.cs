@@ -20,6 +20,7 @@ namespace Networking
                 yield break;
             }
             
+            
             T result = JsonConvert.DeserializeObject<T>(request.downloadHandler.text);
             
             onSuccess?.Invoke(result);
