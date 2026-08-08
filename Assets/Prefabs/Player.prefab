@@ -2562,6 +2562,9 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   turretTransform: {fileID: 7167337704865076795}
   turretRotateSpeed: 10
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &5602022645672871767
 MonoBehaviour:
   m_ObjectHideFlags: 0

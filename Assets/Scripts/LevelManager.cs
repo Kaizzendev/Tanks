@@ -47,7 +47,7 @@ public class LevelManager : MonoBehaviour
     {
         LevelConfig newConfig = Instantiate(config);
         newConfig.seed = config.seed + currentLevel * 13;
-        newConfig.mapSize = new Vector2(Random.Range(10f,300f), Random.Range(10f,300f));
+        //newConfig.mapSize = new Vector2(Random.Range(10f,300f), Random.Range(10f,300f));
         newConfig.enemyCount = config.enemyCount + Mathf.RoundToInt(currentLevel * 1.2f);
         
         int length = 1;

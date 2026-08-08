@@ -26,7 +26,7 @@ namespace Player
         {
             Vector3 direction = new Vector3(spawnPoint.position.x,4.2f,spawnPoint.position.z) - new Vector3(transform.position.x, 4.2f, transform.position.z);
             GameObject missilePrefab =
-                Instantiate(missile, spawnPoint.position, spawnPoint.rotation); //TODO: Object pool
+                Instantiate(missile, spawnPoint.position, spawnPoint.rotation * Quaternion.Euler(1,-90,1)); //TODO: Object pool
             missilePrefab.GetComponent<Missile>().missileDamage = SetDamage();
             missilePrefab.GetComponent<Missile>().Launch(direction);
         }

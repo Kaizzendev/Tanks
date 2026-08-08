@@ -12,6 +12,7 @@ public class TurretController : MonoBehaviour
     [Header("Rotation")]
     public float turretRotateSpeed = 150f;
 
+    [SerializeField] private LayerMask _layerMask;
     private void FixedUpdate()
     {
         RotateTurretTowardsMouse();
@@ -27,7 +28,7 @@ public class TurretController : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         Vector3 mousePos = Vector3.zero;
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit,_layerMask))
         {
             mousePos = hit.point;
         }
