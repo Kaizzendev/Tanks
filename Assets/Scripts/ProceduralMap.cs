@@ -128,7 +128,7 @@ public class ProceduralMap : MonoBehaviour
 
         if (UnityEngine.AI.NavMesh.SamplePosition(center, out hit, 20f, UnityEngine.AI.NavMesh.AllAreas))
         {
-            Instantiate(playerPrefab, hit.position + Vector3.up, Quaternion.identity, transform);
+            Instantiate(playerPrefab, hit.position + Vector3.up + new Vector3(0,3f,0), Quaternion.identity, transform);
         }
             
     }

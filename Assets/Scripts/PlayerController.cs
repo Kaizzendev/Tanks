@@ -7,39 +7,39 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        private Rigidbody rb;
-        private float moveInput;
-        private float rotationInput;
+        private Rigidbody _rb;
+        private float _moveInput;
+        private float _rotationInput;
 
         void Start()
         {
-            rb = GetComponent<Rigidbody>();
+            _rb = GetComponent<Rigidbody>();
         }
 
         void Update()
         {
-            moveInput = Input.GetAxis("Vertical");
-            rotationInput = Input.GetAxis("Horizontal");
+            _moveInput = Input.GetAxis("Vertical");
+            _rotationInput = Input.GetAxis("Horizontal");
         }
 
         private void FixedUpdate()
         {
-            MoveTank(moveInput);
-            RotateTank(rotationInput);
+            MoveTank(_moveInput);
+            RotateTank(_rotationInput);
         }
 
         private void RotateTank(float input)
         {
             Quaternion rotation = Quaternion.Euler(new Vector3(0, PlayerStats.Instance.rotationSpeed * input, 0));
-            rb.MoveRotation(rb.rotation * rotation);
+            _rb.MoveRotation(_rb.rotation * rotation);
         }
 
         private void MoveTank(float input)
         {
-            Vector3 move = input * -transform.right * PlayerStats.Instance.moveSpeed;
-            rb.linearVelocity = new Vector3(
+            Vector3 move = input * transform.forward * PlayerStats.Instance.moveSpeed;
+            _rb.linearVelocity = new Vector3(
                 Mathf.Clamp(move.x, -PlayerStats.Instance.maxMoveSpeed, PlayerStats.Instance.maxMoveSpeed),
-                rb.linearVelocity.y,
+                _rb.linearVelocity.y,
                 Mathf.Clamp(move.z, -PlayerStats.Instance.maxMoveSpeed, PlayerStats.Instance.maxMoveSpeed)
             );
         }

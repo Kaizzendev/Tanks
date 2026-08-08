@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,17 +16,25 @@ public class TurretController : MonoBehaviour
     {
         RotateTurretTowardsMouse();
     }
-    
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
+
     private void RotateTurretTowardsMouse()
     {
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        Vector3 mousePos = Vector3.zero;
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            mousePos = hit.point;
+        }
         
-        float angle = Mathf.Atan2(ray.direction.z, ray.direction.x) * Mathf.Rad2Deg;
-        Quaternion lookRot = Quaternion.Euler(0, -angle + 180, 0);
-        turretTransform.rotation = Quaternion.Slerp(turretTransform.rotation, lookRot, turretRotateSpeed * Time.deltaTime);
+        Vector3 direction = new Vector3(mousePos.x,0, mousePos.z) - new Vector3(turretTransform.position.x, 0, turretTransform.position.z);
         
-      
-        
+        turretTransform.rotation = Quaternion.LookRotation(direction);
     }
     
 }
