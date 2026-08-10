@@ -13,6 +13,7 @@ namespace Player
 
         void Start()
         {
+            GameEvents.onPlayerSpawn?.Invoke(transform);
             _rb = GetComponent<Rigidbody>();
         }
 
