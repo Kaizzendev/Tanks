@@ -1,20 +1,21 @@
-using System;
+﻿using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Player
 {
-
-    public class PlayerShooting : MonoBehaviour
+    public class ShootController : PlayerControllerBase
     {
         [Header("References")] public GameObject missile;
-        public Transform spawnPoint;
+        [SerializeField] private Transform spawnPoint;
 
         private float nextFireTime;
-
-
-        private void Update()
+        internal void Update()
         {
+            if (!isEnabled)
+            {
+                return;
+            }
             if (Input.GetMouseButton(0) && Time.time > nextFireTime)
             {
                 Shoot();

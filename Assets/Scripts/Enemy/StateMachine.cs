@@ -20,9 +20,19 @@ public class StateMachine
         currentState.Enter();
     }
 
+    public T GetCurrentState<T>() where T : State
+    {
+        return currentState as T;
+    }
+
     public void Update()
     {
         currentState?.Update();
+    }
+
+    public void FixedUpdate()
+    {
+        currentState?.FixedUpdate();
     }
     
 }
