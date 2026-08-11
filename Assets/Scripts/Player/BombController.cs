@@ -1,12 +1,11 @@
 ﻿using System;
 using UnityEngine;
-
 namespace Player
 {
     public class BombController: PlayerControllerBase
     {
 
-        public Bomb _bomb;
+        public Bomb.Bomb _bomb;
         internal void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))

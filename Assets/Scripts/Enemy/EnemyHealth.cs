@@ -19,7 +19,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Missile") || other.CompareTag("Bomb"))
+        if (other.CompareTag("Missile"))
         {
             currentHealth -= other.GetComponent<Missile>().missileDamage;
             if (currentHealth <= 0)
@@ -27,6 +27,15 @@ public class EnemyHealth : MonoBehaviour
                
                 Death();
             }
+        }
+    }
+    
+    public void TakeDamage(float amount)
+    {
+        currentHealth -= amount;
+        if (currentHealth <= 0)
+        {
+            Death();
         }
     }
 

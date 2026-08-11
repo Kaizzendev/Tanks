@@ -2571,7 +2571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b11aa6ada45a340824a61f739c4383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2028616856005136478, guid: 51daffa2d8ab73349af9c2bf8f4ea91c, type: 3}
+  player: {fileID: 3087444548537484262, guid: 40421536b5aebf04b87c07f555efa4b3, type: 3}
   moveSpeed: 6
   rotateSpeed: 6
   detectionRange: 40
@@ -2581,7 +2581,7 @@ MonoBehaviour:
   fireTimer: 0
   turret: {fileID: 5021297792936054801}
   firePoint: {fileID: 5460709649325387512}
-  missile: {fileID: 6234660730239567049, guid: e3c71408acd10344c8054324c4de0568, type: 3}
+  missile: {fileID: 2949473240864245288, guid: 2cfc19c27935285479d81ffe4dc142ef, type: 3}
   navMeshAgent: {fileID: 7918533034220454181}
   patrolPoints: []
   waitTimeAtPoint: 1

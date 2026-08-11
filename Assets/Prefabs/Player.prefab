@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7177377002938088391}
   - component: {fileID: 7659070067208362490}
   - component: {fileID: 8230302535069262685}
+  - component: {fileID: 7040370484679351911}
   - component: {fileID: 4758812587398900597}
   - component: {fileID: 3380556978387543543}
   - component: {fileID: 4092196190354782383}
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84ce8769eec3c54f8b0b361d33afead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.ShootController
-  missile: {fileID: 6234660730239567049, guid: e3c71408acd10344c8054324c4de0568, type: 3}
+  missile: {fileID: 2949473240864245288, guid: 2cfc19c27935285479d81ffe4dc142ef, type: 3}
   spawnPoint: {fileID: 3198495819002040804}
 --- !u!114 &7659070067208362490
 MonoBehaviour:
@@ -131,6 +132,27 @@ MonoBehaviour:
   _dashTrails:
   - {fileID: 1492153567957646072}
   - {fileID: 1535760957681552644}
+--- !u!114 &7040370484679351911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73344394955103238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22635e0984868ca4d8034dd4c7df52af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerStats
+  maxHealth: 100
+  currentHealth: 0
+  damage: 100
+  attackSpeed: 0.5
+  criticChance: 0
+  criticMultiplier: 2
+  maxMoveSpeed: 14
+  moveSpeed: 7
+  rotationSpeed: 2
 --- !u!54 &4758812587398900597
 Rigidbody:
   m_ObjectHideFlags: 0
