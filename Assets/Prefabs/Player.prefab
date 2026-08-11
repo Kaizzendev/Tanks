@@ -125,9 +125,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.DashController
   _dashDirection: {fileID: 3353602792226813734}
-  _dashForce: 1000
-  _dashDuration: 1000
-  _dashcCooldown: 1000
+  _dashForce: 100
+  _dashDuration: 0.2
+  _dashCooldown: 1
 --- !u!54 &4758812587398900597
 Rigidbody:
   m_ObjectHideFlags: 0
