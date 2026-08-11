@@ -1,4 +1,6 @@
-﻿namespace Player
+﻿using UnityEngine;
+
+namespace Player
 {
     public class DeadState: State
     {
@@ -10,7 +12,7 @@
         
         public override void Enter()
         {
-        
+            Debug.Log("Dead State");
         }
 
         public override void Update()

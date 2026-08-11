@@ -13,6 +13,7 @@ public class AliveState : State
     public override void Enter()
     {
         GameEvents.onPlayerSpawn?.Invoke(_player.transform);
+        
     }
 
     public override void Update()

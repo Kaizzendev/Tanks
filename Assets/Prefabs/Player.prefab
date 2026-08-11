@@ -70,6 +70,7 @@ MonoBehaviour:
   _shootController: {fileID: 7177377002938088391}
   _bombController: {fileID: 7659070067208362490}
   _dashController: {fileID: 8230302535069262685}
+  _invulnerabilityDuration: 5
 --- !u!114 &5655753092838509188
 MonoBehaviour:
   m_ObjectHideFlags: 0

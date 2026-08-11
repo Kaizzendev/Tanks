@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DefaultNamespace;
+using UnityEngine;
 namespace Player
 {
     public class AttackState: State
@@ -49,6 +50,7 @@ namespace Player
                 Vector3 direction = enemy.firePoint.position - enemy.turret.transform.position;
                 GameObject missilePrefab = GameObject.Instantiate(enemy.missile, enemy.firePoint.position, enemy.firePoint.rotation);
                 missilePrefab.GetComponent<Missile>().Launch(direction);
+                missilePrefab.GetComponent<Missile>().team = EnumTeam.Enemy;
             }
         }
         

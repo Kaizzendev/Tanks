@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DefaultNamespace;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
@@ -13,7 +14,9 @@ public class Missile : MonoBehaviour
     public float missileSpeed = 20f;
     public float missileDamage = 100;
     public float timeToDespawn = 10f;
-    
+
+
+    public EnumTeam team;
     private Rigidbody rb;
     private void Awake()
     {

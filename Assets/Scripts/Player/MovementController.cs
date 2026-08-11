@@ -31,6 +31,12 @@ namespace Player
 
         private void FixedUpdate()
         {
+            
+            if (!isEnabled)
+            {
+                return;
+            }
+            
             MoveTank(_moveInput);
             RotateTank(_rotationInput);
             RotateTurretTowardsMouse();

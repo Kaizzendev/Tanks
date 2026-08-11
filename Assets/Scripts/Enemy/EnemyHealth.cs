@@ -1,4 +1,5 @@
 using System;
+using DefaultNamespace;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -19,7 +20,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Missile"))
+        if (other.CompareTag("Missile") && other.GetComponent<Missile>().team == EnumTeam.Player)
         {
             currentHealth -= other.GetComponent<Missile>().missileDamage;
             if (currentHealth <= 0)

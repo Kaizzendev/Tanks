@@ -1,4 +1,5 @@
 ﻿using System;
+using DefaultNamespace;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -28,6 +29,7 @@ namespace Player
             Vector3 direction = new Vector3(spawnPoint.position.x,4.2f,spawnPoint.position.z) - new Vector3(transform.position.x, 4.2f, transform.position.z);
             GameObject missilePrefab =
                 Instantiate(missile, spawnPoint.position, spawnPoint.rotation); //TODO: Object pool
+            missilePrefab.GetComponent<Missile>().team = EnumTeam.Player;
             missilePrefab.GetComponent<Missile>().missileDamage = SetDamage();
             missilePrefab.GetComponent<Missile>().Launch(direction);
         }
