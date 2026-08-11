@@ -15,6 +15,8 @@ namespace Player
         [SerializeField] private float _dashForce = 1000f;
         [SerializeField] private float _dashDuration = 0.2f;
         [SerializeField] private float _dashCooldown = 1f;
+        
+        [SerializeField] private TrailRenderer[] _dashTrails;
         private float _dashStartTime;
         private float _lastTimeCasted;
         private bool _isDashing;
@@ -30,10 +32,19 @@ namespace Player
                 return;
             }
             
-            if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _lastTimeCasted + _dashCooldown)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _lastTimeCasted + _dashCooldown && !_isDashing)
             {
                 _isDashing =  true;
                 _dashStartTime = Time.time;
+            }
+
+            if (_isDashing)
+            {
+                StartEmitter();
+            }
+            else
+            {
+                StopEmitter();
             }
             
         }
@@ -58,7 +69,22 @@ namespace Player
             Vector3 direction = _dashDirection.position - transform.position;
             direction.Normalize();
             _rb.linearVelocity = direction * _dashForce;
+        }
 
+        private void StartEmitter()
+        {
+            foreach (TrailRenderer trail in _dashTrails)
+            {
+                trail.emitting = true;
+            }
+        }
+
+        private void StopEmitter()
+        {
+            foreach (TrailRenderer trail in _dashTrails)
+            {
+                trail.emitting = false;
+            }
         }
     }
 }
