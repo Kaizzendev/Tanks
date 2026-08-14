@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f6eafe704f3434f9183146bd2c0ba1b, type: 3}
+  m_Name: Combar
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralGeneration.Encounter
+  encounterType: 0
+  roomType: {fileID: 11400000, guid: 87437335b9131c44887aa6f0a03636da, type: 2}
+  biome: {fileID: 11400000, guid: f46214f929725a947a646620bc0b08bf, type: 2}
+  environmentSize: 40
+  enemies: []
+  enemyCount: 0
+  enemyMinDistance: 8
+  enemyHealthMultiplier: 1
+  enemyDamageMultiplier: 1
+  patrolPointprefab: {fileID: 4543274752480366561, guid: 8cf0d409f1c98c64abbe6586b9938ff4, type: 3}
+  patrolPointsMinDistance: 5
+  patrolPointsCount: 10

@@ -13,4 +13,5 @@ public class Biome : ScriptableObject
     [Header("Settings")]
     public float objectNoiseScale = 0.05f;
     public float baseObjectDensity = 0.3f;
+    public float objectSpacing = 5f;
 }

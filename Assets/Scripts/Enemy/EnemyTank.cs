@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Player;
+using ProceduralGeneration;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;

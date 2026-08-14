@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0edb4cb4b14e4678b293ffbd7802f74e, type: 3}
+  m_Name: TestRoom
+  m_EditorClassIdentifier: Assembly-CSharp::ProceduralGeneration.Room
+  mapSize: {x: 50, y: 50}
+  proceduralObjects:
+  - {fileID: 11400000, guid: 6f807102149629042b6b4788852c7eee, type: 2}
+  - {fileID: 11400000, guid: e7fb9d499cc2713498f4fcfe459b7bfb, type: 2}
+  wall: {fileID: 3122532026652751264, guid: b85dbf8f4811eb0489b7724e9447e5db, type: 3}
+  physicalWall: 1
+  objectNoiseScale: 0.05
+  baseObjectDensity: 0.3
+  objectSpacing: 5
