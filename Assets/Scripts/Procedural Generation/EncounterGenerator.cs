@@ -8,23 +8,23 @@ namespace ProceduralGeneration
 {
     public class EncounterGenerator: MonoBehaviour
     {
-        [Header("NavMesh")] public NavMeshSurface navSurface;
+        [Header("NavMesh")] private NavMeshSurface _navSurface;
 
-        [Header("Player")] public GameObject playerPrefab;
+        [Header("Player")] private GameObject _playerPrefab;
 
         [SerializeField] private Encounter _encounter;
         
         
         public int seed = 12345;
         
-        private GameObject terrainPlane;
+        private GameObject _terrainPlane;
         
         
-        private Transform propsParent;
-        private Transform enemiesParent;
-        private Transform patrolPointsParent;
+        private Transform _propsParent;
+        private Transform _enemiesParent;
+        private Transform _patrolPointsParent;
         
-        private List<GameObject> spawned = new List<GameObject>();
+        private List<GameObject> _spawned = new List<GameObject>();
         
 
         private void Start()
@@ -42,12 +42,12 @@ namespace ProceduralGeneration
 
         private void GeneratePlane(Vector2 roomTypeMapSize, Material terrainMaterial,  float environmentSize)
         {
-            terrainPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            terrainPlane.transform.SetParent(transform);
-            terrainPlane.transform.localPosition = Vector3.zero;
-            terrainPlane.transform.localScale = new Vector3((roomTypeMapSize.x + environmentSize) / 10f, 1f, (roomTypeMapSize.y + environmentSize) / 10f);
+            _terrainPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            _terrainPlane.transform.SetParent(transform);
+            _terrainPlane.transform.localPosition = Vector3.zero;
+            _terrainPlane.transform.localScale = new Vector3((roomTypeMapSize.x + environmentSize) / 10f, 1f, (roomTypeMapSize.y + environmentSize) / 10f);
 
-            terrainPlane.GetComponent<Renderer>().material = terrainMaterial;
+            _terrainPlane.GetComponent<Renderer>().material = terrainMaterial;
         }
 
 
@@ -88,14 +88,14 @@ namespace ProceduralGeneration
         
         private void GenerateParents()
         {
-            propsParent = new GameObject("Props").transform;
-            propsParent.SetParent(transform);
+            _propsParent = new GameObject("Props").transform;
+            _propsParent.SetParent(transform);
 
-            enemiesParent = new GameObject("Enemies").transform;
-            enemiesParent.SetParent(transform);
+            _enemiesParent = new GameObject("Enemies").transform;
+            _enemiesParent.SetParent(transform);
 
-            patrolPointsParent = new GameObject("Patrol points").transform;
-            patrolPointsParent.SetParent(transform);
+            _patrolPointsParent = new GameObject("Patrol points").transform;
+            _patrolPointsParent.SetParent(transform);
         }
 
         private void GeneratePlayableProps(List<ProceduralObject> objects, float objectSpacing, Vector2 mapSize, float noiseScale)
@@ -129,13 +129,13 @@ namespace ProceduralGeneration
                 Vector3 pos = new Vector3(x, 0f, z);
                 Quaternion rot = Quaternion.Euler(0, Random.Range(0, 360), 0);
 
-                GameObject inst = Instantiate(obj.proceduralObject, pos, rot, propsParent);
+                GameObject inst = Instantiate(obj.proceduralObject, pos, rot, _propsParent);
 
                 // variación de escala
                 float scale = Random.Range(obj.scaleRange.x, obj.scaleRange.y);
                 inst.transform.localScale *= scale;
 
-                spawned.Add(inst);
+                _spawned.Add(inst);
 
             }
         }
@@ -170,13 +170,13 @@ namespace ProceduralGeneration
                 Vector3 pos = new Vector3(x, 0f, z);
                 Quaternion rot = Quaternion.Euler(0, Random.Range(0, 360), 0);
 
-                GameObject inst = Instantiate(obj.proceduralObject, pos, rot, propsParent);
+                GameObject inst = Instantiate(obj.proceduralObject, pos, rot, _propsParent);
 
                 // variación de escala
                 float scale = Random.Range(obj.scaleRange.x, obj.scaleRange.y);
                 inst.transform.localScale *= scale;
 
-                spawned.Add(inst);
+                _spawned.Add(inst);
 
             }
         }
