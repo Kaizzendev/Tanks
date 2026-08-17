@@ -23,6 +23,7 @@ namespace ProceduralGeneration
         private Transform _propsParent;
         private Transform _enemiesParent;
         private Transform _patrolPointsParent;
+        private Transform _wallsParent;
         
         private List<GameObject> _spawned = new List<GameObject>();
         
@@ -34,6 +35,7 @@ namespace ProceduralGeneration
 
         public void Generate(Encounter encounter)
         {
+            GenerateSeed();
             GeneratePlane(encounter.roomType.mapSize, encounter.biome.terrainMaterial, encounter.environmentSize);
             GeneratePlayableArea(encounter.roomType.wall, encounter.roomType.physicalWall, encounter.roomType.mapSize, encounter.environmentSize);
             GenerateParents();
@@ -47,6 +49,11 @@ namespace ProceduralGeneration
                 encounter.biome.objectNoiseScale, 
                 encounter.roomType.objectNoiseScale
                 );
+        }
+
+        private void GenerateSeed()
+        {
+            Random.InitState(seed);
         }
 
         private void GeneratePlane(Vector2 roomTypeMapSize, Material terrainMaterial,  float environmentSize)
@@ -96,7 +103,7 @@ namespace ProceduralGeneration
             {
                 Vector3 position = start + direction * (i * 2);
                 
-                Instantiate(wall, position, Quaternion.identity);
+                Instantiate(wall, position, Quaternion.identity, _wallsParent);
             }
         }
         
@@ -104,12 +111,20 @@ namespace ProceduralGeneration
         {
             _propsParent = new GameObject("Props").transform;
             _propsParent.SetParent(transform);
+            
+            _wallsParent = new GameObject("Walls").transform;
+            _wallsParent.SetParent(transform);
 
             _enemiesParent = new GameObject("Enemies").transform;
             _enemiesParent.SetParent(transform);
 
             _patrolPointsParent = new GameObject("Patrol points").transform;
             _patrolPointsParent.SetParent(transform);
+        }
+
+        private static bool IsPointInside(Vector3 center, Vector3 size, Vector3 point)
+        {
+            return new Bounds(center, size).Contains(point);
         }
 
         private void GenerateProps(
@@ -122,8 +137,6 @@ namespace ProceduralGeneration
             float playableNoiseScale,
             float environmentNoiseScale)
         {
-            Random.InitState(seed);
-
             Vector2 mapTotalSize = GetTotalMapSize(playableMapSize, environmentSize);
 
             List<Vector2> points = PoissonDiskSampler.Generate(
@@ -145,10 +158,9 @@ namespace ProceduralGeneration
                 noiseScale = playableNoiseScale;
                 objects = playableObjects;
                 
-                Vector3 size = new Vector3(playableMapSize.x, 0, playableMapSize.y);
-                bool isInside = new Bounds(Vector3.zero, size).Contains(new Vector3(x, 0, z));
+                Vector3 area = new Vector3(playableMapSize.x, 0, playableMapSize.y);
                 
-                if (!isInside) 
+                if (!IsPointInside(Vector3.zero, area, new Vector3(x, 0, z))) 
                 {
                     noiseScale = environmentNoiseScale;
                     objects = environmentObjects;
@@ -221,10 +233,9 @@ namespace ProceduralGeneration
                         radius = playableRadius;
                         grid = playableGrid;
 
-                        Vector3 size = new Vector3(playableSize.x, 0, playableSize.y);
-                        bool isInside = new Bounds(new Vector3(regionSize.x /2, 0, regionSize.y /2), size).Contains(new Vector3(spawnPoints[spawnIndex].x, 0, spawnPoints[spawnIndex].y));
-                        
-                        if (!isInside)
+                        Vector3 playableArea = new Vector3(playableSize.x, 0, playableSize.y);
+                    
+                        if (!IsPointInside(new Vector3(regionSize.x /2, 0, regionSize.y /2), playableArea,new Vector3(spawnPoints[spawnIndex].x, 0, spawnPoints[spawnIndex].y) ))
                         {
                             cellSize = environmentCellSize;
                             radius = environmentRadius;
