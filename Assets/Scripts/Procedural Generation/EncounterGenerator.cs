@@ -37,7 +37,16 @@ namespace ProceduralGeneration
             GeneratePlane(encounter.roomType.mapSize, encounter.biome.terrainMaterial, encounter.environmentSize);
             GeneratePlayableArea(encounter.roomType.wall, encounter.roomType.physicalWall, encounter.roomType.mapSize, encounter.environmentSize);
             GenerateParents();
-            GeneratePlayableProps(encounter.roomType.proceduralObjects, encounter.roomType.objectSpacing, encounter.roomType.mapSize, encounter.roomType.objectNoiseScale);
+            GenerateProps(
+                encounter.roomType.mapSize,
+                encounter.environmentSize,
+                encounter.roomType.proceduralObjects,
+                encounter.biome.proceduralObjects,
+                encounter.roomType.objectSpacing,
+                encounter.biome.objectSpacing,
+                encounter.biome.objectNoiseScale, 
+                encounter.roomType.objectNoiseScale
+                );
         }
 
         private void GeneratePlane(Vector2 roomTypeMapSize, Material terrainMaterial,  float environmentSize)
@@ -45,9 +54,14 @@ namespace ProceduralGeneration
             _terrainPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
             _terrainPlane.transform.SetParent(transform);
             _terrainPlane.transform.localPosition = Vector3.zero;
-            _terrainPlane.transform.localScale = new Vector3((roomTypeMapSize.x + environmentSize) / 10f, 1f, (roomTypeMapSize.y + environmentSize) / 10f);
+            _terrainPlane.transform.localScale = new Vector3((GetTotalMapSize(roomTypeMapSize,environmentSize).x) / 10f, 1f, GetTotalMapSize(roomTypeMapSize,environmentSize).y / 10f);
 
             _terrainPlane.GetComponent<Renderer>().material = terrainMaterial;
+        }
+
+        private Vector2 GetTotalMapSize(Vector2 mapSize, float environmentSize)
+        {
+            return new Vector2(mapSize.x + environmentSize, mapSize.y + environmentSize);
         }
 
 
@@ -98,21 +112,48 @@ namespace ProceduralGeneration
             _patrolPointsParent.SetParent(transform);
         }
 
-        private void GeneratePlayableProps(List<ProceduralObject> objects, float objectSpacing, Vector2 mapSize, float noiseScale)
+        private void GenerateProps(
+            Vector2 playableMapSize,
+            float environmentSize,
+            List<ProceduralObject> playableObjects,
+            List<ProceduralObject> environmentObjects,
+            float playableObjectSpacing,
+            float environmentObjectSpacing,
+            float playableNoiseScale,
+            float environmentNoiseScale)
         {
             Random.InitState(seed);
 
+            Vector2 mapTotalSize = GetTotalMapSize(playableMapSize, environmentSize);
+
             List<Vector2> points = PoissonDiskSampler.Generate(
-                objectSpacing,
-                mapSize,
+                playableObjectSpacing,
+                environmentObjectSpacing,
+                mapTotalSize,
+                playableMapSize,
                 30
             );
 
+            float noiseScale;
+            List<ProceduralObject> objects = new List<ProceduralObject>();
+
             foreach (Vector2 p in points)
             {
-                float x = p.x - mapSize.x / 2f;
-                float z = p.y - mapSize.y / 2f;
+                float x = p.x - mapTotalSize.x / 2f;
+                float z = p.y - mapTotalSize.y / 2f;
 
+                noiseScale = playableNoiseScale;
+                objects = playableObjects;
+                
+                Vector3 size = new Vector3(playableMapSize.x, 0, playableMapSize.y);
+                bool isInside = new Bounds(Vector3.zero, size).Contains(new Vector3(x, 0, z));
+                
+                if (!isInside) 
+                {
+                    noiseScale = environmentNoiseScale;
+                    objects = environmentObjects;
+                }
+                
                 float density = Mathf.PerlinNoise(
                     (p.x + seed) * noiseScale,
                     (p.y + seed) * noiseScale
@@ -139,65 +180,34 @@ namespace ProceduralGeneration
 
             }
         }
-        
-        private void GenerateEnvironmentProps(List<ProceduralObject> objects, float objectSpacing, Vector2 mapSize, float noiseScale)
-        {
-
-            List<Vector2> points = PoissonDiskSampler.Generate(
-                objectSpacing,
-                mapSize,
-                30
-            );
-
-            foreach (Vector2 p in points)
-            {
-                float x = p.x - mapSize.x / 2f;
-                float z = p.y - mapSize.y / 2f;
-
-                float density = Mathf.PerlinNoise(
-                    (p.x + seed) * noiseScale,
-                    (p.y + seed) * noiseScale
-                );
-
-
-                // seleccionar objeto según reglas
-                ProceduralObject obj = ObjectRuleEngine.SelectObject(density, objects);
-
-                if (obj == null)
-                    continue;
-
-                // instanciar
-                Vector3 pos = new Vector3(x, 0f, z);
-                Quaternion rot = Quaternion.Euler(0, Random.Range(0, 360), 0);
-
-                GameObject inst = Instantiate(obj.proceduralObject, pos, rot, _propsParent);
-
-                // variación de escala
-                float scale = Random.Range(obj.scaleRange.x, obj.scaleRange.y);
-                inst.transform.localScale *= scale;
-
-                _spawned.Add(inst);
-
-            }
-        }
-        
         
         private static class PoissonDiskSampler
         {
-            public static List<Vector2> Generate(float radius, Vector2 regionSize, int rejectionSamples)
+            public static List<Vector2> Generate(float playableRadius, float environmentRadius, Vector2 regionSize, Vector2 playableSize, int rejectionSamples)
             {
-                float cellSize = radius / Mathf.Sqrt(2);
+                float playableCellSize = playableRadius / Mathf.Sqrt(2);
+                float environmentCellSize = environmentRadius / Mathf.Sqrt(2);
 
-                int gridW = Mathf.CeilToInt(regionSize.x / cellSize);
-                int gridH = Mathf.CeilToInt(regionSize.y / cellSize);
+                int playableGridW = Mathf.CeilToInt(regionSize.x / playableCellSize);
+                int playableGridH = Mathf.CeilToInt(regionSize.y / playableCellSize);
+                
+                int environmentGridW = Mathf.CeilToInt(regionSize.x / environmentCellSize);
+                int environmentGridH = Mathf.CeilToInt(regionSize.y / environmentCellSize);
 
-                int[,] grid = new int[gridW, gridH];
+                int[,] playableGrid = new int[playableGridW, playableGridH];
+                
+                int[,] environmentGrid = new int[environmentGridW, environmentGridH];
 
                 List<Vector2> points = new List<Vector2>();
                 List<Vector2> spawnPoints = new List<Vector2>();
 
                 spawnPoints.Add(regionSize / 2);
 
+
+                float cellSize;
+                float radius;
+                int[,] grid;
+                
                 while (spawnPoints.Count > 0)
                 {
                     int spawnIndex = Random.Range(0, spawnPoints.Count);
@@ -206,6 +216,21 @@ namespace ProceduralGeneration
 
                     for (int i = 0; i < rejectionSamples; i++)
                     {
+                        
+                        cellSize = playableCellSize;
+                        radius = playableRadius;
+                        grid = playableGrid;
+
+                        Vector3 size = new Vector3(playableSize.x, 0, playableSize.y);
+                        bool isInside = new Bounds(new Vector3(regionSize.x /2, 0, regionSize.y /2), size).Contains(new Vector3(spawnPoints[spawnIndex].x, 0, spawnPoints[spawnIndex].y));
+                        
+                        if (!isInside)
+                        {
+                            cellSize = environmentCellSize;
+                            radius = environmentRadius;
+                            grid = environmentGrid;
+                        }
+                        
                         float angle = Random.value * Mathf.PI * 2;
                         float dist = Random.Range(radius, radius * 2);
                         Vector2 candidate = spawnCenter + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * dist;

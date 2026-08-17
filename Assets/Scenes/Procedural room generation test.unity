@@ -465,9 +465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e1c6cf6fe54b81abdecf97561a57be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralGeneration.EncounterGenerator
-  navSurface: {fileID: 0}
-  playerPrefab: {fileID: 73344394955103238, guid: 40421536b5aebf04b87c07f555efa4b3, type: 3}
   _encounter: {fileID: 11400000, guid: 3ab473769523e524d83b1beff86c4272, type: 2}
+  seed: 1234567456
 --- !u!4 &1305613577
 Transform:
   m_ObjectHideFlags: 0
