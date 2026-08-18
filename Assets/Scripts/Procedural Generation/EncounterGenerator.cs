@@ -37,8 +37,8 @@ namespace ProceduralGeneration
         {
             GenerateSeed();
             GeneratePlane(encounter.roomType.mapSize, encounter.biome.terrainMaterial, encounter.environmentSize);
-            GeneratePlayableArea(encounter.roomType.wall, encounter.roomType.physicalWall, encounter.roomType.mapSize, encounter.environmentSize);
             GenerateParents();
+            GeneratePlayableArea(encounter.roomType.wall, encounter.roomType.physicalWall, encounter.roomType.mapSize, encounter.environmentSize);
             GenerateProps(
                 encounter.roomType.mapSize,
                 encounter.environmentSize,
@@ -47,7 +47,8 @@ namespace ProceduralGeneration
                 encounter.roomType.objectSpacing,
                 encounter.biome.objectSpacing,
                 encounter.biome.objectNoiseScale, 
-                encounter.roomType.objectNoiseScale
+                encounter.roomType.objectNoiseScale,
+                encounter.roomType.wall
                 );
         }
 
@@ -68,7 +69,7 @@ namespace ProceduralGeneration
 
         private Vector2 GetTotalMapSize(Vector2 mapSize, float environmentSize)
         {
-            return new Vector2(mapSize.x + environmentSize, mapSize.y + environmentSize);
+            return new Vector2(mapSize.x + environmentSize , mapSize.y + environmentSize);
         }
 
 
@@ -96,12 +97,12 @@ namespace ProceduralGeneration
             
             Vector3 direction = (end - start).normalized;
             float distance = Vector3.Distance(start, end);
-            int wallCount = Mathf.FloorToInt(distance / 2);
+            int wallCount = Mathf.FloorToInt(distance / (wall.transform.localScale.x * wall.GetComponent<BoxCollider>().size.x) );
 
 
             for (int i = 0; i < wallCount; i++)
             {
-                Vector3 position = start + direction * (i * 2);
+                Vector3 position = start + direction * (i * (wall.transform.localScale.x * wall.GetComponent<BoxCollider>().size.x));
                 
                 Instantiate(wall, position, Quaternion.identity, _wallsParent);
             }
@@ -127,6 +128,11 @@ namespace ProceduralGeneration
             return new Bounds(center, size).Contains(point);
         }
 
+        private static Vector3 GetSafePlayableArea(Vector2 playableArea, GameObject wall)
+        {
+            return new Vector3(playableArea.x + (wall.GetComponent<BoxCollider>().size.x * wall.transform.localScale.x) + 2f, 0, playableArea.y + (wall.GetComponent<BoxCollider>().size.x * wall.transform.localScale.x) + 2f) ;
+        }
+
         private void GenerateProps(
             Vector2 playableMapSize,
             float environmentSize,
@@ -135,7 +141,9 @@ namespace ProceduralGeneration
             float playableObjectSpacing,
             float environmentObjectSpacing,
             float playableNoiseScale,
-            float environmentNoiseScale)
+            float environmentNoiseScale,
+            GameObject wall
+            )
         {
             Vector2 mapTotalSize = GetTotalMapSize(playableMapSize, environmentSize);
 
@@ -144,7 +152,8 @@ namespace ProceduralGeneration
                 environmentObjectSpacing,
                 mapTotalSize,
                 playableMapSize,
-                30
+                30,
+                wall
             );
 
             float noiseScale;
@@ -157,8 +166,8 @@ namespace ProceduralGeneration
 
                 noiseScale = playableNoiseScale;
                 objects = playableObjects;
-                
-                Vector3 area = new Vector3(playableMapSize.x, 0, playableMapSize.y);
+
+                Vector3 area = GetSafePlayableArea(playableMapSize,wall);
                 
                 if (!IsPointInside(Vector3.zero, area, new Vector3(x, 0, z))) 
                 {
@@ -195,7 +204,7 @@ namespace ProceduralGeneration
         
         private static class PoissonDiskSampler
         {
-            public static List<Vector2> Generate(float playableRadius, float environmentRadius, Vector2 regionSize, Vector2 playableSize, int rejectionSamples)
+            public static List<Vector2> Generate(float playableRadius, float environmentRadius, Vector2 regionSize, Vector2 playableSize, int rejectionSamples, GameObject wall)
             {
                 float playableCellSize = playableRadius / Mathf.Sqrt(2);
                 float environmentCellSize = environmentRadius / Mathf.Sqrt(2);
@@ -219,7 +228,7 @@ namespace ProceduralGeneration
                 float cellSize;
                 float radius;
                 int[,] grid;
-                
+
                 while (spawnPoints.Count > 0)
                 {
                     int spawnIndex = Random.Range(0, spawnPoints.Count);
@@ -229,23 +238,31 @@ namespace ProceduralGeneration
                     for (int i = 0; i < rejectionSamples; i++)
                     {
                         
+                        bool isParentPointInsidePlayableArea = true;
                         cellSize = playableCellSize;
                         radius = playableRadius;
                         grid = playableGrid;
 
-                        Vector3 playableArea = new Vector3(playableSize.x, 0, playableSize.y);
+                        Vector3 playableArea = GetSafePlayableArea(playableSize,wall);
                     
                         if (!IsPointInside(new Vector3(regionSize.x /2, 0, regionSize.y /2), playableArea,new Vector3(spawnPoints[spawnIndex].x, 0, spawnPoints[spawnIndex].y) ))
                         {
                             cellSize = environmentCellSize;
                             radius = environmentRadius;
                             grid = environmentGrid;
+                            isParentPointInsidePlayableArea = false;
                         }
                         
                         float angle = Random.value * Mathf.PI * 2;
                         float dist = Random.Range(radius, radius * 2);
                         Vector2 candidate = spawnCenter + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * dist;
 
+                        if (IsPointInside(new Vector3(regionSize.x / 2, 0, regionSize.y / 2), playableArea,
+                                new Vector3(candidate.x, 0, candidate.y))  && !isParentPointInsidePlayableArea)
+                        {
+                            continue;
+                        }
+                        
                         if (IsValid(candidate, regionSize, cellSize, radius, points, grid))
                         {
                             points.Add(candidate);

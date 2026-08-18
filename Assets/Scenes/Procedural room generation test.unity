@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralGeneration.EncounterGenerator
   _encounter: {fileID: 11400000, guid: 3ab473769523e524d83b1beff86c4272, type: 2}
-  seed: 1234567456
+  seed: 90
 --- !u!4 &1305613577
 Transform:
   m_ObjectHideFlags: 0

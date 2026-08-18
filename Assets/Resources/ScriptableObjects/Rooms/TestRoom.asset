@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0edb4cb4b14e4678b293ffbd7802f74e, type: 3}
   m_Name: TestRoom
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralGeneration.Room
-  mapSize: {x: 100, y: 100}
+  mapSize: {x: 80, y: 80}
   proceduralObjects:
   - {fileID: 11400000, guid: 6f807102149629042b6b4788852c7eee, type: 2}
   - {fileID: 11400000, guid: e7fb9d499cc2713498f4fcfe459b7bfb, type: 2}
@@ -20,4 +20,4 @@ MonoBehaviour:
   physicalWall: 1
   objectNoiseScale: 0.05
   baseObjectDensity: 0.3
-  objectSpacing: 8
+  objectSpacing: 20
