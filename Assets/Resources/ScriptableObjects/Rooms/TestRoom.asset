@@ -20,4 +20,4 @@ MonoBehaviour:
   physicalWall: 1
   objectNoiseScale: 0.05
   baseObjectDensity: 0.3
-  objectSpacing: 20
+  objectSpacing: 10

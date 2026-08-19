@@ -15,9 +15,10 @@ MonoBehaviour:
   encounterType: 0
   roomType: {fileID: 11400000, guid: 87437335b9131c44887aa6f0a03636da, type: 2}
   biome: {fileID: 11400000, guid: f46214f929725a947a646620bc0b08bf, type: 2}
-  environmentSize: 50
-  enemies: []
-  enemyCount: 0
+  environmentSize: 80
+  enemies:
+  - {fileID: 8613093775178724542, guid: e7cd34720a7e0954bb3f983c35c955f7, type: 3}
+  enemyCount: 2
   enemyMinDistance: 8
   enemyHealthMultiplier: 1
   enemyDamageMultiplier: 1

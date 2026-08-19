@@ -10,12 +10,13 @@ namespace ProceduralGeneration
     {
         [Header("NavMesh")] private NavMeshSurface _navSurface;
 
-        [Header("Player")] private GameObject _playerPrefab;
+        [Header("Player")] [SerializeField] private GameObject _playerPrefab;
 
         [SerializeField] private Encounter _encounter;
-        
-        
-        public int seed = 12345;
+
+        [SerializeField] private float _safeSpawnDistance = 6;
+        [SerializeField] private float _playerSafeSpawnEnemiesDistance = 15;
+        [Header("Seed")] public int seed = 12345;
         
         private GameObject _terrainPlane;
         
@@ -24,6 +25,9 @@ namespace ProceduralGeneration
         private Transform _enemiesParent;
         private Transform _patrolPointsParent;
         private Transform _wallsParent;
+        
+
+        private Vector2 _playerSpawnPosition;
         
         private List<GameObject> _spawned = new List<GameObject>();
         
@@ -50,6 +54,9 @@ namespace ProceduralGeneration
                 encounter.roomType.objectNoiseScale,
                 encounter.roomType.wall
                 );
+
+            FindPlayerSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall);
+            FindEnemiesSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall, encounter.enemies, encounter.enemyCount);
         }
 
         private void GenerateSeed()
@@ -71,8 +78,7 @@ namespace ProceduralGeneration
         {
             return new Vector2(mapSize.x + environmentSize , mapSize.y + environmentSize);
         }
-
-
+        
         private void GeneratePlayableArea(GameObject wall, bool physicalWall, Vector2 roomTypeMapSize, float environmentSize)
         {
             if (physicalWall)
@@ -130,7 +136,9 @@ namespace ProceduralGeneration
 
         private static Vector3 GetSafePlayableArea(Vector2 playableArea, GameObject wall)
         {
-            return new Vector3(playableArea.x + (wall.GetComponent<BoxCollider>().size.x * wall.transform.localScale.x) + 2f, 0, playableArea.y + (wall.GetComponent<BoxCollider>().size.x * wall.transform.localScale.x) + 2f) ;
+            return new Vector3(playableArea.x + 
+                               (wall.GetComponent<BoxCollider>().size.x * wall.transform.localScale.x) + 2f, 0, 
+                playableArea.y + (wall.GetComponent<BoxCollider>().size.x * wall.transform.localScale.x) + 2f) ;
         }
 
         private void GenerateProps(
@@ -199,6 +207,89 @@ namespace ProceduralGeneration
 
                 _spawned.Add(inst);
 
+            }
+        }
+
+        private void FindPlayerSpawnPosition(Vector2 playableArea, GameObject wall)
+        {
+            Vector3 safePlayableAreaVector3 = GetSafePlayableArea(playableArea, wall);
+            Vector2 safePlayableArea = new Vector2(safePlayableAreaVector3.x,safePlayableAreaVector3.z);
+            bool isPlayerGenerated = false;
+            while (!isPlayerGenerated)
+            {
+                bool isSpawnPositionValid = false;
+                float positionX = Random.Range(-safePlayableArea.x / 2, safePlayableArea.x / 2);
+                float positionY = Random.Range(-safePlayableArea.y / 2, safePlayableArea.y / 2);
+                Vector2 position = new Vector2(positionX, positionY);
+
+                foreach (GameObject spawnedObject in _spawned)
+                {
+                    if (Vector2.Distance(position, spawnedObject.transform.position) > _safeSpawnDistance)
+                    {
+                        isSpawnPositionValid = true;
+                    }
+                    else
+                    {
+                        isSpawnPositionValid = false;
+                        break;
+                    }
+                }
+
+                if (isSpawnPositionValid)
+                {
+                    GeneratePlayer(position);
+                    isPlayerGenerated = true;
+                }
+                
+            }
+        }
+
+        private void GeneratePlayer(Vector2 spawnPosition)
+        {
+            _playerSpawnPosition =  spawnPosition;
+            Instantiate(_playerPrefab, new Vector3(spawnPosition.x, 7, spawnPosition.y), Quaternion.identity, transform );
+        }
+
+        private void FindEnemiesSpawnPosition(Vector2 playableArea, GameObject wall, GameObject[] enemies, int numberOfEnemies)
+        {
+            Vector3 safePlayableAreaVector3 = GetSafePlayableArea(playableArea, wall);
+            Vector2 safePlayableArea = new Vector2(safePlayableAreaVector3.x,safePlayableAreaVector3.z);
+            List<Vector2> spawnPositions = new List<Vector2>();
+            while (spawnPositions.Count < numberOfEnemies)
+            {
+                bool isSpawnPositionValid = false;
+                float positionX = Random.Range(-safePlayableArea.x / 2, safePlayableArea.x / 2);
+                float positionY = Random.Range(-safePlayableArea.y / 2, safePlayableArea.y / 2);
+                Vector2 position = new Vector2(positionX, positionY);
+
+                foreach (GameObject spawnedObject in _spawned) 
+                {
+                    if (Vector2.Distance(position, spawnedObject.transform.position) > _safeSpawnDistance && Vector2.Distance(position, _playerSpawnPosition) > _playerSafeSpawnEnemiesDistance)
+                    {
+                        isSpawnPositionValid = true;
+                    }
+                    else
+                    {
+                        isSpawnPositionValid = false;
+                        break;
+                    }
+                }
+
+                if (isSpawnPositionValid)
+                {
+                    spawnPositions.Add(position);
+                }
+                
+            }
+            
+            GenerateEnemies(spawnPositions, enemies);
+        }
+
+        private void GenerateEnemies(List<Vector2> spawnPositions, GameObject[] enemies)
+        {
+            foreach (Vector2 spawnPosition in spawnPositions)
+            {
+                Instantiate(enemies[0],  new Vector3(spawnPosition.x, 5, spawnPosition.y), Quaternion.identity, _enemiesParent);
             }
         }
         

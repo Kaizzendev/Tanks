@@ -18,4 +18,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cf32177f1423d5d4c9fce135b956ba37, type: 2}
   objectNoiseScale: 0.05
   baseObjectDensity: 0.3
-  objectSpacing: 3
+  objectSpacing: 5

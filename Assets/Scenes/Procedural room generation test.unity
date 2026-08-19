@@ -182,7 +182,7 @@ MonoBehaviour:
   Lens:
     FieldOfView: 40
     OrthographicSize: 25
-    NearClipPlane: 0.1
+    NearClipPlane: 0.01
     FarClipPlane: 5000
     Dutch: 0
     ModeOverride: 0
@@ -304,7 +304,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.01
   far clip plane: 5000
   field of view: 40
   orthographic: 1
@@ -465,8 +465,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e1c6cf6fe54b81abdecf97561a57be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralGeneration.EncounterGenerator
+  _playerPrefab: {fileID: 73344394955103238, guid: 40421536b5aebf04b87c07f555efa4b3, type: 3}
   _encounter: {fileID: 11400000, guid: 3ab473769523e524d83b1beff86c4272, type: 2}
-  seed: 90
+  _safeSpawnDistance: 10
+  _playerSafeSpawnEnemiesDistance: 30
+  seed: 2147483647
 --- !u!4 &1305613577
 Transform:
   m_ObjectHideFlags: 0
