@@ -199,7 +199,7 @@ namespace ProceduralGeneration
                 Vector3 pos = new Vector3(x, 0f, z);
                 Quaternion rot = Quaternion.Euler(0, Random.Range(0, 360), 0);
 
-                GameObject inst = Instantiate(obj.proceduralObject, pos, rot, _propsParent);
+                GameObject inst = Instantiate(obj.proceduralObject, pos, Quaternion.identity, _propsParent);
 
                 // variación de escala
                 float scale = Random.Range(obj.scaleRange.x, obj.scaleRange.y);

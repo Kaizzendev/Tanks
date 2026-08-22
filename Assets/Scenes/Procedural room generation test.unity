@@ -469,7 +469,7 @@ MonoBehaviour:
   _encounter: {fileID: 11400000, guid: 3ab473769523e524d83b1beff86c4272, type: 2}
   _safeSpawnDistance: 10
   _playerSafeSpawnEnemiesDistance: 30
-  seed: 2147483647
+  seed: 123131
 --- !u!4 &1305613577
 Transform:
   m_ObjectHideFlags: 0
