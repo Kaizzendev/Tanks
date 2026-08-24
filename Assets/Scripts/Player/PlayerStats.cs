@@ -1,4 +1,5 @@
 using System;
+using Manager;
 using UnityEngine;
 
 namespace Player
@@ -64,7 +65,7 @@ namespace Player
 
         private void Die()
         {
-            GameManager.Instance.ChangeState(GameManager.GameState.gameOver);
+            GameManager.Instance.ChangeState(GameManager.GameState.GameOver);
         }
     }
 }

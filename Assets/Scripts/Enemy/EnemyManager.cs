@@ -5,7 +5,7 @@ public class EnemyManager : MonoBehaviour
 {
    private int enemiesAlive;
 
-   public event Action onWaveCleared;
+   public event Action OnWaveCleared;
    
    private void OnEnable()
    {
@@ -29,7 +29,7 @@ public class EnemyManager : MonoBehaviour
       enemiesAlive--;
       if (enemiesAlive <= 0)
       {
-         onWaveCleared?.Invoke();
+         OnWaveCleared?.Invoke();
       }
    }
    public int GetEnemiesAlive() => enemiesAlive;
