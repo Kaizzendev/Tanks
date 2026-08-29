@@ -36,9 +36,18 @@ namespace ProceduralGeneration
         {
             Generate(_encounter);
         }
+        
+#if UNITY_EDITOR
+        [ContextMenu("Generate Map")]
+#endif
+        public void GenerateContextMenu()
+        {
+            Generate(_encounter);
+        }
 
         public void Generate(Encounter encounter)
         {
+            ClearMap();
             GenerateSeed();
             GeneratePlane(encounter.roomType.mapSize, encounter.biome.terrainMaterial, encounter.environmentSize);
             GenerateParents();
@@ -57,6 +66,14 @@ namespace ProceduralGeneration
 
             FindPlayerSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall);
             FindEnemiesSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall, encounter.enemies, encounter.enemyCount);
+        }
+        
+        private void ClearMap()
+        {
+            for (int i = transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(transform.GetChild(i).gameObject);
+            }
         }
 
         private void GenerateSeed()

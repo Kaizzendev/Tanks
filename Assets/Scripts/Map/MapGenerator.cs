@@ -1,51 +1,113 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using ProceduralGeneration;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Map
 {
-    public class MapGenerator
+    public class MapGenerator: MonoBehaviour
     {
-        private List<MapNode> mapNodes = new List<MapNode>();
+        private List<MapNode> _mapNodes = new List<MapNode>();
 
         [Header("Map Configuration")] 
         [SerializeField] private int _numberOfLayers = 5;
 
         [SerializeField] private int _maxChildPerNode = 3;
         
+        [SerializeField] private int _minChildPerNode = 1;
+        
+        [SerializeField] private int _maxNodesPerLayer = 6;
+        
+        [SerializeField] private int _minNodesPerLayer = 1;
 
-        private void Generate()
+        [SerializeField] private AnimationCurve _animationCurve;
+        
+        private List<int> _densityPerLayer = new List<int>();
+        
+        private List<List<MapNode>> _nodesPerLayer = new List<List<MapNode>>();
+
+        public int seed;
+        
+        
+#if UNITY_EDITOR
+        [ContextMenu("Generate Map")]
+#endif
+        public void GenerateContextMenu()
         {
-            mapNodes.Clear();
-            
-            GenerateTree();
+            Generate();
         }
-        private void GenerateTree()
+        
+        private void Generate()
+        { 
+            Clear();
+            GenerateSeed();
+            GenerateGraph();
+        }
+        
+        private void GenerateSeed()
         {
-            int currentLayer = 1;
+            Random.InitState(seed);
+        }
+
+        private void Clear()
+        {
+            _mapNodes.Clear();
+            _densityPerLayer.Clear();
+            _nodesPerLayer.Clear();
+        }
+        
+        private void GenerateGraph()
+        {
+            int currentLayer = 0;
             int nodeId = 0;
+
+            MapNode initialNode = GenerateNode(currentLayer, nodeId);
+            List<MapNode> initialNodeList = new List<MapNode>();
+            initialNodeList.Add(initialNode);
+            
+            
+            _mapNodes.Add(initialNode);
+            _nodesPerLayer.Capacity = _numberOfLayers;
+            _nodesPerLayer.Add(initialNodeList);
+            currentLayer++;
+            
             while (currentLayer <= _numberOfLayers)
             {
-                if (currentLayer == 1)
+                int numberOfNodesOnLayer = GetDensityPerLayer(currentLayer);
+                List<MapNode> currentNodesInLayer = new List<MapNode>(numberOfNodesOnLayer);
+                for (int i = 0; i < numberOfNodesOnLayer; i++)
                 {
-                    GenerateNode(currentLayer,nodeId);
-                    currentLayer++;
+                    nodeId = int.Parse(currentLayer.ToString() + i.ToString());
+                    MapNode currentNode = GenerateNode(currentLayer, nodeId);
+                    currentNodesInLayer.Add(currentNode);
+                    _mapNodes.Add(currentNode);
                 }
-
-                for (int i = 0; i < 5; i++)
-                {
-                    GenerateNode(currentLayer, nodeId);
-                }
-
+                _nodesPerLayer.Add(currentNodesInLayer);
+                Debug.Log($"Generated {_nodesPerLayer[currentLayer].Count}, in layer {currentLayer}");
                 currentLayer++;
             }
         }
 
-        private void GenerateNode(int layer,  int nodeId)
+        private int GetDensityPerLayer(int layer)
+        {
+            float density = _animationCurve.Evaluate(((float)layer/(float)_numberOfLayers));
+            
+            int roundedDensity = (int)Mathf.Round(density * _maxNodesPerLayer);
+            if (roundedDensity < _minNodesPerLayer)
+            {
+                roundedDensity = _minNodesPerLayer;
+            }
+            return roundedDensity;
+        }
+
+        private MapNode GenerateNode(int layer,  int nodeId, EncounterType encounterType = EncounterType.Combat)
         {
             MapNode node = new MapNode();
+            node.seed = seed + nodeId;
             node.Layer = layer;
-            node.EncounterType = (EncounterType) Random.Range(0, (int) EncounterType.Upgrade);
+            return node;
         }
     }
 }

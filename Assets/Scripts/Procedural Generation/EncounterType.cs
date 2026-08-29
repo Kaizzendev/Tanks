@@ -9,6 +9,7 @@
         Boss,
         Shop,
         Choice,
-        Upgrade
+        Upgrade,
+        Start
     }
 }

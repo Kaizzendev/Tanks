@@ -8,7 +8,8 @@ namespace Map
         internal int Id;
         internal int Layer;
         internal EncounterType EncounterType;
+        internal int seed;
         
-        internal List<MapNode> Neighbors; 
+        internal List<MapNode> Neighbours; 
     }
 }
