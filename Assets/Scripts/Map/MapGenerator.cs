@@ -11,6 +11,9 @@ namespace Map
     {
         private List<MapNode> _mapNodes = new List<MapNode>();
 
+        [Header("Debug")]
+        [SerializeField] private bool _isDebugMode = false;
+        
         [Header("Map Configuration")] 
         [SerializeField] private int _numberOfLayers = 5;
 
@@ -29,6 +32,8 @@ namespace Map
         private List<List<MapNode>> _nodesPerLayer = new List<List<MapNode>>();
 
         public int seed;
+
+        private EncounterTypeGenerationRule[] _encounterTypeGenerationRules;
         
         
 #if UNITY_EDITOR
@@ -44,6 +49,7 @@ namespace Map
             Clear();
             GenerateSeed();
             GenerateGraph();
+            SetNodesEncounterType();
         }
         
         private void GenerateSeed()
@@ -73,21 +79,99 @@ namespace Map
             _nodesPerLayer.Add(initialNodeList);
             currentLayer++;
             
-            while (currentLayer <= _numberOfLayers)
+            for (int i = currentLayer; i <= _numberOfLayers; i++)
             {
                 int numberOfNodesOnLayer = GetDensityPerLayer(currentLayer);
                 List<MapNode> currentNodesInLayer = new List<MapNode>(numberOfNodesOnLayer);
-                for (int i = 0; i < numberOfNodesOnLayer; i++)
+
+                if (currentLayer == _numberOfLayers)
                 {
-                    nodeId = int.Parse(currentLayer.ToString() + i.ToString());
+                    numberOfNodesOnLayer = 1;
+                }
+                
+                for (int j = 0; j < numberOfNodesOnLayer; j++)
+                {
+                    nodeId = int.Parse(currentLayer + j.ToString());
                     MapNode currentNode = GenerateNode(currentLayer, nodeId);
                     currentNodesInLayer.Add(currentNode);
                     _mapNodes.Add(currentNode);
                 }
                 _nodesPerLayer.Add(currentNodesInLayer);
-                Debug.Log($"Generated {_nodesPerLayer[currentLayer].Count}, in layer {currentLayer}");
                 currentLayer++;
             }
+        }
+
+        private void SetNodesEncounterType() 
+        {
+            
+            _encounterTypeGenerationRules = Resources.LoadAll<EncounterTypeGenerationRule>("ScriptableObjects/Map Rules");
+            
+            for (int i = 0; i < _nodesPerLayer.Count; i++)
+            {
+                for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+                {
+                    _nodesPerLayer[i][j].EncounterType = SetEncounterTypePerLayer(i);
+                    DebugLog($"In layer {i}, node {j} --> {_nodesPerLayer[i][j].ToString()}");
+                }
+            }
+        }
+
+        private EncounterType SetEncounterTypePerLayer(int currentLayer)
+        {
+            EncounterType encounterType = EncounterType.Combat;
+
+            if (currentLayer == 0)
+            {
+                return EncounterType.Start;
+            }
+            
+            if (currentLayer == _numberOfLayers)
+            {
+                return EncounterType.Boss;
+            }
+            
+            List<EncounterTypeGenerationRule> encounterTypeCandidates = new List<EncounterTypeGenerationRule>();
+            
+            float mapProgress = (float)currentLayer / _numberOfLayers;
+            
+            foreach (EncounterTypeGenerationRule encounterTypeGenerationRule in _encounterTypeGenerationRules)
+            {
+                if (mapProgress >= encounterTypeGenerationRule.MinMapProgress &&
+                    mapProgress <= encounterTypeGenerationRule.MaxMapProgress)
+                {
+                    encounterTypeCandidates.Add(encounterTypeGenerationRule);
+                }
+            }
+            
+            List<float> encounterTypeProbabilities = new List<float>();
+
+            foreach (EncounterTypeGenerationRule candidate in encounterTypeCandidates)
+            {
+                encounterTypeProbabilities.Add(candidate.AnimationCurve.Evaluate(((float)currentLayer / (float)_numberOfLayers)));
+            }
+
+            float maxWeight = 0;
+            for (int i = 0; i < encounterTypeProbabilities.Count; i++)
+            {
+                maxWeight += encounterTypeProbabilities[i];
+            }
+            float accumulatedWeight = 0;
+            float weight = Random.Range(0, maxWeight);
+
+            for (int i = 0; i < encounterTypeProbabilities.Count; i++)
+            {
+                accumulatedWeight += encounterTypeProbabilities[i];
+
+                if (weight <= accumulatedWeight)
+                {
+                    encounterType = encounterTypeCandidates[i].EncounterType;
+                    break;
+                }
+            }
+            
+
+
+            return encounterType;
         }
 
         private int GetDensityPerLayer(int layer)
@@ -105,9 +189,21 @@ namespace Map
         private MapNode GenerateNode(int layer,  int nodeId, EncounterType encounterType = EncounterType.Combat)
         {
             MapNode node = new MapNode();
-            node.seed = seed + nodeId;
+            node.Id = nodeId;
+            node.seed = seed;
+            node.seed += nodeId;
             node.Layer = layer;
             return node;
         }
+
+        private void DebugLog(string message)
+        {
+            if (_isDebugMode)
+            {
+                Debug.Log($"[MAP GENERATOR] {message}");
+            }    
+        }
+        
+        
     }
 }

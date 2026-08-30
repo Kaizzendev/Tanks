@@ -5,11 +5,16 @@ namespace Map
 {
     public class MapNode
     {
-        internal int Id;
-        internal int Layer;
+        internal float Id;
         internal EncounterType EncounterType;
+        internal int Layer;
         internal int seed;
         
-        internal List<MapNode> Neighbours; 
+        internal List<MapNode> Neighbours;
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, EncounterType: {EncounterType}, Layer: {Layer}, seed: {seed} ";
+        }
     }
 }
