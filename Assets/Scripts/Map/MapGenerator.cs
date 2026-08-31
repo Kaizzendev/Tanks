@@ -50,8 +50,9 @@ namespace Map
             GenerateSeed();
             GenerateGraph();
             SetNodesEncounterType();
+            SetNodeConnections();
         }
-        
+
         private void GenerateSeed()
         {
             Random.InitState(seed);
@@ -173,6 +174,81 @@ namespace Map
 
             return encounterType;
         }
+        
+        private void SetNodeConnections()
+        {
+            for (int i = 0; i < _nodesPerLayer.Count -1; i++)
+            {
+                for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+                {
+                    int desiredChildNodes = Random.Range(_minChildPerNode, Mathf.Min(_maxChildPerNode, _nodesPerLayer[i + 1].Count + 1));
+
+                    foreach (MapNode currentNode in _nodesPerLayer[i + 1])
+                    {
+                        if (currentNode.EncounterType == EncounterType.Boss)
+                        {
+                            _nodesPerLayer[i][j].Children.Add(currentNode);
+                            currentNode.Parents.Add(_nodesPerLayer[i][j]);
+                            DebugLog($"Adding child node {currentNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+                            continue;
+                        }
+                        if (_nodesPerLayer[i][j].Children.Count >= desiredChildNodes)
+                        {
+                            break;
+                        }
+                        
+                        if (currentNode.Parents.Count >= 1) //random min parents = 1, max parents = nodos totales de la capa anterior
+                        {
+                            continue;
+                        }
+
+                        if (_nodesPerLayer[i][j].Children.Contains(currentNode))
+                        {
+                            continue;
+                        }
+
+                        if (currentNode.Parents.Contains(_nodesPerLayer[i][j]))
+                        {
+                            continue;
+                        }
+                        
+                        _nodesPerLayer[i][j].Children.Add(currentNode);
+                        currentNode.Parents.Add(_nodesPerLayer[i][j]);
+                        DebugLog($"Adding child node {currentNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+                    }
+                    
+                }
+            }
+
+            for (int i = 0; i < _nodesPerLayer.Count -1; i++)
+            {
+                foreach (MapNode childrenNode in _nodesPerLayer[i +1])
+                {
+                    if (childrenNode.Parents.Count == 0)
+                    {
+                        foreach (MapNode currentNode in _nodesPerLayer[i])
+                        {
+                            if (childrenNode.Parents.Contains(currentNode))
+                            {
+                                continue;
+                            }
+
+                            if (currentNode.Children.Count == _maxChildPerNode)
+                            {
+                                continue;
+                            }
+                            
+                            childrenNode.Parents.Add(currentNode);
+                            currentNode.Children.Add(childrenNode);
+                            DebugLog($"Adding child node {childrenNode.ToString()} --> {currentNode.ToString()}");
+                            break;
+                        }
+                    }
+                }
+            }
+            
+        }
+        
 
         private int GetDensityPerLayer(int layer)
         {

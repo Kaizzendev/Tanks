@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Shop
   m_EditorClassIdentifier: Assembly-CSharp::Map.EncounterTypeGenerationRule
   EncounterType: 5
-  MinLayer: 1
-  MaxLayer: 5
+  MinMapProgress: 0.322
+  MaxMapProgress: 1
   AnimationCurve:
     serializedVersion: 2
     m_Curve:
