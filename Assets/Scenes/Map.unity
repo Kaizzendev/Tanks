@@ -338,11 +338,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Map.MapGenerator
   _isDebugMode: 1
-  _numberOfLayers: 5
-  _maxChildPerNode: 3
-  _minChildPerNode: 1
-  _maxNodesPerLayer: 5
+  _distanceBetweenNodes: 10
+  _numberOfLayers: 6
   _minNodesPerLayer: 1
+  _maxNodesPerLayer: 5
+  _minChildPerNode: 1
+  _maxChildPerNode: 3
   _minParentsPerNode: 1
   _maxParentsPerNode: 3
   _animationCurve:
@@ -358,10 +359,19 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
+      time: 0.36450744
+      value: 0.13286565
+      inSlope: -10.65049
+      outSlope: -10.65049
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11684161
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -369,7 +379,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  seed: 23
+  seed: 123123
 --- !u!4 &417880912
 Transform:
   m_ObjectHideFlags: 0

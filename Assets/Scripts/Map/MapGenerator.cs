@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ProceduralGeneration;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace Map
@@ -14,21 +15,24 @@ namespace Map
         [Header("Debug")]
         [SerializeField] private bool _isDebugMode = false;
         
+        [Header("Map size")]
+        [SerializeField] private int _distanceBetweenNodes = 10;
+        
         [Header("Map Configuration")] 
+        [Header("Layer Configuration")] 
         [SerializeField] private int _numberOfLayers = 5;
+        [SerializeField] private int _minNodesPerLayer = 1;
+        [SerializeField] private int _maxNodesPerLayer = 6;
 
+        [Header("Child Configuration")]
+        [SerializeField] private int _minChildPerNode = 1;
         [SerializeField] private int _maxChildPerNode = 3;
         
-        [SerializeField] private int _minChildPerNode = 1;
-        
-        [SerializeField] private int _maxNodesPerLayer = 6;
-        
-        [SerializeField] private int _minNodesPerLayer = 1;
-
+        [Header("Parent Configuration")]
         [SerializeField] private int _minParentsPerNode = 1;
-        
         [SerializeField] private int _maxParentsPerNode = 3;
 
+        [Header("Node Density Per Layer")]
         [SerializeField] private AnimationCurve _animationCurve;
         
         private List<int> _densityPerLayer = new List<int>();
@@ -56,6 +60,7 @@ namespace Map
             SetNodesEncounterType();
             SetNodeConnections();
             RearrangeEncounterTypes();
+            SetNodePositions();
         }
 
         private void GenerateSeed()
@@ -360,6 +365,44 @@ namespace Map
             return node;
         }
 
+        private void SetNodePositions()
+        {
+            
+            Queue<MapNode> queue = new Queue<MapNode>();
+            
+            for (int i = 1; i < _nodesPerLayer.Count -1; i++)
+            {
+                for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+                {
+                    foreach (MapNode childNode in _nodesPerLayer[i][j].Children)
+                    {
+                        if (queue.Contains(childNode))
+                        {
+                            continue;
+                        }
+                        queue.Enqueue(childNode);
+                    }
+                }
+                
+                _nodesPerLayer[i +1].Clear();
+                _nodesPerLayer[i +1] = queue.ToList();
+                queue.Clear();
+
+            }
+            
+            for (int i = 0; i < _nodesPerLayer.Count; i++)
+            {
+                int count = _nodesPerLayer[i].Count -1;
+                float startY = _distanceBetweenNodes * count * 0.5f;
+                for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+                {
+                    _nodesPerLayer[i][j].Position = new Vector3(i * _distanceBetweenNodes, 0,startY - (j * _distanceBetweenNodes));
+                }
+            }
+            
+
+        }
+
         private void DebugLog(string message)
         {
             if (_isDebugMode)
@@ -372,8 +415,6 @@ namespace Map
         {
             if (_isDebugMode)
             {
-                int offset = 10;
-
                 for (int i = 0; i < _nodesPerLayer.Count; i++)
                 {
 
@@ -386,15 +427,11 @@ namespace Map
                         }
                             
                     }
-
-
-                    int count = _nodesPerLayer[i].Count;
-                    float startY = offset * count * 0.5f;
+                    
                     for (int j = 0; j < _nodesPerLayer[i].Count; j++)
                     {
-                        _nodesPerLayer[i][j].Position = new Vector3(i * offset, 0,startY - (j * offset));
                         Gizmos.color = SetColors(_nodesPerLayer[i][j].EncounterType);
-                        Gizmos.DrawSphere(new Vector3(i * offset, 0,  startY - (j * offset) ), 2f);
+                        Gizmos.DrawSphere(new Vector3(_nodesPerLayer[i][j].Position.x, 0,  _nodesPerLayer[i][j].Position.z), 2f);
                     }
                 }
                 
