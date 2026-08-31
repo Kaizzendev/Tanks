@@ -343,6 +343,8 @@ MonoBehaviour:
   _minChildPerNode: 1
   _maxNodesPerLayer: 5
   _minNodesPerLayer: 1
+  _minParentsPerNode: 1
+  _maxParentsPerNode: 3
   _animationCurve:
     serializedVersion: 2
     m_Curve:
@@ -367,7 +369,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  seed: 123
+  seed: 12313
 --- !u!4 &417880912
 Transform:
   m_ObjectHideFlags: 0

@@ -25,6 +25,10 @@ namespace Map
         
         [SerializeField] private int _minNodesPerLayer = 1;
 
+        [SerializeField] private int _minParentsPerNode = 1;
+        
+        [SerializeField] private int _maxParentsPerNode = 3;
+
         [SerializeField] private AnimationCurve _animationCurve;
         
         private List<int> _densityPerLayer = new List<int>();
@@ -182,8 +186,16 @@ namespace Map
                 for (int j = 0; j < _nodesPerLayer[i].Count; j++)
                 {
                     int desiredChildNodes = Random.Range(_minChildPerNode, Mathf.Min(_maxChildPerNode, _nodesPerLayer[i + 1].Count + 1));
-
-                    foreach (MapNode currentNode in _nodesPerLayer[i + 1])
+                    
+                    List<MapNode> nextLayerNodesUnordered = new List<MapNode>(_nodesPerLayer[i + 1]);
+                    for (int k = nextLayerNodesUnordered.Count -1; k > 0; k--)
+                    {
+                        int index = Random.Range(0, k+1);
+                        MapNode temp = nextLayerNodesUnordered[index];
+                        nextLayerNodesUnordered[index] = nextLayerNodesUnordered[k];
+                        nextLayerNodesUnordered[k] = temp;
+                    }
+                    foreach (MapNode currentNode in nextLayerNodesUnordered)
                     {
                         if (currentNode.EncounterType == EncounterType.Boss)
                         {
@@ -197,7 +209,7 @@ namespace Map
                             break;
                         }
                         
-                        if (currentNode.Parents.Count >= 1) //random min parents = 1, max parents = nodos totales de la capa anterior
+                        if (currentNode.Parents.Count >= Random.Range(_minParentsPerNode, _maxParentsPerNode))
                         {
                             continue;
                         }
@@ -228,12 +240,7 @@ namespace Map
                     {
                         foreach (MapNode currentNode in _nodesPerLayer[i])
                         {
-                            if (childrenNode.Parents.Contains(currentNode))
-                            {
-                                continue;
-                            }
-
-                            if (currentNode.Children.Count == _maxChildPerNode)
+                            if (currentNode.Children.Count >= _maxChildPerNode)
                             {
                                 continue;
                             }
@@ -278,6 +285,64 @@ namespace Map
             {
                 Debug.Log($"[MAP GENERATOR] {message}");
             }    
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_isDebugMode)
+            {
+                int offset = 10;
+
+                for (int i = 0; i < _nodesPerLayer.Count; i++)
+                {
+
+                    foreach (MapNode currentNode in _nodesPerLayer[i])
+                    {
+                        foreach (MapNode currentChildNode in currentNode.Children)
+                        {
+                            Gizmos.color = Color.black;
+                            Gizmos.DrawLine(currentNode.Position, currentChildNode.Position);    
+                        }
+                            
+                    }
+
+
+                    int count = _nodesPerLayer[i].Count;
+                    float startY = offset * count * 0.5f;
+                    for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+                    {
+                        _nodesPerLayer[i][j].Position = new Vector3(i * offset, 0,startY - (j * offset));
+                        Gizmos.color = SetColors(_nodesPerLayer[i][j].EncounterType);
+                        Gizmos.DrawSphere(new Vector3(i * offset, 0,  startY - (j * offset) ), 2f);
+                    }
+                }
+                
+            }
+        }
+
+        private Color SetColors(EncounterType encounterType)
+        {
+            Color color = new Color();
+            switch (encounterType)
+            {
+                case EncounterType.Boss:
+                    color = Color.red;
+                    break;
+                case EncounterType.Start:
+                    color = Color.gray;
+                    break;
+                case EncounterType.Combat:
+                    color = Color.yellow;
+                    break;
+                case EncounterType.Choice:
+                    color = Color.green;
+                    break;
+                case EncounterType.Shop:
+                    color = Color.blue;
+                    break;
+            }
+
+            return color;
         }
         
         

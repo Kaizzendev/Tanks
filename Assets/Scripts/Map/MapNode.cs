@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ProceduralGeneration;
+using UnityEngine;
 
 namespace Map
 {
@@ -9,6 +10,8 @@ namespace Map
         internal EncounterType EncounterType;
         internal int Layer;
         internal int seed;
+
+        internal Vector3 Position;
         
         internal List<MapNode> Parents = new List<MapNode>();
         

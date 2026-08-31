@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Decision
   m_EditorClassIdentifier: Assembly-CSharp::Map.EncounterTypeGenerationRule
   EncounterType: 6
-  MinMapProgress: 0.304
+  MinMapProgress: 0.1
   MaxMapProgress: 0.799
   AnimationCurve:
     serializedVersion: 2
@@ -21,24 +21,15 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.35
-      value: 0.75361544
-      inSlope: 0.74970984
-      outSlope: 0.74970984
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
       time: 1
-      value: 0.5
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
