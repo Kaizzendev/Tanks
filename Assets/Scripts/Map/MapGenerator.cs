@@ -55,6 +55,7 @@ namespace Map
             GenerateGraph();
             SetNodesEncounterType();
             SetNodeConnections();
+            RearrangeEncounterTypes();
         }
 
         private void GenerateSeed()
@@ -178,6 +179,65 @@ namespace Map
 
             return encounterType;
         }
+
+        private EncounterType SetEncounterTypePerLayer(int currentLayer, EncounterType encounterTypeToExclude)
+        {
+            if (currentLayer == 0)
+            {
+                return EncounterType.Start;
+            }
+            
+            if (currentLayer == _numberOfLayers)
+            {
+                return EncounterType.Boss;
+            }
+            
+            List<EncounterTypeGenerationRule> encounterTypeCandidates = new List<EncounterTypeGenerationRule>();
+            
+            float mapProgress = (float)currentLayer / _numberOfLayers;
+            
+            foreach (EncounterTypeGenerationRule encounterTypeGenerationRule in _encounterTypeGenerationRules)
+            {
+                if (mapProgress >= encounterTypeGenerationRule.MinMapProgress &&
+                    mapProgress <= encounterTypeGenerationRule.MaxMapProgress)
+                {
+                    if (encounterTypeGenerationRule.EncounterType != encounterTypeToExclude)
+                    {
+                        encounterTypeCandidates.Add(encounterTypeGenerationRule);
+                    }
+                }
+            }
+            
+            List<float> encounterTypeProbabilities = new List<float>();
+
+            foreach (EncounterTypeGenerationRule candidate in encounterTypeCandidates)
+            {
+                encounterTypeProbabilities.Add(candidate.AnimationCurve.Evaluate(((float)currentLayer / (float)_numberOfLayers)));
+            }
+
+            float maxWeight = 0;
+            for (int i = 0; i < encounterTypeProbabilities.Count; i++)
+            {
+                maxWeight += encounterTypeProbabilities[i];
+            }
+            float accumulatedWeight = 0;
+            float weight = Random.Range(0, maxWeight);
+
+            for (int i = 0; i < encounterTypeProbabilities.Count; i++)
+            {
+                accumulatedWeight += encounterTypeProbabilities[i];
+
+                if (weight <= accumulatedWeight)
+                {
+                    encounterTypeToExclude = encounterTypeCandidates[i].EncounterType;
+                    break;
+                }
+            }
+            
+
+
+            return encounterTypeToExclude;
+        }
         
         private void SetNodeConnections()
         {
@@ -255,8 +315,29 @@ namespace Map
             }
             
         }
-        
 
+        private void RearrangeEncounterTypes()
+        {
+            for (int i = 0; i < _nodesPerLayer.Count; i++)
+            {
+                foreach (MapNode currentNode in _nodesPerLayer[i])
+                {
+                    foreach (MapNode children in currentNode.Children)
+                    {
+                        if (currentNode.EncounterType == EncounterType.Shop && children.EncounterType == EncounterType.Shop)
+                        {
+                            children.EncounterType = SetEncounterTypePerLayer(i + 1, EncounterType.Shop);
+                        } 
+                        if (currentNode.EncounterType == EncounterType.Choice && children.EncounterType == EncounterType.Choice)
+                        {
+                            children.EncounterType = SetEncounterTypePerLayer(i + 1, EncounterType.Choice);
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
         private int GetDensityPerLayer(int layer)
         {
             float density = _animationCurve.Evaluate(((float)layer/(float)_numberOfLayers));
@@ -344,7 +425,6 @@ namespace Map
 
             return color;
         }
-        
         
     }
 }
