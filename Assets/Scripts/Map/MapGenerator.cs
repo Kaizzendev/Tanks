@@ -244,82 +244,167 @@ namespace Map
             return encounterTypeToExclude;
         }
         
+        
         private void SetNodeConnections()
         {
             for (int i = 0; i < _nodesPerLayer.Count -1; i++)
             {
                 for (int j = 0; j < _nodesPerLayer[i].Count; j++)
                 {
-                    int desiredChildNodes = Random.Range(_minChildPerNode, Mathf.Min(_maxChildPerNode, _nodesPerLayer[i + 1].Count + 1));
                     
-                    List<MapNode> nextLayerNodesUnordered = new List<MapNode>(_nodesPerLayer[i + 1]);
-                    for (int k = nextLayerNodesUnordered.Count -1; k > 0; k--)
+                    // List<MapNode> nextLayerNodesUnordered = new List<MapNode>(_nodesPerLayer[i + 1]);
+                    // for (int k = nextLayerNodesUnordered.Count -1; k > 0; k--)
+                    // {
+                    //     int index = Random.Range(0, k+1);
+                    //     MapNode temp = nextLayerNodesUnordered[index];
+                    //     nextLayerNodesUnordered[index] = nextLayerNodesUnordered[k];
+                    //     nextLayerNodesUnordered[k] = temp;
+                    // }
+                    
+                    foreach (MapNode nextLayerNode in _nodesPerLayer[i +1])
                     {
-                        int index = Random.Range(0, k+1);
-                        MapNode temp = nextLayerNodesUnordered[index];
-                        nextLayerNodesUnordered[index] = nextLayerNodesUnordered[k];
-                        nextLayerNodesUnordered[k] = temp;
-                    }
-                    foreach (MapNode currentNode in nextLayerNodesUnordered)
-                    {
-                        if (currentNode.EncounterType == EncounterType.Boss)
+                        if (nextLayerNode.EncounterType == EncounterType.Boss)
                         {
-                            _nodesPerLayer[i][j].Children.Add(currentNode);
-                            currentNode.Parents.Add(_nodesPerLayer[i][j]);
-                            DebugLog($"Adding child node {currentNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+                            _nodesPerLayer[i][j].Children.Add(nextLayerNode);
+                            nextLayerNode.Parents.Add(_nodesPerLayer[i][j]);
+                            DebugLog($"Adding child node {nextLayerNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
                             continue;
                         }
-                        if (_nodesPerLayer[i][j].Children.Count >= desiredChildNodes)
+        
+                        if (_nodesPerLayer[i][j].EncounterType == EncounterType.Start)
+                        {
+                            _nodesPerLayer[i][j].Children.Add(nextLayerNode);
+                            nextLayerNode.Parents.Add(_nodesPerLayer[i][j]);
+                            DebugLog($"Adding child node {nextLayerNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+                            continue;
+                        }
+
+                        if (_nodesPerLayer[i][j].Children.Count >= 1)
                         {
                             break;
                         }
-                        
-                        if (currentNode.Parents.Count >= Random.Range(_minParentsPerNode, _maxParentsPerNode))
-                        {
-                            continue;
-                        }
 
-                        if (_nodesPerLayer[i][j].Children.Contains(currentNode))
-                        {
-                            continue;
-                        }
-
-                        if (currentNode.Parents.Contains(_nodesPerLayer[i][j]))
+                        if (nextLayerNode.Parents.Count >= 1)
                         {
                             continue;
                         }
                         
-                        _nodesPerLayer[i][j].Children.Add(currentNode);
-                        currentNode.Parents.Add(_nodesPerLayer[i][j]);
-                        DebugLog($"Adding child node {currentNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+                        if (_nodesPerLayer[i][j].Children.Contains(nextLayerNode))
+                        {
+                            continue;
+                        }
+        
+                        if (nextLayerNode.Parents.Contains(_nodesPerLayer[i][j]))
+                        {
+                            continue;
+                        }
+                        
+                        _nodesPerLayer[i][j].Children.Add(nextLayerNode);
+                        nextLayerNode.Parents.Add(_nodesPerLayer[i][j]);
+                        DebugLog($"Adding child node {nextLayerNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
                     }
                     
                 }
             }
 
-            for (int i = 0; i < _nodesPerLayer.Count -1; i++)
+            for (int i = 0; i < _nodesPerLayer.Count - 1; i++)
             {
-                foreach (MapNode childrenNode in _nodesPerLayer[i +1])
+                
+                for (int j = 0; j < _nodesPerLayer[i].Count; j++)
                 {
-                    if (childrenNode.Parents.Count == 0)
+                    int desiredChildNodesToConnect = Random.Range(_minChildPerNode, _maxChildPerNode +1);
+                    foreach (MapNode nextLayerNode in _nodesPerLayer[i + 1])
                     {
-                        foreach (MapNode currentNode in _nodesPerLayer[i])
+                        if (_nodesPerLayer[i][j].Children.Count < desiredChildNodesToConnect && !_nodesPerLayer[i][j].Children.Contains(nextLayerNode))
                         {
-                            if (currentNode.Children.Count >= _maxChildPerNode)
-                            {
-                                continue;
-                            }
-                            
-                            childrenNode.Parents.Add(currentNode);
-                            currentNode.Children.Add(childrenNode);
-                            DebugLog($"Adding child node {childrenNode.ToString()} --> {currentNode.ToString()}");
-                            break;
+                            _nodesPerLayer[i][j].Children.Add(nextLayerNode);
+                            nextLayerNode.Parents.Add(_nodesPerLayer[i][j]);
                         }
+                        
                     }
                 }
             }
-            
+
         }
+        
+        // private void SetNodeConnections()
+        // {
+        //     for (int i = 0; i < _nodesPerLayer.Count -1; i++)
+        //     {
+        //         for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+        //         {
+        //             int desiredChildNodes = Random.Range(_minChildPerNode, Mathf.Min(_maxChildPerNode, _nodesPerLayer[i + 1].Count + 1));
+        //             
+        //             List<MapNode> nextLayerNodesUnordered = new List<MapNode>(_nodesPerLayer[i + 1]);
+        //             for (int k = nextLayerNodesUnordered.Count -1; k > 0; k--)
+        //             {
+        //                 int index = Random.Range(0, k+1);
+        //                 MapNode temp = nextLayerNodesUnordered[index];
+        //                 nextLayerNodesUnordered[index] = nextLayerNodesUnordered[k];
+        //                 nextLayerNodesUnordered[k] = temp;
+        //             }
+        //             
+        //             
+        //             foreach (MapNode currentNode in nextLayerNodesUnordered)
+        //             {
+        //                 if (currentNode.EncounterType == EncounterType.Boss)
+        //                 {
+        //                     _nodesPerLayer[i][j].Children.Add(currentNode);
+        //                     currentNode.Parents.Add(_nodesPerLayer[i][j]);
+        //                     DebugLog($"Adding child node {currentNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+        //                     continue;
+        //                 }
+        //                 if (_nodesPerLayer[i][j].Children.Count >= desiredChildNodes)
+        //                 {
+        //                     break;
+        //                 }
+        //                 
+        //                 if (currentNode.Parents.Count >= Random.Range(_minParentsPerNode, _maxParentsPerNode))
+        //                 {
+        //                     continue;
+        //                 }
+        //
+        //                 if (_nodesPerLayer[i][j].Children.Contains(currentNode))
+        //                 {
+        //                     continue;
+        //                 }
+        //
+        //                 if (currentNode.Parents.Contains(_nodesPerLayer[i][j]))
+        //                 {
+        //                     continue;
+        //                 }
+        //                 
+        //                 _nodesPerLayer[i][j].Children.Add(currentNode);
+        //                 currentNode.Parents.Add(_nodesPerLayer[i][j]);
+        //                 DebugLog($"Adding child node {currentNode.ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+        //             }
+        //             
+        //         }
+        //     }
+        //
+        //     for (int i = 0; i < _nodesPerLayer.Count -1; i++)
+        //     {
+        //         foreach (MapNode childrenNode in _nodesPerLayer[i +1])
+        //         {
+        //             if (childrenNode.Parents.Count == 0)
+        //             {
+        //                 foreach (MapNode currentNode in _nodesPerLayer[i])
+        //                 {
+        //                     if (currentNode.Children.Count >= _maxChildPerNode)
+        //                     {
+        //                         continue;
+        //                     }
+        //                     
+        //                     childrenNode.Parents.Add(currentNode);
+        //                     currentNode.Children.Add(childrenNode);
+        //                     DebugLog($"Adding child node {childrenNode.ToString()} --> {currentNode.ToString()}");
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     
+        // }
 
         private void RearrangeEncounterTypes()
         {
