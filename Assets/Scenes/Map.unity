@@ -341,9 +341,9 @@ MonoBehaviour:
   _distanceBetweenNodes: 10
   _numberOfLayers: 6
   _minNodesPerLayer: 1
-  _maxNodesPerLayer: 4
+  _maxNodesPerLayer: 8
   _minChildPerNode: 1
-  _maxChildPerNode: 2
+  _maxChildPerNode: 4
   _minParentsPerNode: 1
   _maxParentsPerNode: 2
   _animationCurve:
@@ -352,8 +352,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -361,8 +361,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -370,7 +370,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  seed: 2147483647
+  seed: 123
 --- !u!4 &417880912
 Transform:
   m_ObjectHideFlags: 0
