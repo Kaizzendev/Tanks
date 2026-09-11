@@ -306,24 +306,76 @@ namespace Map
                     
                 }
             }
-
+            
+            
             for (int i = 0; i < _nodesPerLayer.Count - 1; i++)
             {
-                
                 for (int j = 0; j < _nodesPerLayer[i].Count; j++)
                 {
-                    int desiredChildNodesToConnect = Random.Range(_minChildPerNode, _maxChildPerNode +1);
-                    foreach (MapNode nextLayerNode in _nodesPerLayer[i + 1])
+                    int desiredChildNodes = Random.Range(_minChildPerNode, _maxChildPerNode +1);
+                    
+                    if (_nodesPerLayer[i][j].Children.Count >= 1)
                     {
-                        if (_nodesPerLayer[i][j].Children.Count < desiredChildNodesToConnect && !_nodesPerLayer[i][j].Children.Contains(nextLayerNode))
-                        {
-                            _nodesPerLayer[i][j].Children.Add(nextLayerNode);
-                            nextLayerNode.Parents.Add(_nodesPerLayer[i][j]);
-                        }
-                        
+                        continue;
                     }
+
+                    int previousParentNode = j - 1;
+
+                    if (j == 0)
+                    {
+                        continue;
+                    }
+
+                    if (_nodesPerLayer[i][previousParentNode].Children.Count < 1)
+                    {
+                        continue;
+                    }
+                    
+                    _nodesPerLayer[i][j].Children.Add(_nodesPerLayer[i][previousParentNode].Children[_nodesPerLayer[i][previousParentNode].Children.Count -1]);
+                    _nodesPerLayer[i][j - 1].Children[_nodesPerLayer[i][previousParentNode].Children.Count -1].Parents.Add(_nodesPerLayer[i][j]);
+                    DebugLog($"Adding child node {_nodesPerLayer[i][j - 1].Children[_nodesPerLayer[i][previousParentNode].Children.Count -1].ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+                    
                 }
             }
+            
+            for (int i = 0; i < _nodesPerLayer.Count - 1; i++)
+            {
+                for (int j = 0; j < _nodesPerLayer[i +1].Count; j++)
+                {
+                    if (_nodesPerLayer[i + 1][j].Parents.Count >= 1)
+                    {
+                        continue;
+                    }
+                    
+                    int previousChildNode = j - 1;
+
+                    if (j == 0)
+                    {
+                        continue;
+                    }
+                    
+                    _nodesPerLayer[i + 1][j].Parents.Add(_nodesPerLayer[i + 1][previousChildNode].Parents[_nodesPerLayer[i + 1][previousChildNode].Parents.Count -1]);
+                    _nodesPerLayer[i + 1][previousChildNode].Parents[_nodesPerLayer[i + 1][previousChildNode].Parents.Count -1].Children.Add(_nodesPerLayer[i + 1][j]);
+                    //DebugLog($"Adding child node {_nodesPerLayer[i][j - 1].Children[_nodesPerLayer[i][previousParentNode].Children.Count -1].ToString()} --> {_nodesPerLayer[i][j].ToString()}");
+                }
+            }
+
+            // for (int i = 0; i < _nodesPerLayer.Count - 1; i++)
+            // {
+            //     for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+            //     {
+            //         int desiredChildNodesToConnect = Random.Range(_minChildPerNode, _maxChildPerNode +1);
+            //         foreach (MapNode nextLayerNode in _nodesPerLayer[i + 1])
+            //         {
+            //             if (_nodesPerLayer[i][j].Children.Count < desiredChildNodesToConnect && !_nodesPerLayer[i][j].Children.Contains(nextLayerNode))
+            //             {
+            //                 _nodesPerLayer[i][j].Children.Add(nextLayerNode);
+            //                 nextLayerNode.Parents.Add(_nodesPerLayer[i][j]);
+            //             }
+            //             
+            //         }
+            //     }
+            // }
 
         }
         
@@ -453,27 +505,27 @@ namespace Map
         private void SetNodePositions()
         {
             
-            Queue<MapNode> queue = new Queue<MapNode>();
-            
-            for (int i = 1; i < _nodesPerLayer.Count -1; i++)
-            {
-                for (int j = 0; j < _nodesPerLayer[i].Count; j++)
-                {
-                    foreach (MapNode childNode in _nodesPerLayer[i][j].Children)
-                    {
-                        if (queue.Contains(childNode))
-                        {
-                            continue;
-                        }
-                        queue.Enqueue(childNode);
-                    }
-                }
-                
-                _nodesPerLayer[i +1].Clear();
-                _nodesPerLayer[i +1] = queue.ToList();
-                queue.Clear();
-
-            }
+            // Queue<MapNode> queue = new Queue<MapNode>();
+            //
+            // for (int i = 1; i < _nodesPerLayer.Count -1; i++)
+            // {
+            //     for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+            //     {
+            //         foreach (MapNode childNode in _nodesPerLayer[i][j].Children)
+            //         {
+            //             if (queue.Contains(childNode))
+            //             {
+            //                 continue;
+            //             }
+            //             queue.Enqueue(childNode);
+            //         }
+            //     }
+            //     
+            //     _nodesPerLayer[i +1].Clear();
+            //     _nodesPerLayer[i +1] = queue.ToList();
+            //     queue.Clear();
+            //
+            // }
             
             for (int i = 0; i < _nodesPerLayer.Count; i++)
             {
