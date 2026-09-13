@@ -12,6 +12,7 @@ public class AliveState : State
 
     public override void Enter()
     {
+        _player.SwitchGameplay(true);
         GameEvents.onPlayerSpawn?.Invoke(_player.transform);
         
     }

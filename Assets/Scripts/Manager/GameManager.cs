@@ -20,7 +20,8 @@ namespace Manager
             Pause,
             GameOver,
             LevelUp,
-            Reward
+            Reward,
+            MapNavigation
         }
 
         public GameState CurrentState { get; private set; }
@@ -108,7 +109,9 @@ namespace Manager
                 case GameState.Reward:
                     Time.timeScale = 0;
                     break;
-
+                case GameState.MapNavigation:
+                    Time.timeScale = 1;
+                    break;
             }
 
             Debug.Log($"GameState changed to {state}");

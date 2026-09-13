@@ -13,6 +13,7 @@ namespace Player
         public override void Enter()
         {
             Debug.Log("Dead State");
+            _player.SwitchGameplay(false);
         }
 
         public override void Update()

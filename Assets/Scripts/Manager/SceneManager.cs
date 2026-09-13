@@ -26,7 +26,7 @@ namespace Manager
 
         public static void LoadGame()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Map");
         }
 
         public static void LoadLoginMenu()

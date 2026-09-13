@@ -52,7 +52,7 @@ namespace Map
             Generate();
         }
         
-        private void Generate()
+        public void Generate()
         { 
             Clear();
             GenerateSeed();
@@ -245,7 +245,6 @@ namespace Map
             return encounterTypeToExclude;
         }
         
-        
         private void SetNodeConnections()
         {
             for (int i = 0; i < _nodesPerLayer.Count -1; i++)
@@ -350,8 +349,7 @@ namespace Map
             }
 
         }
-
-
+        
         private void SetNodeConnectionRandomness()
         {
             for (int i = 0; i < _nodesPerLayer.Count - 1; i++)
@@ -536,6 +534,11 @@ namespace Map
             }
 
             return color;
+        }
+
+        public MapNode GetStartNode()
+        {
+            return _nodesPerLayer[0][0];
         }
         
     }

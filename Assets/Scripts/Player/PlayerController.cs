@@ -32,22 +32,21 @@ namespace Player
 
             _fsm.RegisterState(new AliveState(_fsm, this));
             _fsm.RegisterState(new DeadState(_fsm, this));
+            _fsm.RegisterState(new MapNavigationState(_fsm, this));
             _fsm.ChangeState<AliveState>();
+        }
+
+        internal void SwitchGameplay(bool isEnabled)
+        {
+            _movementController.isEnabled = isEnabled;
+            _shootController.isEnabled = isEnabled;
+            _bombController.isEnabled = isEnabled;
+            _dashController.isEnabled = isEnabled;
         }
 
         private void Update()
         {
             _fsm?.Update();
-
-            if (_fsm.GetCurrentState<AliveState>() != null)
-            {
-                return;
-            }
-                
-            _movementController.isEnabled = false;
-            _shootController.isEnabled = false;
-            _bombController.isEnabled = false;
-            _dashController.isEnabled = false;
         }
 
         private void FixedUpdate()
