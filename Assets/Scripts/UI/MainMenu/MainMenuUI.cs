@@ -24,6 +24,8 @@ public class MainMenuUI : MonoBehaviour
         {
             accountPanel.SetActive(true);
         }
+        //TODO: CHECK IF TOKEN IS BEING RECEIVED
+        Play();
     }
 
     public void Play()

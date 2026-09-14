@@ -1,19 +1,15 @@
 using System;
 using Player;
+using ProceduralGeneration;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Manager
 {
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
-
-        public SceneController sceneController;
-
-        public UpgradeManager upgradeManager;
-        public EnemyManager enemyManager;
-        public LevelManager levelManager;
-
+        
         public enum GameState
         {
             Playing,
@@ -24,15 +20,15 @@ namespace Manager
             MapNavigation
         }
 
+        public Encounter CurrentEncounterData;
+
         public GameState CurrentState { get; private set; }
 
         public event Action<GameState> OnStateChanged;
 
         private void OnEnable()
         {
-            enemyManager.OnWaveCleared += HandleWaveCleared;
-            GameEvents.onUpgradeButtonClicked += HandleUpgradeChosen;
-            levelManager.OnLevelUp += HandleLevelUp;
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void HandleLevelUp()
@@ -57,9 +53,20 @@ namespace Manager
 
         private void OnDisable()
         {
-            enemyManager.OnWaveCleared -= HandleWaveCleared;
-            GameEvents.onUpgradeButtonClicked -= HandleUpgradeChosen;
-            levelManager.OnLevelUp -= HandleLevelUp;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+        
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            switch (scene.name)
+            {
+                case "Map":
+                    ChangeState(GameState.MapNavigation);
+                    break;
+                case "Level":
+                    ChangeState(GameState.Playing);
+                    break;
+            }
         }
 
         private void Awake()
@@ -73,11 +80,6 @@ namespace Manager
             {
                 Destroy(gameObject);
             }
-        }
-
-        private void Start()
-        {
-            ChangeState(GameState.Playing);
         }
 
         public void ChangeState(GameState newState)

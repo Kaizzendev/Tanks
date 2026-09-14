@@ -16,22 +16,17 @@ namespace Player
         public override void Enter()
         {
             _player.SwitchGameplay(false);
-            MapManager.Instance.OnNodeSelected += GoToNode;
-        }
-
-        private void GoToNode(MapNode node)
-        {
-            
+            _player.SwitchMapNavigation(true);
         }
 
         public override void Update()
         {
-            base.Update();
+
         }
 
         public override void Exit()
         {
-            base.Exit();
+            _player.SwitchMapNavigation(false);
         }
     }
 }

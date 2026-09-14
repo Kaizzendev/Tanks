@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 namespace Manager
 {
     public static class SceneManager
     {
+        public static event Action<Scene,LoadSceneMode> sceneLoaded;
         public static void LoadScene(string sceneName)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
@@ -52,6 +54,11 @@ namespace Manager
         public static void LoadAboutMenu()
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("About");
+        }
+
+        public static void LoadLevel()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Level");
         }
     }
 }

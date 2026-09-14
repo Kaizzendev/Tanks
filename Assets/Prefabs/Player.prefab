@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5655753092838509188}
   - component: {fileID: 7177377002938088391}
   - component: {fileID: 7659070067208362490}
+  - component: {fileID: 2108887713438724551}
   - component: {fileID: 8230302535069262685}
   - component: {fileID: 7040370484679351911}
   - component: {fileID: 4758812587398900597}
@@ -70,6 +71,7 @@ MonoBehaviour:
   _shootController: {fileID: 7177377002938088391}
   _bombController: {fileID: 7659070067208362490}
   _dashController: {fileID: 8230302535069262685}
+  _navigationController: {fileID: 2108887713438724551}
   _invulnerabilityDuration: 5
 --- !u!114 &5655753092838509188
 MonoBehaviour:
@@ -114,6 +116,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.BombController
   _bomb: {fileID: 2610203952924404410, guid: 753e0cd3260939449ae4feb45439830d, type: 3}
+--- !u!114 &2108887713438724551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73344394955103238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5b99c5023b44f42b786bb850841c15c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player.MapNavigationController
+  turretTransform: {fileID: 7167337704865076795}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  _mapTravelSpeed: 5
 --- !u!114 &8230302535069262685
 MonoBehaviour:
   m_ObjectHideFlags: 0

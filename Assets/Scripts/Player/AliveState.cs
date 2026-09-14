@@ -1,3 +1,4 @@
+using Manager;
 using Player;
 using UnityEngine;
 
@@ -13,13 +14,14 @@ public class AliveState : State
     public override void Enter()
     {
         _player.SwitchGameplay(true);
+        _player.SwitchMapNavigation(false);
         GameEvents.onPlayerSpawn?.Invoke(_player.transform);
         
     }
 
     public override void Update()
     {
-     
+
     }
     
     public override void FixedUpdate()

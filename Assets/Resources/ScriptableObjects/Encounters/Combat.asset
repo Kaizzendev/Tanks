@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f6eafe704f3434f9183146bd2c0ba1b, type: 3}
-  m_Name: Combar
+  m_Name: Combat
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralGeneration.Encounter
   encounterType: 0
   roomType: {fileID: 11400000, guid: 87437335b9131c44887aa6f0a03636da, type: 2}

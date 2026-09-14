@@ -35,6 +35,9 @@ namespace Map
         [Header("Node Density Per Layer")]
         [SerializeField] private AnimationCurve _animationCurve;
         
+        [Header("Node View Prefab")]
+        [SerializeField] private GameObject _nodeViewPrefab;
+        
         private List<int> _densityPerLayer = new List<int>();
         
         private List<List<MapNode>> _nodesPerLayer = new List<List<MapNode>>();
@@ -62,6 +65,7 @@ namespace Map
             SetNodeConnectionRandomness();
             RearrangeEncounterTypes();
             SetNodePositions();
+            InstantiateNodes();
         }
 
         private void GenerateSeed()
@@ -469,7 +473,7 @@ namespace Map
                 float startY = _distanceBetweenNodes * count * 0.5f;
                 for (int j = 0; j < _nodesPerLayer[i].Count; j++)
                 {
-                    _nodesPerLayer[i][j].Position = new Vector3(i * _distanceBetweenNodes, 0,startY - (j * _distanceBetweenNodes));
+                    _nodesPerLayer[i][j].Position = new Vector3(startY - (j * _distanceBetweenNodes),0,i * _distanceBetweenNodes);
                 }
             }
             
@@ -534,6 +538,39 @@ namespace Map
             }
 
             return color;
+        }
+
+        private void InstantiateNodes()
+        {
+            for (int i = 0; i < _nodesPerLayer.Count; i++)
+            {
+                foreach (MapNode currentNode in _nodesPerLayer[i])
+                {
+                    foreach (MapNode currentChildNode in currentNode.Children)
+                    {
+                        // LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
+                        //
+                        // // Set the material
+                        // lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+                        //
+                        // // Set the color
+                        // lineRenderer.startColor = Color.red;
+                        // lineRenderer.positionCount = 2;
+                        // lineRenderer.SetPosition(0, currentNode.Position);
+                        // lineRenderer.SetPosition(1, currentChildNode.Position);
+                    }
+                            
+                }
+                    
+                for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+                {
+                    GameObject go = Instantiate(_nodeViewPrefab,
+                        new Vector3(_nodesPerLayer[i][j].Position.x, 0, _nodesPerLayer[i][j].Position.z),
+                        Quaternion.identity);
+                    
+                    go.GetComponent<MapNodeView>().Initialize(_nodesPerLayer[i][j], SetColors(_nodesPerLayer[i][j].EncounterType));
+                }
+            }
         }
 
         public MapNode GetStartNode()
