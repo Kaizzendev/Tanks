@@ -32,7 +32,7 @@ public class LoginUI : MonoBehaviour
 
     private void OnLoginSuccess(LoginResponse response)
     {
-        SceneManager.LoadMainMenu();
+        SceneLoader.LoadMainMenu();
     }
 
     private void OnLoginError(Exception ex)
@@ -50,12 +50,12 @@ public class LoginUI : MonoBehaviour
 
     public void GoToRegisterMenu()
     {
-        SceneManager.LoadRegisterMenu();
+        SceneLoader.LoadRegisterMenu();
     }
     
     public void GoBack()
     {
-        SceneManager.LoadMainMenu();
+        SceneLoader.LoadMainMenu();
     }
     
 }

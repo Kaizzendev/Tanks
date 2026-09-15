@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Manager;
+using Player;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -31,18 +35,30 @@ namespace ProceduralGeneration
         
         private List<GameObject> _spawned = new List<GameObject>();
         
-
-        private void Start()
-        {
-            Generate(_encounter);
-        }
-        
 #if UNITY_EDITOR
         [ContextMenu("Generate Map")]
 #endif
         public void GenerateContextMenu()
         {
             Generate(_encounter);
+        }
+
+        private void OnEnable()
+        {
+            GameManager.Instance.OnStateChanged += HandleState;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.Instance.OnStateChanged -= HandleState;
+        }
+
+        private void HandleState(GameManager.GameState state)
+        {
+            if (state == GameManager.GameState.LoadingLevel)
+            {
+                Generate(GameManager.Instance.CurrentEncounterData);
+            }
         }
 
         public void Generate(Encounter encounter)
@@ -66,6 +82,14 @@ namespace ProceduralGeneration
 
             FindPlayerSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall);
             FindEnemiesSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall, encounter.enemies, encounter.enemyCount);
+
+            StartCoroutine(nameof(LevelGenerated));
+        }
+
+        private IEnumerator LevelGenerated()
+        {
+           yield return new WaitForEndOfFrame();
+           GameEvents.OnLevelGenerated?.Invoke();
         }
         
         private void ClearMap()

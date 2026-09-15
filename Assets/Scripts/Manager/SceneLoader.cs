@@ -3,17 +3,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 namespace Manager
 {
-    public static class SceneManager
+    public static class SceneLoader
     {
         public static event Action<Scene,LoadSceneMode> sceneLoaded;
         public static void LoadScene(string sceneName)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            SceneManager.LoadScene(sceneName);
         }
 
         public static void ReloadScene()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         public static void Quit()
@@ -23,42 +23,42 @@ namespace Manager
         
         public static void LoadMainMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("MainMenu");
         }
 
         public static void LoadGame()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Map");
+            SceneManager.LoadScene("Map");
         }
 
         public static void LoadLoginMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Login");
+            SceneManager.LoadScene("Login");
         }
 
         public static void LoadRegisterMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Register");
+            SceneManager.LoadScene("Register");
         }
         
         public static void LoadLeaderboardMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Leaderboard");
+            SceneManager.LoadScene("Leaderboard");
         }
 
         public static void LoadSettingsMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Settings");
+            SceneManager.LoadScene("Settings");
         }
 
         public static void LoadAboutMenu()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("About");
+            SceneManager.LoadScene("About");
         }
 
         public static void LoadLevel()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Level");
+            SceneManager.LoadScene("Level");
         }
     }
 }

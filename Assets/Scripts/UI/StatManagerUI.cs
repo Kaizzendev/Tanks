@@ -58,7 +58,7 @@ public class StatManagerUI : MonoBehaviour
     void Update()
     {
         //enemiesText.text = "Enemies left: " + GameManager.Instance.enemyManager.GetEnemiesAlive();
-        levelText.text = "Level: " + LevelManager.Instance.currentLevel;
+        //levelText.text = "Level: " + LevelManager.Instance.currentLevel;
         
         
         

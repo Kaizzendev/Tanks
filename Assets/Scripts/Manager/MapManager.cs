@@ -9,22 +9,6 @@ namespace Manager
 {
     public class MapManager: MonoBehaviour
     {
-        
-        /*
-         * TODO: Navegar el mapa
-         *
-         * 1. Cambiar a la escena mapa X
-         * 2. Por primera vez: generar mapa X
-         * 3. Coger mapa generado X
-         * 4. Colocar jugador en nodo X
-         * 5. Jugador elige camino X
-         * 6. Mover jugador al siguiente nodo X
-         * 7. Guardar estado del mapa X
-         * 8. Cargar nuevo escenario
-         * 
-         */
-        
-        
         public static MapManager Instance;
         
         [Header("Player")] [SerializeField] private GameObject _playerPrefab;

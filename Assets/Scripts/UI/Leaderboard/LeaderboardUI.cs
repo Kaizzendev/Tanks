@@ -53,7 +53,7 @@ namespace UI.Leaderboard
 
         public void GoBack()
         {
-            SceneManager.LoadMainMenu();
+            SceneLoader.LoadMainMenu();
         }
 
     }

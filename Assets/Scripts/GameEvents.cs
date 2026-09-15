@@ -7,5 +7,6 @@ namespace Player
     {
         public static Action onUpgradeButtonClicked;
         public static Action<Transform> onPlayerSpawn;
+        public static Action OnLevelGenerated;
     }
 }

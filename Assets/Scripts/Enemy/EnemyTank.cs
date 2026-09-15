@@ -44,8 +44,8 @@ public class EnemyTank : MonoBehaviour
 
     void Start()
     {
-        ProceduralMap map = FindObjectOfType<ProceduralMap>();
-        patrolPoints = shufflePatrolPoints(map.getPatrolPoints());
+       // ProceduralMap map = FindObjectOfType<ProceduralMap>();
+       // patrolPoints = shufflePatrolPoints(map.getPatrolPoints());
 
         
         

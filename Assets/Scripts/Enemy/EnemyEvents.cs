@@ -5,4 +5,5 @@ public static class EnemyEvents
 {
     public static Action OnEnemySpawned;
     public static Action OnEnemyDied;
+    public static Action OnWaveCleared;
 }

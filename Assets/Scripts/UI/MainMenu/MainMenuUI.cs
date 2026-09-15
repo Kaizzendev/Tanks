@@ -30,32 +30,32 @@ public class MainMenuUI : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadGame();
+        SceneLoader.LoadGame();
     }
     
     public void GoToLoginMenu()
     {
-        SceneManager.LoadLoginMenu();
+        SceneLoader.LoadLoginMenu();
     }
 
     public void GoToRegisterMenu()
     {
-        SceneManager.LoadRegisterMenu();
+        SceneLoader.LoadRegisterMenu();
     }
 
     public void GoToLeaderboardMenu()
     {
-        SceneManager.LoadLeaderboardMenu();
+        SceneLoader.LoadLeaderboardMenu();
     }
 
     public void GoToSettingsMenu()
     {
-        SceneManager.LoadSettingsMenu();
+        SceneLoader.LoadSettingsMenu();
     }
 
     public void GoToAboutMenu()
     {
-        SceneManager.LoadAboutMenu();
+        SceneLoader.LoadAboutMenu();
     }
 
     public void Exit()

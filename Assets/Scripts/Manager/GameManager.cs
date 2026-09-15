@@ -15,12 +15,12 @@ namespace Manager
             Playing,
             Pause,
             GameOver,
-            LevelUp,
             Reward,
+            LoadingLevel,
             MapNavigation
         }
 
-        public Encounter CurrentEncounterData;
+        [HideInInspector] public Encounter CurrentEncounterData;
 
         public GameState CurrentState { get; private set; }
 
@@ -28,32 +28,31 @@ namespace Manager
 
         private void OnEnable()
         {
-            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            GameEvents.OnLevelGenerated += LevelReady;
+            EnemyEvents.OnWaveCleared += HandleWaveCleared;
+            GameEvents.onUpgradeButtonClicked += ReturnToMap;
         }
-
-        private void HandleLevelUp()
-        {
-            if (CurrentState != GameState.LevelUp)
-            {
-                return;
-            }
-
-            ChangeState(GameState.Playing);
-        }
-
-        private void HandleUpgradeChosen()
-        {
-            ChangeState(GameState.LevelUp);
-        }
-
-        private void HandleWaveCleared()
-        {
-            ChangeState(GameState.Reward);
-        }
-
+        
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+
+        private void ReturnToMap()
+        {
+            SceneLoader.LoadGame();
+        }
+
+        private void LevelReady()
+        {
+            ChangeState(GameState.Playing);
+        }
+        
+        private void HandleWaveCleared()
+        {
+            ChangeState(GameState.Reward);
         }
         
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -64,7 +63,7 @@ namespace Manager
                     ChangeState(GameState.MapNavigation);
                     break;
                 case "Level":
-                    ChangeState(GameState.Playing);
+                    ChangeState(GameState.LoadingLevel);
                     break;
             }
         }
@@ -105,11 +104,8 @@ namespace Manager
                 case GameState.GameOver:
                     Time.timeScale = 0;
                     break;
-                case GameState.LevelUp:
-                    Time.timeScale = 0;
-                    break;
                 case GameState.Reward:
-                    Time.timeScale = 0;
+                    Time.timeScale = 1;
                     break;
                 case GameState.MapNavigation:
                     Time.timeScale = 1;

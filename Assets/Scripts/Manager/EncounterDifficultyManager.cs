@@ -21,13 +21,21 @@ namespace Manager
         {
             EncounterType encounterType = currentNode.EncounterType;
             
-            Encounter encounterData = Resources.Load<Encounter>($"ScriptableObjects/Encounters/{encounterType.ToString()}");
+            Encounter baseEncounterData = Resources.Load<Encounter>($"ScriptableObjects/Encounters/{encounterType.ToString()}");
             
-            //Cambiar dificultad 
+            Encounter currentEncounterData = Instantiate(baseEncounterData);
+            Room currentRoomData = Instantiate(baseEncounterData.roomType);
+            Biome currentBiomeData = Instantiate(baseEncounterData.biome);
             
-            GameManager.Instance.CurrentEncounterData = encounterData;
+            currentEncounterData.roomType = currentRoomData;
+            currentEncounterData.biome = currentBiomeData;
             
-            SceneManager.LoadLevel();
+            
+            //TODO: Change Difficulty based on layer, encounter type and progression
+
+            GameManager.Instance.CurrentEncounterData = currentEncounterData;
+            
+            SceneLoader.LoadLevel();
         }
         
     }
