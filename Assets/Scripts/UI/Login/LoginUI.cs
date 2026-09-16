@@ -1,6 +1,7 @@
 using System;
 using DTOs.Responses;
 using Manager;
+using Networking;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -32,6 +33,8 @@ public class LoginUI : MonoBehaviour
 
     private void OnLoginSuccess(LoginResponse response)
     {
+        
+        SessionManager.Instance.SetToken(response.Token);
         SceneLoader.LoadMainMenu();
     }
 

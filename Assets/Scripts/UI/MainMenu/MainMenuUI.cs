@@ -1,5 +1,6 @@
 using System;
 using Manager;
+using Networking;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void OpenAccountPopUpMenu()
     {
-        if (_authService.Token != null)
+        if (SessionManager.Instance.IsLoggedIn)
         {
             Play();
         }
@@ -24,8 +25,6 @@ public class MainMenuUI : MonoBehaviour
         {
             accountPanel.SetActive(true);
         }
-        //TODO: CHECK IF TOKEN IS BEING RECEIVED
-        Play();
     }
 
     public void Play()
