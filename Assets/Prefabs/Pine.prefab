@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5355845527465489670}
   - component: {fileID: 8241743858781897687}
   - component: {fileID: 1607115443969450359}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Pine
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -90,6 +90,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &1607115443969450359
 BoxCollider:

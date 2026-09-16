@@ -12,7 +12,7 @@ namespace ProceduralGeneration
 {
     public class EncounterGenerator: MonoBehaviour
     {
-        [Header("NavMesh")] private NavMeshSurface _navSurface;
+        [Header("NavMesh")] [SerializeField] private NavMeshSurface _navSurface;
 
         [Header("Player")] [SerializeField] private GameObject _playerPrefab;
 
@@ -22,6 +22,8 @@ namespace ProceduralGeneration
         [SerializeField] private float _playerSafeSpawnEnemiesDistance = 15;
         [Header("Seed")] public int seed = 12345;
         
+        [Header("Layer mask")]
+        [SerializeField] private LayerMask _groundLayerMask;
         private GameObject _terrainPlane;
         
         
@@ -80,6 +82,8 @@ namespace ProceduralGeneration
                 encounter.roomType.wall
                 );
 
+            BakeNavMesh();
+
             FindPlayerSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall);
             FindEnemiesSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall, encounter.enemies, encounter.enemyCount);
 
@@ -111,7 +115,9 @@ namespace ProceduralGeneration
             _terrainPlane.transform.SetParent(transform);
             _terrainPlane.transform.localPosition = Vector3.zero;
             _terrainPlane.transform.localScale = new Vector3((GetTotalMapSize(roomTypeMapSize,environmentSize).x) / 10f, 1f, GetTotalMapSize(roomTypeMapSize,environmentSize).y / 10f);
-
+            _terrainPlane.layer = LayerMask.NameToLayer("Ground");
+            
+            
             _terrainPlane.GetComponent<Renderer>().material = terrainMaterial;
         }
 
@@ -249,6 +255,13 @@ namespace ProceduralGeneration
                 _spawned.Add(inst);
 
             }
+        }
+
+        private void BakeNavMesh()
+        {
+            _navSurface.center = Vector3.zero;
+            _navSurface.size = new Vector3(_encounter.roomType.mapSize.x,4,_encounter.roomType.mapSize.y);
+            _navSurface.BuildNavMesh();
         }
 
         private void FindPlayerSpawnPosition(Vector2 playableArea, GameObject wall)

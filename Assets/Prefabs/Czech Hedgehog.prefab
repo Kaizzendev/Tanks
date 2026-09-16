@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3136087923361214853}
   - component: {fileID: 7764497508263812000}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Czech Hedgehog
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 2283136718251760716}
   - component: {fileID: 2882461176078472169}
   - component: {fileID: 1145172571941234467}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Czech Hedgehog (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,4 +142,5 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}

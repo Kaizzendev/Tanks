@@ -1153,7 +1153,7 @@ GameObject:
   - component: {fileID: 1051484157}
   - component: {fileID: 1051484156}
   m_Layer: 0
-  m_Name: NavMeshBaker
+  m_Name: NavMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1173,13 +1173,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
   m_SerializedVersion: 0
   m_AgentTypeID: 0
-  m_CollectObjects: 0
+  m_CollectObjects: 1
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 887
-  m_UseGeometry: 0
+    m_Bits: 8256
+  m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
   m_IgnoreNavMeshAgent: 1
@@ -1469,11 +1469,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e1c6cf6fe54b81abdecf97561a57be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralGeneration.EncounterGenerator
+  _navSurface: {fileID: 1051484156}
   _playerPrefab: {fileID: 73344394955103238, guid: 40421536b5aebf04b87c07f555efa4b3, type: 3}
   _encounter: {fileID: 11400000, guid: 3ab473769523e524d83b1beff86c4272, type: 2}
   _safeSpawnDistance: 10
   _playerSafeSpawnEnemiesDistance: 30
   seed: 8679
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1305613577
 Transform:
   m_ObjectHideFlags: 0
