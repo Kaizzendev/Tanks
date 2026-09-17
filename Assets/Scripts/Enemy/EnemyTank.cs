@@ -10,14 +10,14 @@ public class EnemyTank : MonoBehaviour
 {
     public Transform player;
 
-    [Header("Paramaters")] public float moveSpeed;
-    public float rotateSpeed;
-    public float detectionRange;
-    public float fireRate;
-    public float turretRotationSpeed;
-    public float fireRange = 30f;
+    [Header("Paramaters")] 
+    public float moveSpeed; 
+    public float detectionRange; 
+    public float fireRate; 
+    public float turretRotationSpeed; 
+    public float fireRange = 30f; 
 
-    public float fireTimer;
+    public float fireTimer; 
 
     [Header("References")]
     public Transform turret;

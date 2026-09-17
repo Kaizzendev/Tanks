@@ -1,4 +1,5 @@
 ﻿using System;
+using Enemy;
 using UnityEngine;
 
 namespace Bomb
@@ -24,7 +25,7 @@ namespace Bomb
             foreach (var go in Physics.OverlapSphere(transform.position, _explosionRadius))
             {
                //go.GetComponent<Player.PlayerStats>()?.TakeDamage(_bomb.damage);
-                go.GetComponentInParent<EnemyHealth>()?.TakeDamage(_bomb.damage);
+                go.GetComponentInParent<EnemyController>()?.TakeDamage(_bomb.damage);
                 Debug.Log(go.name);
             }
             Destroy(gameObject);

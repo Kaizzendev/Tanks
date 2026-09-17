@@ -9,13 +9,14 @@ namespace Player
 {
     public class PlayerController : PlayerControllerBase, IDamageable
     {
-        
+        [Header("Controllers")]   
         [SerializeField] private MovementController _movementController;
         [SerializeField] private ShootController _shootController;
         [SerializeField] private BombController _bombController;
         [SerializeField] private DashController _dashController;
         [SerializeField] private MapNavigationController _navigationController;
 
+        [Header("Invulnerability")]
         [SerializeField] private float _invulnerabilityDuration;
         private float _invulnerabilityTimer;
 

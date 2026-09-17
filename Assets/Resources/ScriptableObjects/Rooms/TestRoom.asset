@@ -17,7 +17,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6f807102149629042b6b4788852c7eee, type: 2}
   - {fileID: 11400000, guid: e7fb9d499cc2713498f4fcfe459b7bfb, type: 2}
   - {fileID: 11400000, guid: 6051df76e0ca44e4dba7ad767eff30b1, type: 2}
-  wall: {fileID: 3122532026652751264, guid: b85dbf8f4811eb0489b7724e9447e5db, type: 3}
+  wall: {fileID: 209138526641170471, guid: b6558b63394082b4ebd4a3c2da3ee495, type: 3}
   physicalWall: 1
   objectNoiseScale: 0.05
   baseObjectDensity: 0.3

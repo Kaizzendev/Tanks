@@ -47,14 +47,6 @@ namespace Player
                 StartWaiting();
             }
         }
-
-        public override void Exit()
-        {
-            enemy.navMeshAgent.isStopped = true; 
-            waiting = false;               
-            waitingTime = 0f;
-        }
-
         private void StartWaiting()
         {
             waiting = true;
@@ -69,6 +61,12 @@ namespace Player
             enemy.navMeshAgent.isStopped = false;
             enemy.navMeshAgent.SetDestination(enemy.patrolPoints[currentIndex].position);
             currentIndex = (currentIndex + 1) % enemy.patrolPoints.Length; // recorre en bucle
+        }
+        public override void Exit()
+        {
+            enemy.navMeshAgent.isStopped = true; 
+            waiting = false;               
+            waitingTime = 0f;
         }
     }
 }
