@@ -37,6 +37,8 @@ namespace ProceduralGeneration
         
         private List<GameObject> _spawned = new List<GameObject>();
         
+        private Vector3 _debugPosition;
+        
 #if UNITY_EDITOR
         [ContextMenu("Generate Map")]
 #endif
@@ -269,18 +271,20 @@ namespace ProceduralGeneration
             Vector3 safePlayableAreaVector3 = GetSafePlayableArea(playableArea, wall);
             Vector2 safePlayableArea = new Vector2(safePlayableAreaVector3.x,safePlayableAreaVector3.z);
             bool isPlayerGenerated = false;
-            while (!isPlayerGenerated)
+            while (!isPlayerGenerated) //TODO: Max attempts
             {
                 bool isSpawnPositionValid = false;
                 float positionX = Random.Range(-safePlayableArea.x / 2, safePlayableArea.x / 2);
                 float positionY = Random.Range(-safePlayableArea.y / 2, safePlayableArea.y / 2);
-                Vector2 position = new Vector2(positionX, positionY);
+                Vector3 position = new Vector3(positionX,1, positionY);
 
                 foreach (GameObject spawnedObject in _spawned)
                 {
-                    if (Vector2.Distance(position, spawnedObject.transform.position) > _safeSpawnDistance)
+                    if (!Physics.CheckBox(position, _playerPrefab.GetComponent<BoxCollider>().size / 2, Quaternion.identity, LayerMask.GetMask("Obstacle")))
                     {
                         isSpawnPositionValid = true;
+                        _debugPosition = position;
+                        Debug.Log($"Position Checked: {position}, area checked: {_playerPrefab.GetComponent<BoxCollider>().size}");
                     }
                     else
                     {
@@ -298,27 +302,33 @@ namespace ProceduralGeneration
             }
         }
 
-        private void GeneratePlayer(Vector2 spawnPosition)
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawCube(_debugPosition, _playerPrefab.GetComponent<BoxCollider>().size);
+        }
+
+        private void GeneratePlayer(Vector3 spawnPosition)
         {
             _playerSpawnPosition =  spawnPosition;
-            Instantiate(_playerPrefab, new Vector3(spawnPosition.x, 7, spawnPosition.y), Quaternion.identity, transform );
+            Instantiate(_playerPrefab, new Vector3(spawnPosition.x, 7, spawnPosition.z), Quaternion.identity, transform );
         }
 
         private void FindEnemiesSpawnPosition(Vector2 playableArea, GameObject wall, GameObject[] enemies, int numberOfEnemies)
         {
             Vector3 safePlayableAreaVector3 = GetSafePlayableArea(playableArea, wall);
             Vector2 safePlayableArea = new Vector2(safePlayableAreaVector3.x,safePlayableAreaVector3.z);
-            List<Vector2> spawnPositions = new List<Vector2>();
+            List<Vector3> spawnPositions = new List<Vector3>();
             while (spawnPositions.Count < numberOfEnemies)
             {
                 bool isSpawnPositionValid = false;
                 float positionX = Random.Range(-safePlayableArea.x / 2, safePlayableArea.x / 2);
                 float positionY = Random.Range(-safePlayableArea.y / 2, safePlayableArea.y / 2);
-                Vector2 position = new Vector2(positionX, positionY);
+                Vector3 position = new Vector3(positionX,1, positionY);
 
                 foreach (GameObject spawnedObject in _spawned) 
                 {
-                    if (Vector2.Distance(position, spawnedObject.transform.position) > _safeSpawnDistance && Vector2.Distance(position, _playerSpawnPosition) > _playerSafeSpawnEnemiesDistance)
+                    if (!Physics.CheckBox(position, _playerPrefab.GetComponent<BoxCollider>().size / 2, Quaternion.identity, LayerMask.GetMask("Obstacle")) && Vector2.Distance(position, _playerSpawnPosition) > _playerSafeSpawnEnemiesDistance)
                     {
                         isSpawnPositionValid = true;
                     }
@@ -339,11 +349,11 @@ namespace ProceduralGeneration
             GenerateEnemies(spawnPositions, enemies);
         }
 
-        private void GenerateEnemies(List<Vector2> spawnPositions, GameObject[] enemies)
+        private void GenerateEnemies(List<Vector3> spawnPositions, GameObject[] enemies)
         {
-            foreach (Vector2 spawnPosition in spawnPositions)
+            foreach (Vector3 spawnPosition in spawnPositions)
             {
-                Instantiate(enemies[0],  new Vector3(spawnPosition.x, 5, spawnPosition.y), Quaternion.identity, _enemiesParent);
+                Instantiate(enemies[0],  new Vector3(spawnPosition.x, 5, spawnPosition.z), Quaternion.identity, _enemiesParent);
             }
         }
         

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Enemy
@@ -24,7 +26,7 @@ namespace Enemy
         [SerializeField] internal float turretRotationSpeed = 2;
 
         [Header("Navigation")]
-        [SerializeField] internal Transform[] patrolPoints;
+        [SerializeField] internal List<Vector3> patrolPoints = new List<Vector3>();
         [SerializeField] internal float detectionRange = 40f;
         [SerializeField] internal int currentIndex = 0;
         [SerializeField] internal bool waiting;
@@ -40,5 +42,6 @@ namespace Enemy
          [SerializeField] internal Transform firePoint;
          [SerializeField] internal GameObject missile;
          [SerializeField] internal NavMeshAgent navMeshAgent;
+        
     }
 }

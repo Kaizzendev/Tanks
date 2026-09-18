@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Enemy
 {
@@ -10,6 +11,7 @@ namespace Enemy
         
         internal void Chase(Vector3 position)
         {
+            _enemyStats.navMeshAgent.isStopped = false;
             _enemyStats.navMeshAgent.SetDestination(position);
         }
     }

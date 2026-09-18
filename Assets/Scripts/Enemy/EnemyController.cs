@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DefaultNamespace;
 using Player;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Enemy
 {
     public class EnemyController: EnemyControllerBase, IDamageable
     {
+        [Header("Debug")] [SerializeField] private bool _isDebug;
+        
         [Header("Controllers")]
         [SerializeField] internal PatrolController _patrolController;
         [SerializeField] internal ChaseController _chaseController;
@@ -42,13 +45,15 @@ namespace Enemy
             _fsm.ChangeState<AliveState>();
         }
 
-        private void Start() // Alñgo falla que no se desplaza hacia el jugador
+        private void Start()
         {
             _fsm = new StateMachine();
             _fsm.RegisterState(new AliveState(_fsm, this, _stats));
             _fsm.RegisterState(new DeadState(_fsm, this));
 
             _stats.navMeshAgent.speed = _stats.moveSpeed;
+            
+            _stats.patrolPoints.Add(transform.position);
         }
 
 
@@ -92,10 +97,13 @@ namespace Enemy
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _stats.fireRange);
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, _stats.detectionRange);
+            if (_isDebug)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, _stats.fireRange);
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireSphere(transform.position, _stats.detectionRange);
+            }
         }
     }
 }

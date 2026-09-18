@@ -1,4 +1,6 @@
-﻿namespace Enemy
+﻿using UnityEngine;
+
+namespace Enemy
 {
     public class AliveState: State
     {
@@ -23,20 +25,23 @@
                 _enemy._attackController.Attack(_enemy._player.position);
             }
 
-            if (_enemy.distance > _stats.fireRange && _enemy.distance < _stats.detectionRange)
+            else if (_enemy.distance > _stats.fireRange && _enemy.distance < _stats.detectionRange)
             {
                 _enemy._chaseController.Chase(_enemy._player.position);
             }
             
-            if (_enemy.distance > _stats.detectionRange)
+            else
             {
                 _enemy._patrolController.Patrol();
             }
+            
+            Debug.Log($"is stopped: {_stats.navMeshAgent.isStopped}");
         }
 
         public override void Exit()
         {
-            base.Exit();
+            _enemy.SwitchGameplay(false);
+            _stats.navMeshAgent.isStopped = false;
         }
     }
 }

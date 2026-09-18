@@ -40,11 +40,11 @@ namespace Enemy
 
         private void MoveToNextPoint()
         {
-            if (_enemyStats.patrolPoints.Length == 0) return;
+            if (_enemyStats.patrolPoints.Count == 0) return;
 
             _enemyStats.navMeshAgent.isStopped = false;
-            _enemyStats.navMeshAgent.SetDestination(_enemyStats.patrolPoints[_enemyStats.currentIndex].position);
-            _enemyStats.currentIndex = (_enemyStats.currentIndex + 1) % _enemyStats.patrolPoints.Length; // recorre en bucle
+            _enemyStats.navMeshAgent.SetDestination(_enemyStats.patrolPoints[_enemyStats.currentIndex]);
+            _enemyStats.currentIndex = (_enemyStats.currentIndex + 1) % _enemyStats.patrolPoints.Count; // recorre en bucle
         }
     }
 }
