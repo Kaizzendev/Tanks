@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enemy;
 using Manager;
 using Player;
 using Unity.AI.Navigation;
@@ -26,7 +27,6 @@ namespace ProceduralGeneration
         [SerializeField] private LayerMask _groundLayerMask;
         private GameObject _terrainPlane;
         
-        
         private Transform _propsParent;
         private Transform _enemiesParent;
         private Transform _patrolPointsParent;
@@ -38,6 +38,7 @@ namespace ProceduralGeneration
         private List<GameObject> _spawned = new List<GameObject>();
         
         private Vector3 _debugPosition;
+        private List<Vector3> _debugPatrolPositions = new List<Vector3>();
         
 #if UNITY_EDITOR
         [ContextMenu("Generate Map")]
@@ -270,35 +271,27 @@ namespace ProceduralGeneration
         {
             Vector3 safePlayableAreaVector3 = GetSafePlayableArea(playableArea, wall);
             Vector2 safePlayableArea = new Vector2(safePlayableAreaVector3.x,safePlayableAreaVector3.z);
+            
             bool isPlayerGenerated = false;
-            while (!isPlayerGenerated) //TODO: Max attempts
+            int currentTries = 0;
+                
+            while (!isPlayerGenerated && currentTries < 1000) 
             {
-                bool isSpawnPositionValid = false;
                 float positionX = Random.Range(-safePlayableArea.x / 2, safePlayableArea.x / 2);
                 float positionY = Random.Range(-safePlayableArea.y / 2, safePlayableArea.y / 2);
                 Vector3 position = new Vector3(positionX,1, positionY);
-
-                foreach (GameObject spawnedObject in _spawned)
+                
+                if (!Physics.CheckBox(position, _playerPrefab.GetComponent<BoxCollider>().size / 2, Quaternion.identity, LayerMask.GetMask("Obstacle")))
                 {
-                    if (!Physics.CheckBox(position, _playerPrefab.GetComponent<BoxCollider>().size / 2, Quaternion.identity, LayerMask.GetMask("Obstacle")))
-                    {
-                        isSpawnPositionValid = true;
-                        _debugPosition = position;
-                        Debug.Log($"Position Checked: {position}, area checked: {_playerPrefab.GetComponent<BoxCollider>().size}");
-                    }
-                    else
-                    {
-                        isSpawnPositionValid = false;
-                        break;
-                    }
-                }
-
-                if (isSpawnPositionValid)
-                {
+                    _debugPosition = position;
+                    
                     GeneratePlayer(position);
                     isPlayerGenerated = true;
                 }
-                
+
+
+                currentTries++;
+
             }
         }
 
@@ -306,6 +299,11 @@ namespace ProceduralGeneration
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawCube(_debugPosition, _playerPrefab.GetComponent<BoxCollider>().size);
+            Gizmos.color = Color.darkRed;
+            foreach (Vector3 patrolPointPosition in _debugPatrolPositions)
+            {
+                Gizmos.DrawCube(patrolPointPosition, _playerPrefab.GetComponent<BoxCollider>().size);
+            }
         }
 
         private void GeneratePlayer(Vector3 spawnPosition)
@@ -318,43 +316,71 @@ namespace ProceduralGeneration
         {
             Vector3 safePlayableAreaVector3 = GetSafePlayableArea(playableArea, wall);
             Vector2 safePlayableArea = new Vector2(safePlayableAreaVector3.x,safePlayableAreaVector3.z);
+            
             List<Vector3> spawnPositions = new List<Vector3>();
-            while (spawnPositions.Count < numberOfEnemies)
+            
+            int currentTries = 0;
+            
+            while (spawnPositions.Count < numberOfEnemies && currentTries < 1000)
             {
-                bool isSpawnPositionValid = false;
                 float positionX = Random.Range(-safePlayableArea.x / 2, safePlayableArea.x / 2);
                 float positionY = Random.Range(-safePlayableArea.y / 2, safePlayableArea.y / 2);
                 Vector3 position = new Vector3(positionX,1, positionY);
-
-                foreach (GameObject spawnedObject in _spawned) 
-                {
-                    if (!Physics.CheckBox(position, _playerPrefab.GetComponent<BoxCollider>().size / 2, Quaternion.identity, LayerMask.GetMask("Obstacle")) && Vector2.Distance(position, _playerSpawnPosition) > _playerSafeSpawnEnemiesDistance)
-                    {
-                        isSpawnPositionValid = true;
-                    }
-                    else
-                    {
-                        isSpawnPositionValid = false;
-                        break;
-                    }
-                }
-
-                if (isSpawnPositionValid)
+        
+                if (!Physics.CheckBox(position, _playerPrefab.GetComponent<BoxCollider>().size / 2, Quaternion.identity, LayerMask.GetMask("Obstacle")) && Vector2.Distance(position, _playerSpawnPosition) > _playerSafeSpawnEnemiesDistance)
                 {
                     spawnPositions.Add(position);
                 }
                 
+                
+                currentTries++;
             }
             
-            GenerateEnemies(spawnPositions, enemies);
+            GenerateEnemies(spawnPositions, enemies, playableArea, wall);
+            
         }
 
-        private void GenerateEnemies(List<Vector3> spawnPositions, GameObject[] enemies)
+        private void GenerateEnemies(List<Vector3> spawnPositions, GameObject[] enemies, Vector2 playableArea, GameObject wall)
         {
             foreach (Vector3 spawnPosition in spawnPositions)
             {
-                Instantiate(enemies[0],  new Vector3(spawnPosition.x, 5, spawnPosition.z), Quaternion.identity, _enemiesParent);
+                GameObject go = Instantiate(enemies[0],  new Vector3(spawnPosition.x, 5, spawnPosition.z), Quaternion.identity, _enemiesParent);
+                FindPatrolPointSpawnPosition(playableArea, wall, spawnPositions.Count,go);
             }
+        }
+        
+        private void FindPatrolPointSpawnPosition(Vector2 playableArea, GameObject wall, int numberOfEnemies, GameObject enemy)
+        {
+            Vector3 safePlayableAreaVector3 = GetSafePlayableArea(playableArea, wall);
+            Vector2 safePlayableArea = new Vector2(safePlayableAreaVector3.x,safePlayableAreaVector3.z);
+            
+            bool isPointGenerated = false;
+            int currentTries = 0;
+            
+            while (!isPointGenerated && currentTries < 1000)
+            {
+                
+                float positionX = Random.Range(-safePlayableArea.x / 2, safePlayableArea.x / 2);
+                float positionY = Random.Range(-safePlayableArea.y / 2, safePlayableArea.y / 2);
+                Vector3 position = new Vector3(positionX,1, positionY);
+
+                if (!Physics.CheckBox(position, _playerPrefab.GetComponent<BoxCollider>().size / 2, Quaternion.identity, LayerMask.GetMask("Obstacle")) && 
+                    Vector2.Distance(position, _playerSpawnPosition) > _playerSafeSpawnEnemiesDistance &&
+                    Vector2.Distance(position, enemy.transform.position) > _safeSpawnDistance
+                    )
+                {
+                    GenerateSpawnPoint(position, enemy);
+                    isPointGenerated = true;
+                }
+
+                currentTries++;
+            }
+        }
+
+        private void GenerateSpawnPoint(Vector3 patrolPointPosition, GameObject enemy)
+        {
+            _debugPatrolPositions.Add(patrolPointPosition);
+            enemy.GetComponent<EnemyStats>().patrolPoints.Add(patrolPointPosition);
         }
         
         private static class PoissonDiskSampler

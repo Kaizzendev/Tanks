@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Bomb
   - Obstacle
+  - Unbreakable
   layers:
   - Default
   - TransparentFX

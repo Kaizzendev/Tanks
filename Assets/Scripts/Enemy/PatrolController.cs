@@ -11,6 +11,7 @@ namespace Enemy
         private void Start()
         {
             _enemyStats.currentIndex = 0;
+            _enemyStats.waitingTime = 0;
             _enemyStats.waiting = false;
         }
 
@@ -26,7 +27,7 @@ namespace Enemy
                 }
             }
 
-            if (!_enemyStats.navMeshAgent.pathPending && _enemyStats.navMeshAgent.remainingDistance < 0.5f)
+            if (!_enemyStats.navMeshAgent.pathPending && _enemyStats.navMeshAgent.remainingDistance < 0.5f && !_enemyStats.waiting)
             {
                 StartWaiting();
             }
