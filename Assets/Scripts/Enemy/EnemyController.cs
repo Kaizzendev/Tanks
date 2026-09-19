@@ -27,7 +27,7 @@ namespace Enemy
         private StateMachine _fsm;
         
         internal Transform _player;
-
+        
         private void OnEnable()
         {
            EnemyEvents.OnEnemySpawned?.Invoke();
@@ -49,7 +49,7 @@ namespace Enemy
         {
             _fsm = new StateMachine();
             _fsm.RegisterState(new AliveState(_fsm, this, _stats));
-            _fsm.RegisterState(new DeadState(_fsm, this));
+            _fsm.RegisterState(new DeadState(_fsm, this, _stats));
 
             _stats.navMeshAgent.speed = _stats.moveSpeed;
             
@@ -92,7 +92,13 @@ namespace Enemy
         
         public void TakeDamage(float amount)
         {
+            if (_fsm.GetCurrentState<DeadState>() != null)
+            {
+                return;
+            }
+            
             EnemyEvents.OnEnemyDied?.Invoke();
+            _fsm.ChangeState<DeadState>();
         }
 
         private void OnDrawGizmos()

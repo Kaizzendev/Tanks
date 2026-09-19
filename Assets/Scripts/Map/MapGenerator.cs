@@ -55,7 +55,7 @@ namespace Map
             Generate();
         }
         
-        public void Generate()
+        public List<List<MapNode>> Generate()
         { 
             Clear();
             GenerateSeed();
@@ -65,7 +65,9 @@ namespace Map
             SetNodeConnectionRandomness();
             RearrangeEncounterTypes();
             SetNodePositions();
-            InstantiateNodes();
+            InstantiateNodes(_nodesPerLayer);
+            
+            return _nodesPerLayer;
         }
 
         private void GenerateSeed()
@@ -540,11 +542,11 @@ namespace Map
             return color;
         }
 
-        private void InstantiateNodes()
+        internal void InstantiateNodes(List<List<MapNode>> mapNodes)
         {
-            for (int i = 0; i < _nodesPerLayer.Count; i++)
+            for (int i = 0; i < mapNodes.Count; i++)
             {
-                foreach (MapNode currentNode in _nodesPerLayer[i])
+                foreach (MapNode currentNode in mapNodes[i])
                 {
                     foreach (MapNode currentChildNode in currentNode.Children)
                     {
@@ -562,13 +564,13 @@ namespace Map
                             
                 }
                     
-                for (int j = 0; j < _nodesPerLayer[i].Count; j++)
+                for (int j = 0; j < mapNodes[i].Count; j++)
                 {
                     GameObject go = Instantiate(_nodeViewPrefab,
-                        new Vector3(_nodesPerLayer[i][j].Position.x, 0, _nodesPerLayer[i][j].Position.z),
+                        new Vector3(mapNodes[i][j].Position.x, 0, mapNodes[i][j].Position.z),
                         Quaternion.identity);
                     
-                    go.GetComponent<MapNodeView>().Initialize(_nodesPerLayer[i][j], SetColors(_nodesPerLayer[i][j].EncounterType));
+                    go.GetComponent<MapNodeView>().Initialize(mapNodes[i][j], SetColors(mapNodes[i][j].EncounterType));
                 }
             }
         }

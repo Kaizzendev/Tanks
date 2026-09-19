@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Map;
 using Player;
 using ProceduralGeneration;
@@ -30,6 +31,19 @@ namespace Manager
         
         private bool isNodeSelected;
 
+        private List<List<MapNode>> _nodesPerLayer =  new List<List<MapNode>>();
+        
+        private void OnEnable()
+        {
+            GameManager.Instance.OnStateChanged += OnGameStateChanged;
+        }
+
+
+        private void OnDisable()
+        {
+            GameManager.Instance.OnStateChanged -= OnGameStateChanged;
+        }
+
         private void Awake()
         {
             if (Instance == null)
@@ -42,34 +56,47 @@ namespace Manager
                 Destroy(gameObject);
             }
         }
-
-        private void Start()
+        
+        private void OnGameStateChanged(GameManager.GameState state)
         {
-            GenerateMap();
+            if (state == GameManager.GameState.MapNavigation)
+            {
+                GenerateMap();
+            }
         }
 
         private void GenerateMap()
         {
-            if (_isMapGenerated)
+
+            if (_mapGenerator == null)
             {
-                return;
+                _mapGenerator = FindObjectOfType<MapGenerator>();
             }
             
-            _mapGenerator.Generate();
+            
+            if (!_isMapGenerated)
+            {
+                _nodesPerLayer = _mapGenerator.Generate();
+                CurrentNode = _mapGenerator.GetStartNode();
+            }
+            else
+            {
+                _mapGenerator.InstantiateNodes(_nodesPerLayer);
+            }
+                
+            
+            GeneratePlayerInNode(CurrentNode.Position);
             _isMapGenerated = true;
-
-            CurrentNode = _mapGenerator.GetStartNode();
-
-            GeneratePlayerInSpawn(CurrentNode.Position);
         }
         
-        private void GeneratePlayerInSpawn(Vector3 spawnPoint)
+        private void GeneratePlayerInNode(Vector3 spawnPoint)
         {
             _player = Instantiate(_playerPrefab, spawnPoint + _spawnPositionOffset, Quaternion.identity);
             
             
             MapNavigationController mapNavigationController = _player.GetComponent<MapNavigationController>();
 
+            
             mapNavigationController.OnNodeReached += HandleNodeReached;
         }
 

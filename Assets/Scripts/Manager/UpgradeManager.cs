@@ -38,12 +38,6 @@ namespace Manager
             }
         }
 
-        private void Start()
-        {
-            LoadUpgrades();
-            LoadUpgradesIntoButtons();
-        }
-
         private void LoadUpgrades() // This can be improved by selecting by tier or selecting unique elements.
         {
             upgradePool = new Upgrade[3];

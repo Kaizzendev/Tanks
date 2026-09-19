@@ -3,16 +3,19 @@
     public class DeadState: State
     {
         private EnemyController _enemy;
+        private EnemyStats _stats;
         
-        public DeadState(StateMachine fsm, EnemyController enemy) : base(fsm)
+        public DeadState(StateMachine fsm, EnemyController enemy, EnemyStats stats) : base(fsm)
         {
             _enemy = enemy;
+            _stats = stats;
 
         }
 
         public override void Enter()
         {
             _enemy.SwitchGameplay(false);
+            _stats.navMeshAgent.isStopped = true;
         }
 
         public override void Update()
