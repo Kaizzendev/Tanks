@@ -7,36 +7,61 @@ namespace Manager
 {
     public class EncounterDifficultyManager: MonoBehaviour
     {
-        private void OnDisable()
-        {
-            MapManager.Instance.OnNodeReached -= SetEncounterDifficulty;
-        }
 
+        private string _nextLevelName;
+        
         private void Start()
         {
-            MapManager.Instance.OnNodeReached += SetEncounterDifficulty;
+            MapManager.Instance.OnNodeReached += SetEncounter;
+        }
+        
+        private void OnDisable()
+        {
+            MapManager.Instance.OnNodeReached -= SetEncounter;
         }
 
-        private void SetEncounterDifficulty(MapNode currentNode)
+        private void SetEncounter(MapNode currentNode)
         {
             EncounterType encounterType = currentNode.EncounterType;
             
             Encounter baseEncounterData = Resources.Load<Encounter>($"ScriptableObjects/Encounters/{encounterType.ToString()}");
+
+            switch (baseEncounterData.encounterType)
+            {
+                case EncounterType.Choice:
+                    _nextLevelName = "ChoiceLevel";
+                    break;
+                case EncounterType.Shop:
+                    _nextLevelName = "ShopLevel";
+                    break;
+                default:
+                    _nextLevelName = "Level";
+                    SetEncounterDifficulty(currentNode, baseEncounterData);
+                    break;
+
+            }
             
-            Encounter currentEncounterData = Instantiate(baseEncounterData);
-            Room currentRoomData = Instantiate(baseEncounterData.roomType);
-            Biome currentBiomeData = Instantiate(baseEncounterData.biome);
+            LoadNextLevel(_nextLevelName);
+        }
+
+        private void SetEncounterDifficulty(MapNode currentNode, Encounter encounterData)
+        {
+            //TODO: Change Difficulty based on layer, encounter type and progression
+            
+            Encounter currentEncounterData = Instantiate(encounterData);
+            Room currentRoomData = Instantiate(encounterData.roomType);
+            Biome currentBiomeData = Instantiate(encounterData.biome);
             
             currentEncounterData.roomType = currentRoomData;
             currentEncounterData.biome = currentBiomeData;
-            
-            
-            //TODO: Change Difficulty based on layer, encounter type and progression
 
             GameManager.Instance.CurrentEncounterData = currentEncounterData;
-            
-            SceneLoader.LoadLevel();
         }
-        
+
+        private void LoadNextLevel(string levelName)
+        {
+            SceneLoader.LoadScene(levelName);
+        }
+
     }
 }

@@ -105,7 +105,7 @@ namespace Manager
                     Time.timeScale = 0;
                     break;
                 case GameState.Reward:
-                    Time.timeScale = 1;
+                    Time.timeScale = 0;
                     break;
                 case GameState.MapNavigation:
                     Time.timeScale = 1;

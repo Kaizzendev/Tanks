@@ -85,7 +85,7 @@ namespace ProceduralGeneration
                 encounter.roomType.wall
                 );
 
-            BakeNavMesh();
+            BakeNavMesh(encounter.roomType.mapSize);
 
             FindPlayerSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall);
             FindEnemiesSpawnPosition(encounter.roomType.mapSize, encounter.roomType.wall, encounter.enemies, encounter.enemyCount);
@@ -260,10 +260,10 @@ namespace ProceduralGeneration
             }
         }
 
-        private void BakeNavMesh()
+        private void BakeNavMesh(Vector2 roomSize)
         {
             _navSurface.center = Vector3.zero;
-            _navSurface.size = new Vector3(_encounter.roomType.mapSize.x,4,_encounter.roomType.mapSize.y);
+            _navSurface.size = new Vector3(roomSize.x,4,roomSize.y);
             _navSurface.BuildNavMesh();
         }
 
