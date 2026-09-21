@@ -18,8 +18,9 @@ namespace Enemy
         
         [Header("Enemy Stats")]
         [SerializeField] private EnemyStats _stats;
-        
-        [Header("References")]
+
+        [Header("References")] [SerializeField]
+        private Material _mainMaterial;
         public GameObject explosion;
         
         internal float distance;
@@ -96,9 +97,27 @@ namespace Enemy
             {
                 return;
             }
+
+            Die();
             
             EnemyEvents.OnEnemyDied?.Invoke();
             _fsm.ChangeState<DeadState>();
+        }
+
+        private void Die()
+        {
+            AssignColor();
+            Instantiate(explosion, transform.position, Quaternion.identity);
+        }
+
+        private void AssignColor()
+        {
+            Color color = _mainMaterial.color;
+
+            ParticleSystem particleSystem = explosion.transform.GetChild(0).GetComponent<ParticleSystem>();
+            var main = particleSystem.main;
+
+            main.startColor = color;
         }
 
         private void OnDrawGizmos()

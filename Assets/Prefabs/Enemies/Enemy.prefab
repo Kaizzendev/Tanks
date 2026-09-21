@@ -2563,6 +2563,7 @@ MonoBehaviour:
   _chaseController: {fileID: 5743806207101283206}
   _attackController: {fileID: 2833862533454180956}
   _stats: {fileID: 138291988645187590}
+  _mainMaterial: {fileID: 2100000, guid: 7fcc0657987e89c4ea11c9347522df01, type: 2}
   explosion: {fileID: 5864781356994049933, guid: d9c4ee827d3fa7849b61fb6e3f59fd93, type: 3}
 --- !u!114 &1574133704334818736
 MonoBehaviour:

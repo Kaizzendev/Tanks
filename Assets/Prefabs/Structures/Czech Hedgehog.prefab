@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3136087923361214853}
   - component: {fileID: 7764497508263812000}
+  - component: {fileID: 4337324544900047696}
   m_Layer: 13
   m_Name: Czech Hedgehog
   m_TagString: Unbreakable
@@ -54,6 +55,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.14642744, y: 0.15822385, z: 0.15442586}
   m_Center: {x: 0.015735207, y: 0.091243446, z: 0.0012974023}
+--- !u!114 &4337324544900047696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209138526641170471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14392d0969824509b7c51e59be5cd9fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Objects.Destructible
+  _particleSystem: {fileID: 4362749972224487632, guid: 46a28f92086d4904d9e82d6642248a34, type: 3}
+  _mainMaterial: {fileID: 2100000, guid: 9d5b4c740e29114418f66a1115bfde04, type: 2}
 --- !u!1 &1505473393455810294
 GameObject:
   m_ObjectHideFlags: 0

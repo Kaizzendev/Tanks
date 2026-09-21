@@ -26,7 +26,7 @@ namespace Manager
             
             Encounter baseEncounterData = Resources.Load<Encounter>($"ScriptableObjects/Encounters/{encounterType.ToString()}");
 
-            switch (baseEncounterData.encounterType)
+            switch (currentNode.EncounterType)
             {
                 case EncounterType.Choice:
                     _nextLevelName = "ChoiceLevel";

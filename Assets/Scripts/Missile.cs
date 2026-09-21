@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DefaultNamespace;
+using Objects;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
@@ -44,7 +45,7 @@ public class Missile : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            Destroy(other.gameObject);
+            other.GetComponent<Destructible>().DestroyObject();
         }
         Destroy(gameObject);
     }

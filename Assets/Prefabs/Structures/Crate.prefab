@@ -281,6 +281,7 @@ GameObject:
   - component: {fileID: 8762921934386738229}
   - component: {fileID: 7836514576833195968}
   - component: {fileID: -2404941015247415871}
+  - component: {fileID: -3340043292796705850}
   m_Layer: 13
   m_Name: Crate
   m_TagString: Obstacle
@@ -351,6 +352,20 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 1, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &-3340043292796705850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3122532026652751264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14392d0969824509b7c51e59be5cd9fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Objects.Destructible
+  _particleSystem: {fileID: 4362749972224487632, guid: 46a28f92086d4904d9e82d6642248a34, type: 3}
+  _mainMaterial: {fileID: 2100000, guid: c1b4a1e7e97c41a45b60757eaed64989, type: 2}
 --- !u!1 &4403244333698474187
 GameObject:
   m_ObjectHideFlags: 0
