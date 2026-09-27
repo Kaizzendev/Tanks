@@ -55,6 +55,7 @@ namespace Enemy
             _stats.navMeshAgent.speed = _stats.moveSpeed;
             
             _stats.patrolPoints.Add(transform.position);
+            _stats.currentHealth = _stats.maxHealth;
         }
 
 
@@ -77,7 +78,7 @@ namespace Enemy
         
         private void OnTriggerEnter(Collider other)
         {
-            if ((other.CompareTag("Missile") && other.GetComponent<Missile>().team == EnumTeam.Player) && !IsInvulnerable())
+            if ((other.CompareTag("Missile") && other.GetComponent<Missile>().team == EnumTeam.Player))
             {
                 TakeDamage(other.gameObject.GetComponent<Missile>().missileDamage);
             }
@@ -91,6 +92,7 @@ namespace Enemy
         }
         
         
+        
         public void TakeDamage(float amount)
         {
             if (_fsm.GetCurrentState<DeadState>() != null)
@@ -98,16 +100,28 @@ namespace Enemy
                 return;
             }
 
-            Die();
+            if (IsInvulnerable())
+            {
+                return;
+            }
             
-            EnemyEvents.OnEnemyDied?.Invoke();
-            _fsm.ChangeState<DeadState>();
+            _stats.currentHealth -= amount;
+            _stats._invulnerabilityTimer = Time.time;
+            if (_stats.currentHealth <= 0)
+            {
+                Debug.Log($"DEAD");
+                Die();
+            }
+            
         }
 
         private void Die()
         {
             AssignColor();
             Instantiate(explosion, transform.position, Quaternion.identity);
+            
+            EnemyEvents.OnEnemyDied?.Invoke();
+            _fsm.ChangeState<DeadState>();
         }
 
         private void AssignColor()
