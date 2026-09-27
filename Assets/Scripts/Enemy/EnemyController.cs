@@ -90,9 +90,8 @@ namespace Enemy
 
             return isInvulnerable;
         }
-        
-        
-        
+
+
         public void TakeDamage(float amount)
         {
             if (_fsm.GetCurrentState<DeadState>() != null)
@@ -101,6 +100,32 @@ namespace Enemy
             }
 
             if (IsInvulnerable())
+            {
+                return;
+            }
+            
+            _stats.currentHealth -= amount;
+            _stats._invulnerabilityTimer = Time.time;
+            if (_stats.currentHealth <= 0)
+            {
+                Debug.Log($"DEAD");
+                Die();
+            }
+        }
+
+        public void TakeDamage(float amount, EnumTeam team)
+        {
+            if (_fsm.GetCurrentState<DeadState>() != null)
+            {
+                return;
+            }
+
+            if (IsInvulnerable())
+            {
+                return;
+            }
+
+            if (team != EnumTeam.Player)
             {
                 return;
             }

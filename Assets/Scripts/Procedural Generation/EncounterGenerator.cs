@@ -309,7 +309,7 @@ namespace ProceduralGeneration
         private void GeneratePlayer(Vector3 spawnPosition)
         {
             _playerSpawnPosition =  spawnPosition;
-            Instantiate(_playerPrefab, new Vector3(spawnPosition.x, 7, spawnPosition.z), Quaternion.identity, transform );
+            Instantiate(_playerPrefab, new Vector3(spawnPosition.x, 3, spawnPosition.z), Quaternion.identity, transform );
         }
 
         private void FindEnemiesSpawnPosition(Vector2 playableArea, GameObject wall, GameObject[] enemies, int numberOfEnemies)

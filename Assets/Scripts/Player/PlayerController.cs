@@ -41,6 +41,7 @@ namespace Player
             {
                 StartStateMachine();
             }
+            
             switch (gameState)
             {
                 case GameManager.GameState.MapNavigation:
@@ -57,6 +58,8 @@ namespace Player
 
         private void Start()
         {
+            
+            
             if (_fsm == null)
             {
                 StartStateMachine();
@@ -114,6 +117,23 @@ namespace Player
 
         public void TakeDamage(float amount)
         {
+            PlayerStats.Instance.currentHealth -= amount;
+            _invulnerabilityTimer = Time.time;
+            
+            if (PlayerStats.Instance.currentHealth <= 0)
+            {
+                _fsm.ChangeState<DeadState>();
+            }
+        }
+
+        public void TakeDamage(float amount, EnumTeam team)
+        {
+
+            if (team != EnumTeam.Enemy)
+            {
+                return;
+            }
+            
             PlayerStats.Instance.currentHealth -= amount;
             _invulnerabilityTimer = Time.time;
             

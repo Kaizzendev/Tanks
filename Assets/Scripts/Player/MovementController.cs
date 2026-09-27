@@ -11,8 +11,6 @@ namespace Player
         
         [SerializeField] internal Transform turretTransform;
         [SerializeField] internal LayerMask _layerMask;
-
-
         private void Start()
         {
             _rb = GetComponent<Rigidbody>();
@@ -73,6 +71,5 @@ namespace Player
 
             turretTransform.rotation = Quaternion.LookRotation(direction);
         }
-        
     }
 }

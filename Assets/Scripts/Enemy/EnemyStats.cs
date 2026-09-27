@@ -13,7 +13,6 @@ namespace Enemy
 
         [Header("Damage Stats")]
         [SerializeField] internal float damage = 100f;
-        [SerializeField] internal float attackSpeed = 1f;
         [SerializeField] internal float criticChance = 0f;
         [SerializeField] internal float criticMultiplier = 2f;
         [SerializeField] internal float fireTimer;

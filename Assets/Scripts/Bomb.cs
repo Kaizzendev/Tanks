@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using DefaultNamespace;
 using Objects;
 using Player;
 using Unity.Cinemachine;
@@ -14,6 +15,7 @@ namespace Bomb
         [SerializeField] internal float damage;
         [SerializeField] private GameObject explosion;
         [SerializeField] private CinemachineImpulseSource  _impulseSource;
+        public EnumTeam team;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -31,8 +33,7 @@ namespace Bomb
             {
                 if (col.GetComponent<IDamageable>() != null)
                 {
-                    col.GetComponent<IDamageable>().TakeDamage(damage);
-                    Debug.Log($"Choco con: {col.GetType()}");
+                    col.GetComponent<IDamageable>()?.TakeDamage(damage, team);
                 }
             }
             

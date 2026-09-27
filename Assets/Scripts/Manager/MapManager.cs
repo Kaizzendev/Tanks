@@ -27,7 +27,7 @@ namespace Manager
 
         private GameObject _player;
         
-        [SerializeField] private Vector3 _spawnPositionOffset = new Vector3(0,6,0);
+        [SerializeField] private Vector3 _spawnPositionOffset = new Vector3(0,0,0);
         
         private bool isNodeSelected;
 

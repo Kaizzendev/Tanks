@@ -1,4 +1,5 @@
 ﻿using System;
+using DefaultNamespace;
 using UnityEngine;
 namespace Player
 {
@@ -8,6 +9,12 @@ namespace Player
         public Bomb.Bomb _bomb;
         internal void Update()
         {
+            
+            if (!isEnabled)
+            {
+                return;
+            }
+            
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 PlaceBomb();
@@ -16,7 +23,9 @@ namespace Player
 
         private void PlaceBomb()
         { 
-            Instantiate(_bomb, new Vector3(transform.position.x,0,transform.position.z), Quaternion.identity);  
+            var bomb = Instantiate(_bomb, new Vector3(transform.position.x,0,transform.position.z), Quaternion.identity);
+            bomb.team = EnumTeam.Player;
+            bomb.GetComponent<MeshRenderer>().material.color = Color.blue;
         }
     }
 }

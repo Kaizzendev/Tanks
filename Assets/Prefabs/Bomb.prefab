@@ -70,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6c181a86c444f834ab1231d7130289c8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,6 +110,7 @@ MonoBehaviour:
   damage: 30
   explosion: {fileID: 5864781356994049933, guid: d9c4ee827d3fa7849b61fb6e3f59fd93, type: 3}
   _impulseSource: {fileID: -7583921740737271326}
+  team: 0
 --- !u!135 &3556442177392043532
 SphereCollider:
   m_ObjectHideFlags: 0
