@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Audio;
 using DefaultNamespace;
 using Objects;
 using Player;
@@ -16,6 +17,15 @@ namespace Bomb
         [SerializeField] private GameObject explosion;
         [SerializeField] private CinemachineImpulseSource  _impulseSource;
         public EnumTeam team;
+        
+        [Header("Sounds")]
+        [SerializeField] private AudioClip _placeBomb;
+        [SerializeField] private AudioClip _bombExplosion;
+
+        private void Start()
+        {
+            AudioManager.Instance.PlayOneShot2D(_placeBomb);
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -40,6 +50,8 @@ namespace Bomb
             Instantiate(explosion, transform.position, Quaternion.identity);
             _impulseSource.GenerateImpulse();
             OnExplode?.Invoke();
+            
+            AudioManager.Instance.PlayOneShot2D(_bombExplosion);
             
             GetComponent<MeshRenderer>().enabled = false;
             

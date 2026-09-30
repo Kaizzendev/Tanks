@@ -11,6 +11,9 @@ namespace Player
         
         [SerializeField] internal Transform turretTransform;
         [SerializeField] internal LayerMask _layerMask;
+
+        internal bool _isMoving;
+
         private void Start()
         {
             _rb = GetComponent<Rigidbody>();
@@ -25,6 +28,15 @@ namespace Player
             
             _moveInput = Input.GetAxis("Vertical");
             _rotationInput = Input.GetAxis("Horizontal");
+
+            if (_moveInput != 0)
+            {
+                _isMoving = true;
+            }
+            else
+            {
+                _isMoving = false;
+            }
         }
 
         private void FixedUpdate()

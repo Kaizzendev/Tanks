@@ -106,11 +106,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b09f122da04c85841d05af69505294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.Bomb
-  _sphereCollider: {fileID: 3556442177392043532}
+  _sphereCollider: {fileID: 6847292561694497426}
   damage: 30
   explosion: {fileID: 5864781356994049933, guid: d9c4ee827d3fa7849b61fb6e3f59fd93, type: 3}
   _impulseSource: {fileID: -7583921740737271326}
   team: 0
+  _placeBomb: {fileID: 8300000, guid: 8287ef1a81c39b7438239f6245959833, type: 3}
+  _bombExplosion: {fileID: 8300000, guid: f6c4c49b01a4b534cb4995d0468292c5, type: 3}
 --- !u!135 &3556442177392043532
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -195,7 +197,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8010756163869934466}
   - component: {fileID: 6847292561694497426}
-  - component: {fileID: 4338021057990725464}
   m_Layer: 0
   m_Name: Explosion radius
   m_TagString: Untagged
@@ -239,17 +240,3 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4338021057990725464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9137983953464888886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a422c9a34da740faaf1e175a8191a6d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bomb.BombRadius
-  _explosionRadius: 2
-  _bomb: {fileID: 2610203952924404410}

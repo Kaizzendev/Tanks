@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Audio;
 using DefaultNamespace;
 using Objects;
 using UnityEngine;
@@ -16,6 +17,10 @@ public class Missile : MonoBehaviour
     public float missileDamage = 100;
     public float timeToDespawn = 10f;
 
+    [Header("Sounds")] 
+    [SerializeField] private AudioClip _ricochet;
+
+    [SerializeField] private AudioClip _shoot;
 
     public EnumTeam team;
     private Rigidbody rb;
@@ -29,6 +34,7 @@ public class Missile : MonoBehaviour
     public void Launch(Vector3 direction)
     {
         rb.linearVelocity = direction * missileSpeed;
+        AudioManager.Instance.PlayOneShot2D(_shoot);
     }
 
     private void Start()

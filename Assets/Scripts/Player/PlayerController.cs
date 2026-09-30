@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Audio;
 using DefaultNamespace;
 using Manager;
 using UnityEngine;
@@ -19,6 +20,15 @@ namespace Player
         [Header("Invulnerability")]
         [SerializeField] private float _invulnerabilityDuration;
         private float _invulnerabilityTimer;
+        
+        [Header("Sounds")]
+        [SerializeField] internal AudioSource _movingSound;
+        [SerializeField] internal AudioClip _dashingSound;
+        [SerializeField] internal AudioClip _explosionSound;
+        
+        [Header("References")] [SerializeField]
+        private Material _mainMaterial;
+        public GameObject explosion;
 
         private float nextFireTime;
         
@@ -93,6 +103,21 @@ namespace Player
         private void Update()
         {
             _fsm?.Update();
+
+            if (_movementController._isMoving && _movementController.isEnabled)
+            {
+                if (!_movingSound.isPlaying)
+                {
+                    _movingSound.Play();
+                }
+            }
+            else
+            {
+                if (_movingSound.isPlaying)
+                {
+                    _movingSound.Stop();
+                }
+            }
         }
 
         private void FixedUpdate()
@@ -122,7 +147,7 @@ namespace Player
             
             if (PlayerStats.Instance.currentHealth <= 0)
             {
-                _fsm.ChangeState<DeadState>();
+                Die();
             }
         }
 
@@ -139,8 +164,28 @@ namespace Player
             
             if (PlayerStats.Instance.currentHealth <= 0)
             {
-                _fsm.ChangeState<DeadState>();
+                Die();
             }
+        }
+
+        private void Die()
+        {
+            AssignColor();
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            
+            AudioManager.Instance.PlayOneShot2D(_explosionSound);
+            
+            _fsm.ChangeState<DeadState>();
+        }
+        
+        private void AssignColor()
+        {
+            Color color = _mainMaterial.color;
+
+            ParticleSystem particleSystem = explosion.transform.GetChild(0).GetComponent<ParticleSystem>();
+            var main = particleSystem.main;
+
+            main.startColor = color;
         }
     }
 }

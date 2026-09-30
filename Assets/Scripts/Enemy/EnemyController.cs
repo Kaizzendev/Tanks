@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Audio;
 using DefaultNamespace;
 using Player;
 using UnityEngine;
@@ -22,6 +23,10 @@ namespace Enemy
         [Header("References")] [SerializeField]
         private Material _mainMaterial;
         public GameObject explosion;
+        
+        [Header("Sounds")]
+        [SerializeField] internal AudioSource _movingSound;
+        [SerializeField] internal AudioClip _explosionSound;
         
         internal float distance;
         
@@ -67,6 +72,19 @@ namespace Enemy
             }
             
             _fsm.Update();
+            
+            if (_stats.navMeshAgent.velocity != Vector3.zero)
+            {
+                if (!_movingSound.isPlaying)
+                {
+                    _movingSound.Play();
+                }
+            }
+            else
+            {
+                _movingSound.Stop();
+            }
+            
         }
 
         internal void SwitchGameplay(bool isEnabled)
@@ -147,6 +165,8 @@ namespace Enemy
             
             EnemyEvents.OnEnemyDied?.Invoke();
             _fsm.ChangeState<DeadState>();
+            
+            AudioManager.Instance.PlayOneShot2D(_explosionSound);
         }
 
         private void AssignColor()

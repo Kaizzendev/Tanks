@@ -35,7 +35,13 @@ namespace Enemy
                 _enemy._patrolController.Patrol();
             }
             
-            Debug.Log($"is stopped: {_stats.navMeshAgent.isStopped}");
+            Debug.Log(
+                $"Distance: {_enemy.distance} | " +
+                $"Stopped: {_stats.navMeshAgent.isStopped} | " +
+                $"Velocity: {_stats.navMeshAgent.velocity} | " +
+                $"HasPath: {_stats.navMeshAgent.hasPath} | " +
+                $"PathStatus: {_stats.navMeshAgent.pathStatus}"
+            );
         }
 
         public override void Exit()

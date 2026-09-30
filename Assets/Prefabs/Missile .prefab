@@ -146,6 +146,8 @@ MonoBehaviour:
   missileSpeed: 10
   missileDamage: 100
   timeToDespawn: 10
+  _ricochet: {fileID: 8300000, guid: af5cbbf1917c27c418a64e57d61811f7, type: 3}
+  _shoot: {fileID: 8300000, guid: f6ceaa67903f00244bf3b740d87390bd, type: 3}
   team: 0
 --- !u!54 &3996532065447000935
 Rigidbody:
