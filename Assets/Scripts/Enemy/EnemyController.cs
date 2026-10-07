@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Audio;
 using DefaultNamespace;
+using Enemy.UtilityAI;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -61,6 +62,21 @@ namespace Enemy
             
             _stats.patrolPoints.Add(transform.position);
             _stats.currentHealth = _stats.maxHealth;
+        }
+
+        public void Attack()
+        {
+            _attackController.Attack(_player.position);
+        }
+
+        public void Chase()
+        {
+            _chaseController.Chase(_player.position);
+        }
+
+        public void Patrol()
+        {
+            _patrolController.Patrol();
         }
 
 

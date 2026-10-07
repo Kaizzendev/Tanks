@@ -2789,6 +2789,7 @@ GameObject:
   - component: {fileID: 8992575248051711492}
   - component: {fileID: 2228774578058666151}
   - component: {fileID: 6248073117897781889}
+  - component: {fileID: 1441372879276548621}
   - component: {fileID: 932498552820298617}
   - component: {fileID: 1574133704334818736}
   - component: {fileID: 5743806207101283206}
@@ -2867,6 +2868,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.2764697, y: 4.8968077, z: 3.9004157}
   m_Center: {x: -0.63670564, y: 0.80695343, z: -0.100580335}
+--- !u!114 &1441372879276548621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8613093775178724542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ae6adeb5904d7eb1386e6c84523e8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy.UtilityAI.UtilitySystemBrain
+  _actions:
+  - {fileID: 11400000, guid: 38a9ff2e418da5548850fa3744a05e62, type: 2}
+  - {fileID: 11400000, guid: f90ca2acb2eae6d46bb2bda840bf75c6, type: 2}
+  - {fileID: 11400000, guid: 6242ed8fdef24d44598354f224d57c7e, type: 2}
+  _thinkRatio: 5
 --- !u!114 &932498552820298617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2880,6 +2898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.EnemyController
   _isDebug: 1
+  _brain: {fileID: 1441372879276548621}
   _patrolController: {fileID: 1574133704334818736}
   _chaseController: {fileID: 5743806207101283206}
   _attackController: {fileID: 2833862533454180956}
