@@ -65,6 +65,7 @@ namespace Enemy.UtilityAI
             _context.enemy = _enemyController;
             _context.currentHealth = _enemyStats.currentHealth;
             _context.distanceToPlayer = _enemyController.distance;
+            _context.isPlayerVisible = _enemyStats.isPlayerVisible;
         }   
 
         private void Act()

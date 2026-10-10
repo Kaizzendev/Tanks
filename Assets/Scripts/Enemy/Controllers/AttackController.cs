@@ -12,7 +12,8 @@ namespace Enemy
         
         internal void Attack(Vector3 target)
         {
-            _enemyStats.navMeshAgent.isStopped = true;
+            _enemyStats.navMeshAgent.isStopped = false;
+            _enemyStats.navMeshAgent.SetDestination(target);
             RotateTurretTowards(target);
             Shoot();
         }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Enemy
 {
@@ -14,7 +16,7 @@ namespace Enemy
             _enemyStats.waitingTime = 0;
             _enemyStats.waiting = false;
         }
-
+        
         public void Patrol()
         {
             if (_enemyStats.waiting)

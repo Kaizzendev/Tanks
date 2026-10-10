@@ -1,4 +1,6 @@
-﻿namespace Enemy
+﻿using UnityEngine;
+
+namespace Enemy
 {
     public class DeadState: State
     {
@@ -15,7 +17,9 @@
         public override void Enter()
         {
             _enemy.SwitchGameplay(false);
+            _stats.navMeshAgent.velocity = Vector3.zero;
             _stats.navMeshAgent.isStopped = true;
+            _enemy.enabled = false;
         }
 
         public override void Update()

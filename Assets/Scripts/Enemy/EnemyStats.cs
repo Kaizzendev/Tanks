@@ -26,11 +26,14 @@ namespace Enemy
 
         [Header("Navigation")]
         [SerializeField] internal List<Vector3> patrolPoints = new List<Vector3>();
-        [SerializeField] internal float detectionRange = 40f;
         [SerializeField] internal int currentIndex = 0;
         [SerializeField] internal bool waiting;
         [SerializeField] internal float waitingTime;
         [SerializeField] internal float waitTimeAtPoint = 1f;
+
+        [Header("Sensors")] 
+        [SerializeField] internal bool isPlayerVisible;
+        [SerializeField] internal float detectionRange = 40f;
         
         [Header("Invulnerability")]
         [SerializeField] internal float _invulnerabilityDuration;
@@ -41,6 +44,7 @@ namespace Enemy
          [SerializeField] internal Transform firePoint;
          [SerializeField] internal GameObject missile;
          [SerializeField] internal NavMeshAgent navMeshAgent;
-        
+         [SerializeField] internal LayerMask playerLayerMask;
+
     }
 }

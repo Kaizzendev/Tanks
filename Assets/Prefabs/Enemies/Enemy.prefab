@@ -577,13 +577,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1009224521320776759}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -4.53, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5021297792936054801}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1119751689742059530
 GameObject:
   m_ObjectHideFlags: 0
@@ -2790,6 +2790,7 @@ GameObject:
   - component: {fileID: 2228774578058666151}
   - component: {fileID: 6248073117897781889}
   - component: {fileID: 1441372879276548621}
+  - component: {fileID: 3606067882717020303}
   - component: {fileID: 932498552820298617}
   - component: {fileID: 1574133704334818736}
   - component: {fileID: 5743806207101283206}
@@ -2884,7 +2885,32 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38a9ff2e418da5548850fa3744a05e62, type: 2}
   - {fileID: 11400000, guid: f90ca2acb2eae6d46bb2bda840bf75c6, type: 2}
   - {fileID: 11400000, guid: 6242ed8fdef24d44598354f224d57c7e, type: 2}
-  _thinkRatio: 5
+  _thinkRatio: 0.5
+--- !u!114 &3606067882717020303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8613093775178724542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2955d73cc4f34f3bbc162128a51c6f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy.AISensors
+  _distance: 30
+  _angle: 60
+  _meshColor: {r: 1, g: 0, b: 0.047468662, a: 0.07058824}
+  _visionConeResolution: 120
+  _meshMaterial: {fileID: 2100000, guid: 7f616520c51f2344992494664b411098, type: 2}
+  _obstructingVisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 8192
+  _playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _enemyStats: {fileID: 138291988645187590}
+  _enemyController: {fileID: 932498552820298617}
 --- !u!114 &932498552820298617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2898,7 +2924,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy.EnemyController
   _isDebug: 1
-  _brain: {fileID: 1441372879276548621}
   _patrolController: {fileID: 1574133704334818736}
   _chaseController: {fileID: 5743806207101283206}
   _attackController: {fileID: 2833862533454180956}
@@ -2970,16 +2995,20 @@ MonoBehaviour:
   moveSpeed: 6
   turretRotationSpeed: 1
   patrolPoints: []
-  detectionRange: 40
   currentIndex: 0
   waiting: 0
   waitingTime: 0
   waitTimeAtPoint: 1
+  isPlayerVisible: 0
+  detectionRange: 40
   _invulnerabilityDuration: 1
   turret: {fileID: 5021297792936054801}
   firePoint: {fileID: 5460709649325387512}
   missile: {fileID: 2949473240864245288, guid: 2cfc19c27935285479d81ffe4dc142ef, type: 3}
   navMeshAgent: {fileID: 7918533034220454181}
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!195 &7918533034220454181
 NavMeshAgent:
   m_ObjectHideFlags: 0
